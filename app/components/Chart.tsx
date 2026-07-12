@@ -32,8 +32,8 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   const { date, base, quote, rate } = payload[0].payload;
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
-      <p className="text-sm text-gray-500">
+    <div className="rounded-xl border border-gray-400 bg-gray-800 p-3 shadow-lg p-3">
+      <p className="text-sm text-gray-50">
         {new Date(date).toLocaleDateString("en-US", {
           weekday: "short",
           month: "long",
@@ -42,11 +42,11 @@ function CustomTooltip({ active, payload }: TooltipProps) {
         })}
       </p>
 
-      <p className="mt-2 font-semibold">
+      <p className="mt-2 font-semibold text-white">
         {base} → {quote}
       </p>
 
-      <p className="text-xl font-bold text-blue-600">{rate.toFixed(5)}</p>
+      <p className="text-xl font-bold text-yellow-300">{rate.toFixed(5)}</p>
     </div>
   );
 }
@@ -91,7 +91,7 @@ export default function Chart({ data }: ExchangeRateChartProps) {
           />
 
           <YAxis
-            tickFormatter={(value: number) => value.toFixed(3)}
+            tickFormatter={(value: number) => value.toFixed(2)}
             tickLine={false}
             axisLine={false}
             domain={[
@@ -100,7 +100,7 @@ export default function Chart({ data }: ExchangeRateChartProps) {
             ]}
           />
 
-          <Tooltip
+          {/* <Tooltip
             cursor={{
               stroke: "#555",
               strokeDasharray: "3 3",
@@ -111,8 +111,15 @@ export default function Chart({ data }: ExchangeRateChartProps) {
               borderRadius: 12,
               color: "white",
             }}
-          />
+          /> */}
 
+          <Tooltip
+            cursor={{
+              stroke: "#555",
+              strokeDasharray: "3 3",
+            }}
+            content={<CustomTooltip />}
+          />
           <Area
             dataKey="rate"
             stroke="#D8FF3E"

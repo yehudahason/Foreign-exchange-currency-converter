@@ -84,7 +84,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 
 export default function DailyChart({ data }: ExchangeRateChartProps) {
   return (
-    <div className="h-[420px] w-full rounded-3xl bg-[#171717] p-6">
+    <div className="h-[420px] w-full rounded-3xl bg-[#171717] p-0">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
@@ -110,19 +110,19 @@ export default function DailyChart({ data }: ExchangeRateChartProps) {
 
           <XAxis
             dataKey="time"
-            interval={2}
+            interval={8}
             tickLine={false}
             axisLine={false}
             tick={{
               fill: "#8b8b8b",
-              fontSize: 12,
+              fontSize: 10,
             }}
             minTickGap={20}
           />
 
           <YAxis
             dataKey="close"
-            tickFormatter={(value: number) => value.toFixed(4)}
+            tickFormatter={(value: number) => value.toFixed(2)}
             tickLine={false}
             axisLine={false}
             tick={{
