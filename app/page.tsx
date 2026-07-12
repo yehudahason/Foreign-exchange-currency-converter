@@ -25,6 +25,16 @@ type Rates = {
   quotes: string;
   base: string;
 };
+
+export type Currency = {
+  iso_code: string;
+  iso_numeric: string;
+  name: string;
+  symbol: string;
+  start_date: string;
+};
+
+export type CurrencyList = Currency[];
 import { ExchangeRateDaily } from "./components/DailyChart";
 export default function Home() {
   const [data, setData] = useState<ExchangeRate[]>([]);
@@ -33,7 +43,8 @@ export default function Home() {
 
   async function getAllcodes() {
     const res = await fetch("https://api.frankfurter.dev/v2/currencies");
-    const currencies = await res.json();
+    const currencies = (await res.json()) as CurrencyList;
+    console.log(currencies);
     const codes = currencies.map((item) => item.iso_code);
     console.log(codes);
   }
