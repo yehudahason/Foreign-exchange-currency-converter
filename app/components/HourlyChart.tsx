@@ -1,6 +1,10 @@
 "use client";
-import type { TooltipProps } from "recharts";
 
+import type {
+  CustomTooltipProps,
+  ExchangeRateHourly,
+  HourlyChartProps,
+} from "../types";
 import {
   Area,
   AreaChart,
@@ -11,32 +15,10 @@ import {
   YAxis,
 } from "recharts";
 
-export type ExchangeRateDaily = {
-  time: string;
-  datetime: string;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-};
-
-type ExchangeRateChartProps = {
-  data: ExchangeRateDaily[];
-};
-
-type TooltipEntry = {
-  payload: ExchangeRateDaily;
-};
-
-type CustomTooltipProps = {
-  active?: boolean;
-  payload?: TooltipEntry[];
-};
-
 function CustomTooltip({ active, payload }: CustomTooltipProps) {
   if (!active || !payload?.length) return null;
 
-  const point = payload[0].payload as ExchangeRateDaily;
+  const point = payload[0].payload as ExchangeRateHourly;
 
   return (
     <div className="min-w-48 rounded-xl border border-zinc-700 bg-[#171717] p-4 shadow-2xl">
@@ -82,7 +64,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   );
 }
 
-export default function DailyChart({ data }: ExchangeRateChartProps) {
+export default function HourlyChart({ data }: HourlyChartProps) {
   return (
     <div className="h-[420px] w-full rounded-3xl bg-[#171717] p-0">
       <ResponsiveContainer width="100%" height="100%">
@@ -91,7 +73,7 @@ export default function DailyChart({ data }: ExchangeRateChartProps) {
           margin={{
             top: 10,
             right: 20,
-            left: 10,
+            left: 0,
             bottom: 0,
           }}
         >

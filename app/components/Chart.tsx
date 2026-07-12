@@ -8,24 +8,7 @@ import {
   YAxis,
 } from "recharts";
 
-export type ExchangeRate = {
-  date: string;
-  base: string;
-  quote: string;
-  rate: number;
-};
-
-type ExchangeRateChartProps = {
-  data: ExchangeRate[];
-};
-
-type TooltipProps = {
-  active?: boolean;
-  payload?: {
-    payload: ExchangeRate;
-  }[];
-};
-
+import type { ChartProps, TooltipProps } from "../types";
 function CustomTooltip({ active, payload }: TooltipProps) {
   if (!active || !payload?.length) return null;
 
@@ -51,9 +34,9 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   );
 }
 
-export default function Chart({ data }: ExchangeRateChartProps) {
+export default function Chart({ data }: ChartProps) {
   return (
-    <div className="h-[400px] w-full rounded-xl bg-black p-4 shadow">
+    <div className="h-[420px] w-full rounded-xl bg-black p-0 shadow">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
