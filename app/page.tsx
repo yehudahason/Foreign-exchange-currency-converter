@@ -167,37 +167,41 @@ export default function Home() {
             {itemsP.map((code, index) => (
               <li
                 key={code}
-                onClick={() => {
-                  setSelected(code);
-                }}
                 id={`currency-${code}`}
                 role="option"
                 aria-selected={selected === code}
                 tabIndex={-1}
-                className={` ${highlightedIndex === index ? "border" : ""} cursor-pointer w-full focus:border relative px-4 py-3 hover:bg-gray-800`}
+                className={`  cursor-pointer w-full focus:border relative `}
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                <button
+                  className={` ${highlightedIndex === index ? " border border-gray-500" : ""} cursor-pointer w-full focus:border relative px-3 py-4  hover:bg-gray-800`}
+                  onClick={() => {
+                    setSelected(code);
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                      <img
+                        src={`https://flagcdn.com/${mergeObject[code].flag}.svg`}
+                        aria-hidden="true"
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+
+                    <span className="w-7 text-preset-4 text-white">{code}</span>
+
+                    <span className="truncate text-preset-5 text-zinc-400">
+                      {mergeObject[code].name}
+                    </span>
                     <img
-                      src={`https://flagcdn.com/${mergeObject[code].flag}.svg`}
-                      aria-hidden="true"
+                      className={`${selected === code ? "" : "hidden "}  absolute right-2 z-20`}
+                      src="/images/icon-check.svg"
                       alt=""
-                      className="h-full w-full object-cover"
+                      aria-hidden="true"
                     />
                   </div>
-
-                  <span className="w-7 text-preset-4 text-white">{code}</span>
-
-                  <span className="truncate text-preset-5 text-zinc-400">
-                    {mergeObject[code].name}
-                  </span>
-                  <img
-                    className={`${selected === code ? "" : "hidden "}  absolute right-2 z-20`}
-                    src="/images/icon-check.svg"
-                    alt=""
-                    aria-hidden="true"
-                  />
-                </div>
+                </button>
               </li>
             ))}
             <li className="flex justify-between w-full uppercase font-medium py-2 px-4 text-gray-400  border-b border-b-gray-700">
@@ -214,34 +218,40 @@ export default function Home() {
                   aria-selected={selected === code}
                   id={`currency-${code}`}
                   key={code}
-                  onClick={() => {
-                    setSelected(code);
-                  }}
                   tabIndex={-1}
-                  className={`${highlightedIndex === realIndex ? "border" : ""}  cursor-pointer w-full relative px-4 py-3 hover:bg-gray-800 focus:border rounded`}
+                  className={`cursor-pointer w-full relative  hover:bg-gray-800 `}
                 >
-                  <div className=" flex items-center gap-4">
-                    <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                  <button
+                    onClick={() => {
+                      setSelected(code);
+                    }}
+                    className={`${highlightedIndex === realIndex ? "border border-gray-600" : ""}  cursor-pointer w-full relative px-4 py-3 hover:bg-gray-800 focus:border rounded`}
+                  >
+                    <div className=" flex items-center gap-4">
+                      <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                        <img
+                          src={`https://flagcdn.com/${mergeObject[code].flag}.svg`}
+                          aria-hidden="true"
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+
+                      <span className="w-7 text-preset-4 text-white">
+                        {code}
+                      </span>
+
+                      <span className="truncate text-preset-5 text-zinc-400">
+                        {mergeObject[code].name}
+                      </span>
                       <img
-                        src={`https://flagcdn.com/${mergeObject[code].flag}.svg`}
-                        aria-hidden="true"
+                        className={`${selected === code ? "" : "hidden "} block absolute right-2 z-20`}
+                        src="/images/icon-check.svg"
                         alt=""
-                        className="h-full w-full object-cover"
+                        aria-hidden="true"
                       />
                     </div>
-
-                    <span className="w-7 text-preset-4 text-white">{code}</span>
-
-                    <span className="truncate text-preset-5 text-zinc-400">
-                      {mergeObject[code].name}
-                    </span>
-                    <img
-                      className={`${selected === code ? "" : "hidden "} block absolute right-2 z-20`}
-                      src="/images/icon-check.svg"
-                      alt=""
-                      aria-hidden="true"
-                    />
-                  </div>
+                  </button>
                 </li>
               );
             })}
