@@ -5,7 +5,7 @@ export const POPULAR_CURRENCIES: Record<
     name: string;
   }
 > = {
-  USD: { flag: "us", name: "United States Dollar" },
+  USD: { flag: "us", name: "US Dollar" },
   EUR: { flag: "eu", name: "Euro" },
   GBP: { flag: "gb", name: "British Pound" },
 };
