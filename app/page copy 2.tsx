@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState, useRef, useMemo } from "react";
+
+import { useEffect, useState, useRef } from "react";
 import Chart from "./components/Chart";
 import HourlyChart from "./components/HourlyChart";
 import type { Rates } from "./types";
@@ -9,8 +10,6 @@ import { compareRate } from "./fetchMethods/compareRates";
 import { getHourlyData } from "./fetchMethods/getHourlyData";
 import { CURRENCIES } from "@/public/frankfurter_currencies";
 import { POPULAR_CURRENCIES } from "@/public/popularCurrencies";
-import CurrencyList from "./components/CurrencyList";
-
 export default function Home() {
   const [rate, setrate] = useState<Rates>({ quotes: "ILS", base: "USD" });
   const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
@@ -26,7 +25,7 @@ export default function Home() {
   const itemsP = popularCurrencies.filter((c) =>
     c.toLowerCase().includes(query.toLowerCase()),
   );
-  const filtered = useMemo(() => [...itemsP, ...itemsO], [itemsO, itemsP]);
+  const filtered = [...itemsP, ...itemsO];
 
   const country = mergeObject[rate.base].flag;
   const country2 = mergeObject[rate.quotes].flag;
@@ -111,7 +110,7 @@ export default function Home() {
         aria-expanded={open}
         aria-controls="currency-listbox"
         onClick={() => setOpen(!open)}
-        className="flex cursor-pointer justify-center items-center  p-2 bg-neutral-800  gap-2 rounded-lg border border-neutral-600"
+        className="flex justify-center items-center  p-2 bg-neutral-800  gap-2 rounded-lg border border-neutral-600"
       >
         {" "}
         <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
@@ -129,7 +128,7 @@ export default function Home() {
         />
       </button>
       {open && (
-        <div className="absolute  c top-20 w-72 p-2 bg-[#1b1d24]  rounded-xl">
+        <div className="absolute  top-20 w-72 p-2 bg-[#1b1d24]  rounded-xl">
           <label htmlFor="currency-search" className="sr-only">
             Search currencies
           </label>
@@ -160,14 +159,6 @@ export default function Home() {
             role="listbox"
             className="absolute z-10 mt-0  px-2 pb-4 max-h-80 w-full overflow-y-auto rounded-b-lg bg-[#1b1d24] text-yellow-100 shadow-xl scrollbar left-0 flex flex-col items-center"
           >
-            {/* No results*/}
-            {itemsP.length === 0 && itemsO.length === 0 && (
-              <li className="uppercase  w-full flex justify-between items-center font-medium py-2 px-4 text-gray-400 border-b border-b-gray-700">
-                <span className="text-preset-5-medium">No results</span>
-                <span className="text-preset-5-medium">{0}</span>
-              </li>
-            )}
-            {/* Popular results*/}
             {itemsP.length > 0 && (
               <li className="uppercase  w-full flex justify-between items-center font-medium py-2 px-4 text-gray-400 border-b border-b-gray-700">
                 <span className="text-preset-5-medium">Popular</span>
@@ -176,20 +167,53 @@ export default function Home() {
                 </span>
               </li>
             )}
-            {itemsP.length > 0 && (
-              <CurrencyList
-                items={itemsP}
-                selected={selected}
-                highlightedIndex={highlightedIndex}
-                mergeObject={mergeObject}
-                onSelect={(code: string) => {
-                  setSelected(code);
-                  setOpen(false);
-                }}
-              />
+            {itemsP.length === 0 && itemsO.length === 0 && (
+              <li className="uppercase  w-full flex justify-between items-center font-medium py-2 px-4 text-gray-400 border-b border-b-gray-700">
+                <span className="text-preset-5-medium">No results</span>
+                <span className="text-preset-5-medium">{0}</span>
+              </li>
             )}
+            {itemsP.map((code, index) => (
+              <li
+                key={code}
+                id={`currency-${code}`}
+                role="option"
+                aria-selected={selected === code}
+                tabIndex={-1}
+                className={`  cursor-pointer w-full focus:border relative `}
+              >
+                <button
+                  className={`border-2 border-[#1b1d24]  ${highlightedIndex === index ? " border-gray-500" : ""} cursor-pointer w-full focus:border relative px-3 py-4  hover:border-2 hover:border-gray-500`}
+                  onClick={() => {
+                    setSelected(code);
+                    setOpen(false);
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                      <img
+                        src={`https://flagcdn.com/${mergeObject[code].flag}.svg`}
+                        aria-hidden="true"
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
 
-            {/* Others results*/}
+                    <span className="w-7 text-preset-4 text-white">{code}</span>
+
+                    <span className="truncate text-preset-5 text-zinc-400">
+                      {mergeObject[code].name}
+                    </span>
+                    <img
+                      className={`${selected === code ? "" : "hidden "}  absolute right-2 z-20`}
+                      src="/images/icon-check.svg"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </div>
+                </button>
+              </li>
+            ))}
             {itemsO.length > 0 && (
               <li className="flex justify-between w-full uppercase font-medium py-2 px-4 text-gray-400  border-b border-b-gray-700">
                 <span className="text-preset-5-medium">Others Currencies </span>
@@ -198,19 +222,56 @@ export default function Home() {
                 </span>
               </li>
             )}
-            {itemsO.length > 0 && (
-              <CurrencyList
-                items={itemsO}
-                startIndex={itemsP.length}
-                selected={selected}
-                highlightedIndex={highlightedIndex}
-                mergeObject={mergeObject}
-                onSelect={(code: string) => {
-                  setSelected(code);
-                  setOpen(false);
-                }}
-              />
-            )}
+            {itemsO.map((code, index) => {
+              const realIndex = itemsP.length + index;
+              return (
+                <li
+                  role="option"
+                  aria-selected={selected === code}
+                  id={`currency-${code}`}
+                  key={code}
+                  tabIndex={-1}
+                  className={`cursor-pointer w-full relative  `}
+                >
+                  <button
+                    onClick={() => {
+                      setSelected(code);
+                      setOpen(false);
+                    }}
+                    className={`w-full cursor-pointer rounded border-2 border-[#1b1d24]  px-4 py-3 relative ${
+                      highlightedIndex === realIndex
+                        ? " border-gray-500"
+                        : "hover:border-gray-500"
+                    }`}
+                  >
+                    <div className=" flex items-center gap-4">
+                      <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                        <img
+                          src={`https://flagcdn.com/${mergeObject[code].flag}.svg`}
+                          aria-hidden="true"
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+
+                      <span className="w-7 text-preset-4 text-white">
+                        {code}
+                      </span>
+
+                      <span className="truncate text-preset-5 text-zinc-400">
+                        {mergeObject[code].name}
+                      </span>
+                      <img
+                        className={`${selected === code ? "" : "hidden "} block absolute right-2 z-20`}
+                        src="/images/icon-check.svg"
+                        alt=""
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

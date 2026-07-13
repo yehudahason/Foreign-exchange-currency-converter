@@ -66,3 +66,9 @@ export type TooltipProps = {
     payload: ExchangeRate;
   }[];
 };
+
+export type CurrencyInfo = {
+  flag: string;
+  name: string;
+};
+export type CurrencyMap = Record<string, CurrencyInfo>;
