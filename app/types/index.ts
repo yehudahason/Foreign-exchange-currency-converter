@@ -15,6 +15,7 @@ export type ApiResponse = {
 export type Rates = {
   quotes: string;
   base: string;
+  time: string;
 };
 
 export type Currency = {

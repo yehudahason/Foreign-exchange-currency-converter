@@ -3,10 +3,10 @@ import type { Rates } from "../types";
 function formatUTCDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
-export async function compareRate(long: string, rate: Rates) {
+export async function compareRate(time: string, rate: Rates) {
   const today = new Date();
 
-  switch (long) {
+  switch (time) {
     case "1d":
       today.setDate(today.getDate() - 1);
       break;
