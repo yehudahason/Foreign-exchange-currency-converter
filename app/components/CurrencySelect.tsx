@@ -1,17 +1,13 @@
 // CurrencySelect.tsx
 import { useRef, useState, useEffect, useMemo } from "react";
 import CurrencyList from "./CurrencyList";
-
-type CurrencyInfo = {
-  flag: string;
-  name: string;
-};
+import { CurrencyMap } from "../types";
 
 type Props = {
   selected: string;
   onChange: (code: string) => void;
   setSelected: (code: string) => void;
-  mergeObject: Record<string, CurrencyInfo>;
+  mergeObject: CurrencyMap;
   popularCurrencies: string[];
   othersCurrencies: string[];
   left: boolean;
@@ -99,7 +95,7 @@ export default function CurrencySelect({
         aria-expanded={open}
         aria-controls="currency-listbox"
         onClick={() => setOpen(!open)}
-        className="cursor-pointer flex items-center justify-center gap-2 rounded-lg border border-neutral-600 bg-neutral-800 p-2"
+        className="relative cursor-pointer flex items-center justify-center gap-2 rounded-lg border border-neutral-600 bg-neutral-800 p-2"
       >
         <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
           <img

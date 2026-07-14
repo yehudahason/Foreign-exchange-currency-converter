@@ -3,8 +3,25 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
 
+  /* Neutral */
+  --neutral-900: #0a0a0a;
+  --neutral-700: #171719;
+  --neutral-600: #202022;
+  --neutral-500: #2e2e2e;
+  --neutral-400: #3d3d3d;
+  --neutral-300: #454547;
+  --neutral-200: #9d9d9d;
+  --neutral-100: #c6c6c6;
+  --neutral-50: #ffffff;
+
+  /* Lime */
+  --lime-500: #cef739;
+  --lime-800: #283300;
+
+  /* Green */
+  --green-500: #42eb05;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -12,6 +29,22 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-neutral-900: #0a0a0a;
+  --color-neutral-700: #171719;
+  --color-neutral-600: #202022;
+  --color-neutral-500: #2e2e2e;
+  --color-neutral-400: #3d3d3d;
+  --color-neutral-300: #454547;
+  --color-neutral-200: #9d9d9d;
+  --color-neutral-100: #c6c6c6;
+  --color-neutral-50: #ffffff;
+
+  --color-lime-500: #cef739;
+  --color-lime-800: #283300;
+
+  --color-green-500: #42eb05;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -102,4 +135,25 @@ body {
 
 .scrollbar::-webkit-scrollbar-thumb:hover {
   background: #969696;
+}
+.green {
+  filter: brightness(0) saturate(100%) invert(58%) sepia(85%) saturate(537%)
+    hue-rotate(85deg) brightness(95%) contrast(90%);
+}
+
+.red {
+  filter: brightness(0) saturate(100%) invert(23%) sepia(97%) saturate(6239%)
+    hue-rotate(353deg) brightness(97%) contrast(109%);
+}
+@keyframes marquee {
+  from {
+    transform: translateX(1.5%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 480s linear infinite;
 }

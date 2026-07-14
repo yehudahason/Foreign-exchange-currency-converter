@@ -15,7 +15,7 @@ export type ApiResponse = {
 export type Rates = {
   quotes: string;
   base: string;
-  time: string;
+  time: ChartRange;
 };
 
 export type Currency = {
@@ -56,9 +56,10 @@ export type ExchangeRate = {
   quote: string;
   rate: number;
 };
-
+export type ChartRange = "1d" | "1w" | "1m" | "3m" | "1y" | "3y" | "5y";
 export type ChartProps = {
   data: ExchangeRate[];
+  range: ChartRange;
 };
 
 export type TooltipProps = {

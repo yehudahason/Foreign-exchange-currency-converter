@@ -34,7 +34,37 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   );
 }
 
-export default function Chart({ data }: ChartProps) {
+export default function Chart({ data, range }: ChartProps) {
+  const formatTick = (date: string) => {
+    const d = new Date(date);
+
+    switch (range) {
+      case "1d":
+      case "1w":
+      case "1m":
+        return d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          timeZone: "UTC",
+        });
+
+      case "3m":
+      case "1y":
+        return d.toLocaleDateString("en-US", {
+          month: "short",
+          year: "2-digit",
+          timeZone: "UTC",
+        });
+
+      case "3y":
+      case "5y":
+        return d.getUTCFullYear().toString();
+
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className="h-[420px] w-full rounded-xl bg-black p-0 shadow">
       <ResponsiveContainer width="100%" height="100%">
@@ -43,7 +73,7 @@ export default function Chart({ data }: ChartProps) {
           margin={{
             top: 20,
             right: 20,
-            left: 0,
+            left: 18,
             bottom: 0,
           }}
         >
@@ -62,12 +92,7 @@ export default function Chart({ data }: ChartProps) {
 
           <XAxis
             dataKey="date"
-            tickFormatter={(date) =>
-              new Date(date).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              })
-            }
+            tickFormatter={formatTick}
             tickLine={false}
             axisLine={false}
             minTickGap={30}
@@ -82,19 +107,6 @@ export default function Chart({ data }: ChartProps) {
               (max: number) => max + 0.002,
             ]}
           />
-
-          {/* <Tooltip
-            cursor={{
-              stroke: "#555",
-              strokeDasharray: "3 3",
-            }}
-            contentStyle={{
-              background: "#1f1f1f",
-              border: "1px solid #333",
-              borderRadius: 12,
-              color: "white",
-            }}
-          /> */}
 
           <Tooltip
             cursor={{

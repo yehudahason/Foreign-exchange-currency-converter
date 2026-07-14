@@ -22,6 +22,9 @@ export async function compareRate(time: string, rate: Rates) {
     case "1y":
       today.setFullYear(today.getFullYear() - 1);
       break;
+    case "3y":
+      today.setFullYear(today.getFullYear() - 3);
+      break;
     case "5y":
       today.setFullYear(today.getFullYear() - 5);
       break;

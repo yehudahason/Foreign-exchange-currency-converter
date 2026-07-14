@@ -28,8 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${jetbrains.className} h-full antialiased`}>
-      <body className="bg-[#171717] min-h-full flex flex-col">
+    <html
+      lang="en"
+      className={`${jetbrains.className} h-full overflow-x-hidden`}
+    >
+      <head>
+        <title>Frontend Mentor | FX Checker</title>
+      </head>
+      <body className="bg-[#171717] min-h-full flex  w-full flex-col">
         <Providers>{children}</Providers>
       </body>
     </html>
