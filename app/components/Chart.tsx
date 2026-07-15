@@ -66,7 +66,7 @@ export default function Chart({ data, range, ticks }: ChartProps) {
   };
 
   return (
-    <div className="h-[420px] w-full rounded-xl bg-black p-0 shadow">
+    <div className="h-[20rem] w-full rounded-xl bg-black p-0 shadow">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}

@@ -80,7 +80,7 @@ export default function Home() {
                 {(error as Error).message}
               </span>
             )}
-            <ul className="flex items-center w-max animate-marquee">
+            <ul className="flex items-center w-max animate-marquee ">
               {isPending
                 ? ""
                 : todayrates?.map((item) => {
