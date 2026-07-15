@@ -56,10 +56,20 @@ export type ExchangeRate = {
   quote: string;
   rate: number;
 };
+export const rangesArr: ChartRange[] = [
+  "1d",
+  "1w",
+  "1m",
+  "3m",
+  "1y",
+  "3y",
+  "5y",
+];
 export type ChartRange = "1d" | "1w" | "1m" | "3m" | "1y" | "3y" | "5y";
 export type ChartProps = {
   data: ExchangeRate[];
   range: ChartRange;
+  ticks: string[];
 };
 
 export type TooltipProps = {

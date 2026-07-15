@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { rangesArr } from "./types";
 import Chart from "./components/Chart";
 import HourlyChart from "./components/HourlyChart";
-import type { Rates } from "./types";
+import type { ExchangeRate, Rates, ChartRange } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { compareRate } from "./fetchMethods/compareRates";
 import { getHourlyData } from "./fetchMethods/getHourlyData";
@@ -18,21 +19,47 @@ export default function Home() {
   const othersCurrencies = Object.keys(CURRENCIES);
   const [selected, setSelected] = useState<string>("USD");
   const [selected2, setSelected2] = useState<string>("EUR");
+  const [time, setTime] = useState<ChartRange>("1w");
 
   const country = mergeObject[selected].flag;
   const country2 = mergeObject[selected2].flag;
   const flagUrl = `https://flagcdn.com/w40/${country}.png`;
   const flagUrl2 = `https://flagcdn.com/w40/${country2}.png`;
-  const rate: Rates = { base: selected, quotes: selected2, time: "1d" };
+  const rate = useMemo(
+    () => ({ base: selected, quotes: selected2, time }) as Rates,
+    [selected, selected2, time],
+  );
+
+  //The Choosen rate
   const {
     data: rates,
     isPending: ratesLoading,
     error: ratesError,
   } = useQuery({
-    queryKey: ["rates", rate.base, rate.quotes, rate.time],
+    queryKey: ["rates", rate],
     queryFn: () => compareRate(rate.time, rate),
   });
 
+  //Unique  years ticks for 3y 5y
+  const ticks = useMemo(() => {
+    if (!ratesLoading) {
+      if (rate.time !== "3y" && rate.time !== "5y") return undefined;
+
+      const seen = new Set<number>();
+
+      return rates
+        .filter((item: ExchangeRate) => {
+          const year = new Date(item.date).getUTCFullYear();
+
+          if (seen.has(year)) return false;
+          seen.add(year);
+          return true;
+        })
+        .map((item: ExchangeRate) => item.date);
+    }
+  }, [rate, rates, ratesLoading]);
+
+  // 1 day  Hourly rates
   const {
     data: hourlyData,
     isPending: hourlyLoading,
@@ -42,6 +69,8 @@ export default function Home() {
     queryFn: () => getHourlyData(rate),
     enabled: rate.base !== rate.quotes,
   });
+
+  //today USD  banner rates
 
   const { data: todayrates, error, isPending, isError } = useBaseRates("USD");
 
@@ -54,7 +83,8 @@ export default function Home() {
         </div>
 
         <div className="flex w-full overflow-x-hidden">
-          <div className="flex items-center w-32 text-preset-5-medium text-gray-900 uppercase bg-yellow-200 px-2 py-3">
+          <div className="flex w-32 shrink-0 gap-2 items-center justify-center whitespace-nowrap bg-lime-500 p-1 uppercase text-gray-900 sm:px-2 sm:py-3 text-preset-5-medium">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-current"></span>{" "}
             Live markets
           </div>
           <div className="bg-neutral-700 overflow-hidden whitespace-nowrap w-full text-preset-5">
@@ -71,7 +101,7 @@ export default function Home() {
                     return (
                       <li
                         key={item.currency}
-                        className="flex gap-3 shrink-0 px-2 py-3 text-gray-100"
+                        className="flex gap-2 border-x border-gray-800 shrink-0 px-3 py-3 text-gray-100"
                       >
                         <span>USD/{item.currency}</span>
                         <span>{item.rate.toFixed(2)}</span>
@@ -125,26 +155,40 @@ export default function Home() {
             {rate.base}/{rate.quotes}
           </h2>
 
-          <div className="font-mono text-xl text-white">{rate.time}</div>
+          <div className="flex items-center gap-2">
+            {rangesArr.map((range) => (
+              <button
+                type="button"
+                onClick={() => setTime(range)}
+                key={range}
+                className={`text-amber-200 cursor-pointer rounded-md px-3 py-1 text-sm ${range === rate.time ? "bg-gray-500" : "bg-gray-800"} font-medium `}
+              >
+                {range}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="bg-[#171717] rounded-3xl border h-fit mx-auto max-w-3xl  w-full border-zinc-800  p-0 shadow-xl text-amber-200">
+        <div className="bg-[#171717] rounded-3xl border h-fit mx-auto max-w-3xl  w-full border-zinc-800  p-4 shadow-xl text-amber-200">
           {ratesLoading ? (
-            <span className="flex animate-spin h-25 flex-col items-center-safe justify-center">
+            <span className="flex animate-spin h-[420px] flex-col items-center-safe justify-center">
               {" "}
               <Image src="/spinner.png" alt="loading" width={80} height={80} />
             </span>
           ) : (
-            <Chart data={rates ?? []} range={rate.time} />
+            <Chart ticks={ticks} data={rates ?? []} range={rate.time} />
           )}
           {ratesError ? ratesError.message : ""}
           {rate.base === rate.quotes ? (
             ""
           ) : hourlyLoading ? (
-            <span className="flex animate-spin h-25 flex-col items-center-safe justify-center">
+            <span className="flex animate-spin h-[420px] flex-col items-center-safe justify-center">
               <Image src="/spinner.png" alt="" height={80} width={80} />
             </span>
           ) : (
-            <HourlyChart data={hourlyData ?? []} />
+            <div className="flex pt-4 flex-col items-center gap-4 ">
+              <h1>Last 24H</h1>
+              <HourlyChart data={hourlyData ?? []} />
+            </div>
           )}
           {hourlyError ? hourlyError.message : ""}
         </div>

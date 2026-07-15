@@ -34,7 +34,7 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   );
 }
 
-export default function Chart({ data, range }: ChartProps) {
+export default function Chart({ data, range, ticks }: ChartProps) {
   const formatTick = (date: string) => {
     const d = new Date(date);
 
@@ -92,6 +92,7 @@ export default function Chart({ data, range }: ChartProps) {
 
           <XAxis
             dataKey="date"
+            ticks={ticks}
             tickFormatter={formatTick}
             tickLine={false}
             axisLine={false}
@@ -102,10 +103,7 @@ export default function Chart({ data, range }: ChartProps) {
             tickFormatter={(value: number) => value.toFixed(2)}
             tickLine={false}
             axisLine={false}
-            domain={[
-              (min: number) => min - 0.002,
-              (max: number) => max + 0.002,
-            ]}
+            domain={["dataMin - 0.0002", "dataMax + 0.0002"]}
           />
 
           <Tooltip

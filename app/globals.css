@@ -100,7 +100,7 @@
   }
 
   .text-preset-5-medium {
-    @apply font-medium text-[0.75rem] leading-[1.3] tracking-[0.03125rem];
+    @apply font-bold text-[0.75rem] leading-[1.3] tracking-[0.03125rem];
     /* 12px / 130% / 0.5px */
   }
 

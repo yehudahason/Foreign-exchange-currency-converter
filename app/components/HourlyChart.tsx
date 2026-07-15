@@ -66,14 +66,14 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 
 export default function HourlyChart({ data }: HourlyChartProps) {
   return (
-    <div className="h-[420px] w-full rounded-3xl bg-[#171717] p-0">
+    <div className="h-[420px] w-full rounded-3xl bg-black p-0">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
           margin={{
             top: 10,
             right: 20,
-            left: 0,
+            left: 20,
             bottom: 0,
           }}
         >
