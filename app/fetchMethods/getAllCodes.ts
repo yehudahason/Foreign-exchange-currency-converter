@@ -5,5 +5,5 @@ export async function getAllcodes() {
   const currencies = (await res.json()) as CurrencyList;
   // console.log(currencies);
   const codes = currencies.map((item) => item.iso_code);
-  // console.log(codes);
+  console.log(codes);
 }

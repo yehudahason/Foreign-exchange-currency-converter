@@ -28,28 +28,6 @@ export type Currency = {
 
 export type CurrencyList = Currency[];
 
-export type ExchangeRateHourly = {
-  time: string;
-  datetime: string;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-};
-
-export type HourlyChartProps = {
-  data: ExchangeRateHourly[];
-};
-
-export type TooltipEntry = {
-  payload: ExchangeRateHourly;
-};
-
-export type CustomTooltipProps = {
-  active?: boolean;
-  payload?: TooltipEntry[];
-};
-
 export type ExchangeRate = {
   date: string;
   base: string;

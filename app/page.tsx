@@ -1,13 +1,11 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { rangesArr } from "./types";
 import Chart from "./components/Chart";
-import HourlyChart from "./components/HourlyChart";
 import type { ExchangeRate, Rates, ChartRange } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { compareRate } from "./fetchMethods/compareRates";
-import { getHourlyData } from "./fetchMethods/getHourlyData";
 import { CURRENCIES } from "@/public/frankfurter_currencies";
 import { POPULAR_CURRENCIES } from "@/public/popularCurrencies";
 import CurrencySelect from "./components/CurrencySelect";
@@ -58,17 +56,6 @@ export default function Home() {
         .map((item: ExchangeRate) => item.date);
     }
   }, [rate, rates, ratesLoading]);
-
-  // 1 day  Hourly rates
-  const {
-    data: hourlyData,
-    isPending: hourlyLoading,
-    error: hourlyError,
-  } = useQuery({
-    queryKey: ["hourly", rate.base, rate.quotes, rate.time],
-    queryFn: () => getHourlyData(rate),
-    enabled: rate.base !== rate.quotes,
-  });
 
   //today USD  banner rates
 
@@ -178,19 +165,6 @@ export default function Home() {
             <Chart ticks={ticks} data={rates ?? []} range={rate.time} />
           )}
           {ratesError ? ratesError.message : ""}
-          {rate.base === rate.quotes ? (
-            ""
-          ) : hourlyLoading ? (
-            <span className="flex animate-spin h-[420px] flex-col items-center-safe justify-center">
-              <Image src="/spinner.png" alt="" height={80} width={80} />
-            </span>
-          ) : (
-            <div className="flex pt-4 flex-col items-center gap-4 ">
-              <h1>Last 24H</h1>
-              <HourlyChart data={hourlyData ?? []} />
-            </div>
-          )}
-          {hourlyError ? hourlyError.message : ""}
         </div>
       </main>
     </>
