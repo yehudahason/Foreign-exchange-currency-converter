@@ -39,25 +39,25 @@ export default function Chart({ data, range, ticks }: ChartProps) {
     const d = new Date(date);
 
     switch (range) {
-      case "1d":
-      case "1w":
-      case "1m":
+      case "1D":
+      case "1W":
+      case "1M":
         return d.toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
           timeZone: "UTC",
         });
 
-      case "3m":
-      case "1y":
+      case "3M":
+      case "1Y":
         return d.toLocaleDateString("en-US", {
           month: "short",
           year: "2-digit",
           timeZone: "UTC",
         });
 
-      case "3y":
-      case "5y":
+      case "3Y":
+      case "5Y":
         return d.getUTCFullYear().toString();
 
       default:

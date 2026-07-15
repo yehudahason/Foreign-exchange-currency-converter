@@ -34,16 +34,8 @@ export type ExchangeRate = {
   quote: string;
   rate: number;
 };
-export const rangesArr: ChartRange[] = [
-  "1d",
-  "1w",
-  "1m",
-  "3m",
-  "1y",
-  "3y",
-  "5y",
-];
-export type ChartRange = "1d" | "1w" | "1m" | "3m" | "1y" | "3y" | "5y";
+export const rangesArr: ChartRange[] = ["1D", "1W", "1M", "3M", "1Y", "5Y"];
+export type ChartRange = "1D" | "1W" | "1M" | "3M" | "1Y" | "3Y" | "5Y";
 export type ChartProps = {
   data: ExchangeRate[];
   range: ChartRange;
@@ -62,3 +54,31 @@ export type CurrencyInfo = {
   name: string;
 };
 export type CurrencyMap = Record<string, CurrencyInfo>;
+
+//WITH NO  USD !!
+
+export const POPULAR_CURRENCIES = [
+  "EUR",
+  "GBP",
+  "JPY",
+  "CHF",
+  "CAD",
+  "AUD",
+  "NZD",
+  "CNY",
+  "HKD",
+  "SGD",
+  "SEK",
+  "NOK",
+  "DKK",
+  "PLN",
+  "CZK",
+  "HUF",
+  "RON",
+  "TRY",
+  "ILS",
+  "MXN",
+  "BRL",
+  "INR",
+  "ZAR",
+];

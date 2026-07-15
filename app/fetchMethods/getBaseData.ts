@@ -1,4 +1,4 @@
-import { ExchangeRate } from "../types";
+import { POPULAR_CURRENCIES, ExchangeRate } from "../types";
 
 export async function getBaseData(base = "USD") {
   const yesterday = new Date();
@@ -22,15 +22,33 @@ export async function getBaseData(base = "USD") {
 
   const previousMap = new Map(prev.map((rate) => [rate.quote, rate.rate]));
 
-  return today.map(({ quote, rate }) => {
-    const previous = previousMap.get(quote);
+  const order = new Map(
+    POPULAR_CURRENCIES.map((currency, index) => [currency, index]),
+  );
 
-    return {
-      currency: quote,
-      rate,
-      previous,
-      percentChange:
-        previous !== undefined ? ((rate - previous) / previous) * 100 : null,
-    };
-  });
+  const list = today
+    .map(({ quote, rate }) => {
+      const previous = previousMap.get(quote);
+
+      return {
+        currency: quote,
+        rate,
+        previous,
+        percentChange:
+          previous !== undefined ? ((rate - previous) / previous) * 100 : null,
+      };
+    })
+    .sort((a, b) => {
+      const ai = order.get(a.currency);
+      const bi = order.get(b.currency);
+
+      if (ai !== undefined && bi !== undefined) return ai - bi;
+      if (ai !== undefined) return -1;
+      if (bi !== undefined) return 1;
+
+      return a.currency.localeCompare(b.currency);
+    });
+
+  console.log(list);
+  return list;
 }

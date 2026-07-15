@@ -17,7 +17,7 @@ export default function Home() {
   const othersCurrencies = Object.keys(CURRENCIES);
   const [selected, setSelected] = useState<string>("USD");
   const [selected2, setSelected2] = useState<string>("EUR");
-  const [time, setTime] = useState<ChartRange>("1w");
+  const [time, setTime] = useState<ChartRange>("1W");
 
   const country = mergeObject[selected].flag;
   const country2 = mergeObject[selected2].flag;
@@ -41,7 +41,7 @@ export default function Home() {
   //Unique  years ticks for 3y 5y
   const ticks = useMemo(() => {
     if (!ratesLoading) {
-      if (rate.time !== "3y" && rate.time !== "5y") return undefined;
+      if (rate.time !== "3Y" && rate.time !== "5Y") return undefined;
 
       const seen = new Set<number>();
 
@@ -65,7 +65,7 @@ export default function Home() {
     <>
       <header className="bg-neutral-900 w-full">
         <div className="flex items-center text-neutral-200 justify-between p-6 uppercase text-preset-4">
-          <Image src="/images/logo.svg" alt="" width={130} height={60} />
+          <Image src="/images/logo.svg" alt="" width={130} height={40} />
           <span>165 Currencies · EOD · ECB data</span>
         </div>
 
@@ -159,7 +159,12 @@ export default function Home() {
           {ratesLoading ? (
             <span className="flex animate-spin h-[420px] flex-col items-center-safe justify-center">
               {" "}
-              <Image src="/spinner.png" alt="loading" width={80} height={80} />
+              <Image
+                src="/spinner.png"
+                alt="loading"
+                width={160}
+                height={160}
+              />
             </span>
           ) : (
             <Chart ticks={ticks} data={rates ?? []} range={rate.time} />

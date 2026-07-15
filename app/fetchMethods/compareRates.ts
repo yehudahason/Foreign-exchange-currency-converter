@@ -7,25 +7,25 @@ export async function compareRate(time: string, rate: Rates) {
   const today = new Date();
 
   switch (time) {
-    case "1d":
+    case "1D":
       today.setDate(today.getDate() - 1);
       break;
-    case "1w":
+    case "1W":
       today.setDate(today.getDate() - 7);
       break;
-    case "1m":
+    case "1M":
       today.setMonth(today.getMonth() - 1);
       break;
-    case "3m":
+    case "3M":
       today.setMonth(today.getMonth() - 3);
       break;
-    case "1y":
+    case "1Y":
       today.setFullYear(today.getFullYear() - 1);
       break;
-    case "3y":
+    case "3Y":
       today.setFullYear(today.getFullYear() - 3);
       break;
-    case "5y":
+    case "5Y":
       today.setFullYear(today.getFullYear() - 5);
       break;
   }
@@ -40,5 +40,7 @@ export async function compareRate(time: string, rate: Rates) {
     throw new Error("Failed to fetch rates");
   }
 
-  return res.json();
+  const log = await res.json();
+  console.log(log);
+  return log;
 }
