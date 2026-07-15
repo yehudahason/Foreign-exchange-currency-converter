@@ -176,10 +176,18 @@ export default function Home() {
         </div>
         {!ratesLoading && (
           <div className="flex text-amber-100 uppercase gap-5 text-xl">
-            <span className="flex gap-2">Open : {changes.open.toFixed(4)}</span>
-            <span>Last : {changes.last.toFixed(4)}</span>
-            <span>CHange : {changes.change.toFixed(4)} </span>
-            <span>% CHANGE : {changes.percent.toFixed(4)}</span>
+            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
+              Open : {changes.open.toFixed(4)}
+            </span>
+            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
+              Last : {changes.last.toFixed(4)}
+            </span>
+            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
+              CHange : {changes.change.toFixed(4)}{" "}
+            </span>
+            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
+              % CHANGE : {changes.percent.toFixed(4)}
+            </span>
           </div>
         )}
         <div className="bg-[#171717] rounded-3xl border h-fit mx-auto max-w-3xl  w-full border-zinc-800  p-4 shadow-xl text-amber-200">
