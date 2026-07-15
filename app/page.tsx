@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { rangesArr } from "./types";
+import { rangesArr, Changes } from "./types";
 import Chart from "./components/Chart";
 import type { ExchangeRate, Rates, ChartRange } from "./types";
 import { useQuery } from "@tanstack/react-query";
@@ -38,6 +38,26 @@ export default function Home() {
     queryFn: () => compareRate(rate.time, rate),
   });
 
+  const changes = useMemo<Changes>(() => {
+    if (ratesLoading || rates.length === 0) {
+      return {
+        open: 0,
+        last: 0,
+        change: 0,
+        percent: 0,
+      };
+    }
+
+    const first = rates[0].rate;
+    const last = rates[rates.length - 1].rate;
+
+    return {
+      open: first,
+      last,
+      change: last - first,
+      percent: ((last - first) / first) * 100,
+    };
+  }, [ratesLoading, rates]);
   //Unique  years ticks for 3y 5y
   const ticks = useMemo(() => {
     if (!ratesLoading) {
@@ -91,7 +111,7 @@ export default function Home() {
                         className="flex gap-2 border-x border-gray-800 shrink-0 px-3 py-3 text-gray-100"
                       >
                         <span>USD/{item.currency}</span>
-                        <span>{item.rate.toFixed(2)}</span>
+                        <span>{item.rate.toFixed(3)}</span>
                         <span
                           className={`flex ${percentChange >= 0 ? " text-green-500" : "text-red-500"} justify-between items-center gap-1`}
                         >
@@ -102,7 +122,7 @@ export default function Home() {
                             width={16}
                             height={16}
                           />
-                          {percentChange.toFixed(2)}%
+                          {percentChange.toFixed(3)}%
                         </span>
                       </li>
                     );
@@ -141,7 +161,6 @@ export default function Home() {
           <h2 className="text-3xl font-semibold tracking-wider text-white">
             {rate.base}/{rate.quotes}
           </h2>
-
           <div className="flex items-center gap-2">
             {rangesArr.map((range) => (
               <button
@@ -155,6 +174,14 @@ export default function Home() {
             ))}
           </div>
         </div>
+        {!ratesLoading && (
+          <div className="flex text-amber-100 uppercase gap-5 text-xl">
+            <span className="flex gap-2">Open : {changes.open.toFixed(4)}</span>
+            <span>Last : {changes.last.toFixed(4)}</span>
+            <span>CHange : {changes.change.toFixed(4)} </span>
+            <span>% CHANGE : {changes.percent.toFixed(4)}</span>
+          </div>
+        )}
         <div className="bg-[#171717] rounded-3xl border h-fit mx-auto max-w-3xl  w-full border-zinc-800  p-4 shadow-xl text-amber-200">
           {ratesLoading ? (
             <span className="flex animate-spin h-[420px] flex-col items-center-safe justify-center">

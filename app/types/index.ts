@@ -55,8 +55,14 @@ export type CurrencyInfo = {
 };
 export type CurrencyMap = Record<string, CurrencyInfo>;
 
-//WITH NO  USD !!
+export type Changes = {
+  open: number;
+  last: number;
+  change: number;
+  percent: number;
+};
 
+//WITH NO  USD !!
 export const POPULAR_CURRENCIES = [
   "EUR",
   "GBP",
