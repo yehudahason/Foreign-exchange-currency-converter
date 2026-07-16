@@ -20,7 +20,7 @@ export async function getBaseData(base = "USD") {
     }),
   ]);
 
-  const previousMap = new Map(prev.map((rate) => [rate.quote, rate.rate]));
+  const previousMap = new Map(prev.map((r) => [r.quote, r.rate]));
 
   const order = new Map(
     POPULAR_CURRENCIES.map((currency, index) => [currency, index]),
@@ -37,7 +37,12 @@ export async function getBaseData(base = "USD") {
         percentChange:
           previous !== undefined ? ((rate - previous) / previous) * 100 : null,
       };
-    })
+    }) // Filter No Change
+    .filter(
+      (item) =>
+        item.previous !== undefined &&
+        Math.abs(item.rate - item.previous) > 1e-12,
+    )
     .sort((a, b) => {
       const ai = order.get(a.currency);
       const bi = order.get(b.currency);
@@ -48,7 +53,6 @@ export async function getBaseData(base = "USD") {
 
       return a.currency.localeCompare(b.currency);
     });
-
   console.log(list);
   return list;
 }

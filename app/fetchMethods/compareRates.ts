@@ -8,13 +8,11 @@ export async function compareRate(time: string, rate: Rates) {
 
   switch (time) {
     case "1D":
-      today.setDate(today.getDate() - 1);
-      break;
     case "1W":
       today.setDate(today.getDate() - 7);
       break;
     case "1M":
-      today.setMonth(today.getMonth() - 1);
+      today.setDate(today.getDate() - 30);
       break;
     case "3M":
       today.setMonth(today.getMonth() - 3);
@@ -33,7 +31,7 @@ export async function compareRate(time: string, rate: Rates) {
   const from = formatUTCDate(today);
 
   const res = await fetch(
-    `https://api.frankfurter.dev/v2/rates?from=${from}&base=${rate.base}&quotes=${rate.quotes}`,
+    `/api/rates?base=${rate.base}&quote=${rate.quotes}&from=${from}`,
   );
 
   if (!res.ok) {

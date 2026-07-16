@@ -39,7 +39,7 @@ export type ChartRange = "1D" | "1W" | "1M" | "3M" | "1Y" | "3Y" | "5Y";
 export type ChartProps = {
   data: ExchangeRate[];
   range: ChartRange;
-  ticks: string[];
+  ticks: string[] | undefined;
 };
 
 export type TooltipProps = {

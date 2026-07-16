@@ -18,7 +18,6 @@ export default function Home() {
   const [selected, setSelected] = useState<string>("USD");
   const [selected2, setSelected2] = useState<string>("EUR");
   const [time, setTime] = useState<ChartRange>("1W");
-
   const country = mergeObject[selected].flag;
   const country2 = mergeObject[selected2].flag;
   const flagUrl = `https://flagcdn.com/w40/${country}.png`;
@@ -30,13 +29,19 @@ export default function Home() {
 
   //The Choosen rate
   const {
-    data: rates,
+    data,
     isPending: ratesLoading,
     error: ratesError,
   } = useQuery({
     queryKey: ["rates", rate],
     queryFn: () => compareRate(rate.time, rate),
   });
+
+  const rates = useMemo(() => {
+    if (!data) return [];
+
+    return rate.time === "1D" ? data.slice(-2) : data;
+  }, [data, rate.time]);
 
   const changes = useMemo<Changes>(() => {
     if (ratesLoading || rates.length === 0) {
@@ -58,6 +63,7 @@ export default function Home() {
       percent: ((last - first) / first) * 100,
     };
   }, [ratesLoading, rates]);
+
   //Unique  years ticks for 3y 5y
   const ticks = useMemo(() => {
     if (!ratesLoading) {
