@@ -158,7 +158,7 @@ export default function CurrencySelect({
               <>
                 <li className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
                   <span>Popular</span>
-                  <span>{itemsP.length}</span>
+                  <span>3</span>
                 </li>
 
                 <CurrencyList
@@ -178,7 +178,7 @@ export default function CurrencySelect({
               <>
                 <li className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
                   <span>Other currencies</span>
-                  <span>{itemsO.length}</span>
+                  <span>{165}</span>
                 </li>
 
                 <CurrencyList

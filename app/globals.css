@@ -53,63 +53,49 @@
 }
 
 /* globals.css */
-@layer components {
-  .text-preset-1 {
-    @apply font-bold text-[2.5rem] leading-[1] tracking-[-0.03125rem];
-    /* 40px / 100% / -0.5px */
-  }
-
-  .text-preset-1-tablet {
-    @apply font-bold text-[2rem] leading-[1] tracking-[-0.03125rem];
-    /* 32px / 100% / -0.5px */
-  }
-
-  .text-preset-2 {
-    @apply font-normal text-[1.25rem] leading-[1.2] tracking-[-0.03125rem];
-    /* 20px / 120% / -0.5px */
-  }
-
-  .text-preset-2-bold {
-    @apply font-bold text-[1.75rem] leading-[1.4] tracking-[-0.03125rem];
-    /* 20px / 140% / -0.5px */
-  }
-
-  .text-preset-3 {
-    @apply font-normal text-[1rem] leading-[1.2] tracking-[0.0625rem];
-    /* 16px / 120% / 1px */
-  }
-
-  .text-preset-3-medium {
-    @apply font-medium text-[1rem] leading-[1.2] tracking-[0.0625rem];
-    /* 16px / 120% / 1px */
-  }
-
-  .text-preset-3-bold {
-    @apply font-bold text-[1rem] leading-[1.1] tracking-[0.0625rem];
-    /* 16px / 110% / 1px */
-  }
-
-  .text-preset-4 {
-    @apply font-normal text-[0.875rem] leading-[1.2] tracking-[0.0625rem];
-    /* 14px / 120% / 1px */
-  }
-
-  .text-preset-5 {
-    @apply font-normal text-[0.75rem] leading-[1.2] tracking-[0.03125rem];
-    /* 12px / 120% / 0.5px */
-  }
-
-  .text-preset-5-medium {
-    @apply font-bold text-[0.75rem] leading-[1.3] tracking-[0.03125rem];
-    /* 12px / 130% / 0.5px */
-  }
-
-  .text-preset-6 {
-    @apply font-normal text-[0.625rem] leading-[1] tracking-[0];
-    /* 10px / 100% / 0px */
-  }
+@utility text-preset-1 {
+  @apply font-bold text-[2.5rem] leading-[1] tracking-[-0.03125rem];
 }
 
+@utility text-preset-1-tablet {
+  @apply font-bold text-[2rem] leading-[1] tracking-[-0.03125rem];
+}
+
+@utility text-preset-2 {
+  @apply font-normal text-[1.25rem] leading-[1.2] tracking-[1px];
+}
+
+@utility text-preset-2-bold {
+  @apply font-bold text-[1.75rem] leading-[1.4] tracking-[1px];
+}
+
+@utility text-preset-3 {
+  @apply font-normal text-[1rem] leading-[1.2] tracking-[0.0625rem];
+}
+
+@utility text-preset-3-medium {
+  @apply font-medium text-[1rem] leading-[1.2] tracking-[0.0625rem];
+}
+
+@utility text-preset-3-bold {
+  @apply font-bold text-[1rem] leading-[1.1] tracking-[0.0625rem];
+}
+
+@utility text-preset-4 {
+  @apply font-normal text-[0.875rem] leading-[1.2] tracking-[0.0625rem];
+}
+
+@utility text-preset-5 {
+  @apply font-normal text-[0.75rem] leading-[1.2] tracking-[0.03125rem];
+}
+
+@utility text-preset-5-medium {
+  @apply font-bold text-[0.75rem] leading-[1.3] tracking-[0.03125rem];
+}
+
+@utility text-preset-6 {
+  @apply font-normal text-[0.625rem] leading-[1] tracking-[0];
+}
 @utility pause {
   animation-play-state: paused;
 }

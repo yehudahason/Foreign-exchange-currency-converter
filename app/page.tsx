@@ -100,7 +100,7 @@ export default function Home() {
   return (
     <>
       <header className="bg-neutral-900 w-full">
-        <div className="flex items-center gap-2 text-neutral-200 justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4 text-preset-6">
+        <div className="flex items-center gap-2 text-neutral-200 justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4  text-preset-6">
           <Image src="/images/logo.svg" alt="" width={130} height={40} />
           <span>165 Currencies · EOD · ECB data</span>
         </div>
@@ -157,7 +157,7 @@ export default function Home() {
             {/* Top */}
             <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
               {/* Send */}
-              <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-zinc-800 sm:p-6 px-2 py-6">
+              <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
                 <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-400">
                   Send
                 </label>
@@ -166,7 +166,7 @@ export default function Home() {
                   <input
                     type="number"
                     defaultValue={1}
-                    className="  flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-lime-400 outline-none"
+                    className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-white outline-none"
                     onChange={(e) => setMoney(+e.target.value)}
                   />
 
@@ -184,7 +184,7 @@ export default function Home() {
 
               {/* Swap */}
               <button
-                className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800 text-3xl text-white cursor-pointer md:rotate-0 rotate-90"
+                className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border border-zinc-700 bg-neutral-600 text-3xl text-white cursor-pointer md:rotate-0 rotate-90"
                 type="button"
                 onClick={() => handleSwitch()}
               >
@@ -192,7 +192,7 @@ export default function Home() {
               </button>
 
               {/* Receive */}
-              <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-zinc-800 sm:p-6 px-2 py-6">
+              <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
                 <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-400">
                   Receive
                 </label>
@@ -220,13 +220,13 @@ export default function Home() {
 
             {/* Bottom */}
             <div className="flex items-center sm:flex-row flex-col gap-3 justify-between">
-              <p className="text-preset-5 text-zinc-300">
+              <p className="text-preset-2 text-zinc-300">
                 1 {rate.base} = {changes.last} {rate.quotes}
               </p>
 
-              <div className="flex sm:gap-4  gap-2">
-                <button className="rounded-lg bg-lime-400 sm:px-6 p-1 sm:py-3 font-semibold uppercase tracking-wider text-black text-preset-5-medium">
-                  ★ Favorited
+              <div className="flex  gap-4  ">
+                <button className="flex gap-2 rounded-lg bg-lime-400 sm:px-3 px-1 tracking-[3px]  py-3  font-semibold uppercase text-black text-preset-5-medium ">
+                  <span>★</span> <span>Favorited</span>
                 </button>
 
                 <button className="rounded-lg border border-lime-400 sm:p-3 p-1 font-semibold uppercase tracking-wider text-preset-5-medium text-white">
