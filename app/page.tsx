@@ -17,7 +17,7 @@ export default function Home() {
   const othersCurrencies = Object.keys(CURRENCIES);
   const [selected, setSelected] = useState<string>("USD");
   const [selected2, setSelected2] = useState<string>("EUR");
-  const [time, setTime] = useState<ChartRange>("1D");
+  const [time, setTime] = useState<ChartRange>("1W");
   const [money, setMoney] = useState<number>(1);
   const country = mergeObject[selected].flag;
   const country2 = mergeObject[selected2].flag;
