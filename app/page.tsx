@@ -18,6 +18,7 @@ export default function Home() {
   const [selected, setSelected] = useState<string>("USD");
   const [selected2, setSelected2] = useState<string>("EUR");
   const [time, setTime] = useState<ChartRange>("1W");
+  const [money, setMoney] = useState<number>(1);
   const country = mergeObject[selected].flag;
   const country2 = mergeObject[selected2].flag;
   const flagUrl = `https://flagcdn.com/w40/${country}.png`;
@@ -26,6 +27,13 @@ export default function Home() {
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
   );
+
+  //Switch currencies
+  function handleSwitch() {
+    const [a, b] = [selected, selected2];
+    setSelected(b);
+    setSelected2(a);
+  }
 
   //The Choosen rate
   const {
@@ -37,12 +45,14 @@ export default function Home() {
     queryFn: () => compareRate(rate.time, rate),
   });
 
+  //Setting for 1D
   const rates = useMemo(() => {
     if (!data) return [];
 
     return rate.time === "1D" ? data.slice(-2) : data;
   }, [data, rate.time]);
 
+  //Changes
   const changes = useMemo<Changes>(() => {
     if (ratesLoading || rates.length === 0) {
       return {
@@ -90,7 +100,7 @@ export default function Home() {
   return (
     <>
       <header className="bg-neutral-900 w-full">
-        <div className="flex items-center text-neutral-200 justify-between p-6 uppercase text-preset-4">
+        <div className="flex items-center gap-2 text-neutral-200 justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4 text-preset-6">
           <Image src="/images/logo.svg" alt="" width={130} height={40} />
           <span>165 Currencies · EOD · ECB data</span>
         </div>
@@ -137,37 +147,106 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <main className="bg-neutral-900 relative min-h-screen flex flex-col items-center w-full mx-auto gap-6 p-6">
+      <main className="bg-neutral-900 relative min-h-screen flex flex-col items-center w-full mx-auto gap-6 sm:p-6 px-2 py-6">
+        <section className="max-w-7xl mx-auto w-full">
+          <h2 className="mb-6 text-preset-2 text-neutral-50 uppercase tracking-widest">
+            Check the Rate
+          </h2>
+
+          <div className="rounded-3xl w-full bg-zinc-900 sm:p-6 py-4 px-2 shadow-2xl">
+            {/* Top */}
+            <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
+              {/* Send */}
+              <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-zinc-800 sm:p-6 px-2 py-6">
+                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-400">
+                  Send
+                </label>
+
+                <div className="flex gap-4 items-center justify-between relative">
+                  <input
+                    type="number"
+                    defaultValue={1}
+                    className="  flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-lime-400 outline-none"
+                    onChange={(e) => setMoney(+e.target.value)}
+                  />
+
+                  <CurrencySelect
+                    selected={selected}
+                    onChange={setSelected}
+                    setSelected={setSelected}
+                    mergeObject={mergeObject}
+                    popularCurrencies={popularCurrencies}
+                    othersCurrencies={othersCurrencies}
+                    left={true}
+                  />
+                </div>
+              </div>
+
+              {/* Swap */}
+              <button
+                className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800 text-3xl text-white cursor-pointer md:rotate-0 rotate-90"
+                type="button"
+                onClick={() => handleSwitch()}
+              >
+                ⇄
+              </button>
+
+              {/* Receive */}
+              <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-zinc-800 sm:p-6 px-2 py-6">
+                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-400">
+                  Receive
+                </label>
+
+                <div className="flex flex-1 items-center justify-between relative">
+                  <output className=" flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-lime-400">
+                    {(changes.last * money).toFixed(2)}
+                  </output>
+
+                  <CurrencySelect
+                    selected={selected2}
+                    onChange={setSelected2}
+                    setSelected={setSelected2}
+                    mergeObject={mergeObject}
+                    popularCurrencies={popularCurrencies}
+                    othersCurrencies={othersCurrencies}
+                    left={false}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="my-6 border-t border-dashed border-zinc-700" />
+
+            {/* Bottom */}
+            <div className="flex items-center sm:flex-row flex-col gap-3 justify-between">
+              <p className="text-preset-5 text-zinc-300">
+                1 {rate.base} = {changes.last} {rate.quotes}
+              </p>
+
+              <div className="flex sm:gap-4  gap-2">
+                <button className="rounded-lg bg-lime-400 sm:px-6 p-1 sm:py-3 font-semibold uppercase tracking-wider text-black text-preset-5-medium">
+                  ★ Favorited
+                </button>
+
+                <button className="rounded-lg border border-lime-400 sm:p-3 p-1 font-semibold uppercase tracking-wider text-preset-5-medium text-white">
+                  Log Conversion
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
         <div className="flex  items-center gap-2 h-fit overflow-hidden">
           <Image src={flagUrl} width={40} height={25} alt="state" /> /
           <Image src={flagUrl2} width={40} height={25} alt="state" />
         </div>
 
-        <div className="flex justify-center gap-8">
-          <CurrencySelect
-            selected={selected}
-            onChange={setSelected}
-            setSelected={setSelected}
-            mergeObject={mergeObject}
-            popularCurrencies={popularCurrencies}
-            othersCurrencies={othersCurrencies}
-            left={true}
-          />
-          <CurrencySelect
-            selected={selected2}
-            onChange={setSelected2}
-            setSelected={setSelected2}
-            mergeObject={mergeObject}
-            popularCurrencies={popularCurrencies}
-            othersCurrencies={othersCurrencies}
-            left={false}
-          />
-        </div>
+        <div className="flex justify-center gap-8"></div>
         <div className="mb-8 flex items-center  gap-6 justify-between">
           <h2 className="text-3xl font-semibold tracking-wider text-white">
             {rate.base}/{rate.quotes}
           </h2>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center sm:flex-row flex-wrap gap-2">
             {rangesArr.map((range) => (
               <button
                 type="button"
@@ -181,7 +260,7 @@ export default function Home() {
           </div>
         </div>
         {!ratesLoading && (
-          <div className="flex text-amber-100 uppercase gap-5 text-xl">
+          <div className="flex text-amber-100 flex-wrap uppercase gap-5 text-xl">
             <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
               Open : {changes.open.toFixed(4)}
             </span>
@@ -198,7 +277,7 @@ export default function Home() {
         )}
         <div className="bg-[#171717] rounded-3xl border h-fit mx-auto max-w-3xl  w-full border-zinc-800  p-4 shadow-xl text-amber-200">
           {ratesLoading ? (
-            <span className="flex animate-spin h-[420px] flex-col items-center-safe justify-center">
+            <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
               {" "}
               <Image
                 src="/spinner.png"

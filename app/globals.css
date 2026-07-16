@@ -70,7 +70,7 @@
   }
 
   .text-preset-2-bold {
-    @apply font-bold text-[1.25rem] leading-[1.4] tracking-[-0.03125rem];
+    @apply font-bold text-[1.75rem] leading-[1.4] tracking-[-0.03125rem];
     /* 20px / 140% / -0.5px */
   }
 

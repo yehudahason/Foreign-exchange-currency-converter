@@ -95,7 +95,7 @@ export default function CurrencySelect({
         aria-expanded={open}
         aria-controls="currency-listbox"
         onClick={() => setOpen(!open)}
-        className="relative cursor-pointer flex items-center justify-center gap-2 rounded-lg border border-neutral-600 bg-neutral-800 p-2"
+        className="relative  cursor-pointer flex items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-neutral-800 p-2 min-w-fit"
       >
         <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
           <img
@@ -116,7 +116,7 @@ export default function CurrencySelect({
 
       {open && (
         <div
-          className={`absolute top-20 ${left ? "left-20" : "right-20"} w-72 rounded-xl bg-[#1b1d24] p-2`}
+          className={`absolute top-15 ${left ? "z-30 -right-4" : "-right-4"} border border-zinc-700 w-72 rounded-xl bg-[#1b1d24] p-2`}
         >
           <label htmlFor="currency-search" className="sr-only">
             Search currencies
@@ -139,13 +139,13 @@ export default function CurrencySelect({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search currencies..."
-            className="w-full rounded border border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
+            className="w-full rounded border  border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
           />
 
           <ul
             id="currency-listbox"
             role="listbox"
-            className={`scrollbar absolute left-0 z-10 mt-0 flex max-h-80 w-full flex-col items-center overflow-y-auto rounded-b-lg bg-[#1b1d24] px-2 pb-4 shadow-xl`}
+            className={`scrollbar absolute left-0 z-10 m-0 flex max-h-80  flex-col items-center overflow-y-auto rounded-b-lg bg-[#1b1d24] px-2 pt-2 pb-4 shadow-xl border-t-0 border  border-zinc-700 w-full`}
           >
             {itemsP.length === 0 && itemsO.length === 0 && (
               <li className="flex w-full items-center justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
