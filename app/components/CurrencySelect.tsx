@@ -1,11 +1,11 @@
 // CurrencySelect.tsx
 import { useRef, useState, useEffect, useMemo } from "react";
 import CurrencyList from "./CurrencyList";
-import { CurrencyMap } from "../types";
+import { ChartRange, CurrencyMap } from "../types";
 
 type Props = {
   selected: string;
-  onChange: (code: string) => void;
+  setTime: (time: ChartRange) => void;
   setSelected: (code: string) => void;
   mergeObject: CurrencyMap;
   popularCurrencies: string[];
@@ -15,12 +15,12 @@ type Props = {
 
 export default function CurrencySelect({
   selected,
-  onChange,
   mergeObject,
   popularCurrencies,
   setSelected,
   othersCurrencies,
   left,
+  setTime,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -167,8 +167,9 @@ export default function CurrencySelect({
                   highlightedIndex={highlightedIndex}
                   mergeObject={mergeObject}
                   onSelect={(code) => {
-                    onChange(code);
+                    setSelected(code);
                     setOpen(false);
+                    setTime("1W");
                   }}
                 />
               </>
@@ -188,8 +189,9 @@ export default function CurrencySelect({
                   highlightedIndex={highlightedIndex}
                   mergeObject={mergeObject}
                   onSelect={(code) => {
-                    onChange(code);
+                    setSelected(code);
                     setOpen(false);
+                    setTime("1W");
                   }}
                 />
               </>

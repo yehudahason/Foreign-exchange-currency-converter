@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { rangesArr, Changes } from "./types";
 import Chart from "./components/Chart";
 import type { ExchangeRate, Rates, ChartRange } from "./types";
@@ -31,6 +31,7 @@ export default function Home() {
 
   //Switch currencies
   function handleSwitch() {
+    setTime("1W");
     const [a, b] = [selected, selected2];
     setSelected(b);
     setSelected2(a);
@@ -179,12 +180,12 @@ export default function Home() {
 
                   <CurrencySelect
                     selected={selected}
-                    onChange={setSelected}
                     setSelected={setSelected}
                     mergeObject={mergeObject}
                     popularCurrencies={popularCurrencies}
                     othersCurrencies={othersCurrencies}
                     left={true}
+                    setTime={setTime}
                   />
                 </div>
               </div>
@@ -211,12 +212,12 @@ export default function Home() {
 
                   <CurrencySelect
                     selected={selected2}
-                    onChange={setSelected2}
                     setSelected={setSelected2}
                     mergeObject={mergeObject}
                     popularCurrencies={popularCurrencies}
                     othersCurrencies={othersCurrencies}
                     left={false}
+                    setTime={setTime}
                   />
                 </div>
               </div>
