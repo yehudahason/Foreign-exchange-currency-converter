@@ -10,6 +10,7 @@ import { CURRENCIES } from "@/public/frankfurter_currencies";
 import { POPULAR_CURRENCIES } from "@/public/popularCurrencies";
 import CurrencySelect from "./components/CurrencySelect";
 import { useBaseRates } from "./fetchMethods/useBaseRates";
+import { downsample } from "./utils/downsample";
 
 export default function Home() {
   const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
@@ -45,11 +46,17 @@ export default function Home() {
     queryFn: () => compareRate(rate.time, rate),
   });
 
-  //Setting for 1D
+  //Setting for Times
   const rates = useMemo(() => {
     if (!data) return [];
 
-    return rate.time === "1D" ? data.slice(-2) : data;
+    if (rate.time === "1D") {
+      return data.slice(-2);
+    } else if (rate.time === "5Y" || rate.time === "1Y") {
+      return downsample(data, 180);
+    } else {
+      return data;
+    }
   }, [data, rate.time]);
 
   //Changes
