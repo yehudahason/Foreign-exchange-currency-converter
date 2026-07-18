@@ -11,6 +11,7 @@ import { POPULAR_CURRENCIES } from "@/public/popularCurrencies";
 import CurrencySelect from "./components/CurrencySelect";
 import { useBaseRates } from "./fetchMethods/useBaseRates";
 import { downsample } from "./utils/downsample";
+import { formatSigned } from "./utils/formatSigned";
 
 export default function Home() {
   const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
@@ -28,8 +29,9 @@ export default function Home() {
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
   );
-  const date = new Date();
 
+  //Now date
+  const date = new Date();
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: "Europe/Berlin",
     month: "short",
@@ -39,10 +41,6 @@ export default function Home() {
     hour12: false,
     timeZoneName: "short",
   }).formatToParts(date);
-
-  function formatSigned(num) {
-    return num > 0 ? `+${num}` : `${num}`;
-  }
 
   const get = (type: Intl.DateTimeFormatPartTypes): string =>
     parts.find((p) => p.type === type)?.value ?? "";
@@ -285,7 +283,7 @@ export default function Home() {
                 <span
                   className={`flex w-4 gap-1 ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
                 >
-                  {formatSigned(changes.change.toFixed(4))}
+                  {formatSigned(+changes.change.toFixed(4))}
                 </span>
               </span>
               <span className="flex gap-2 min-w-[8rem]  flex-col justify-center items-start bg-gray-800 rounded-xl py-3 px-5 text-zinc-300">
@@ -299,7 +297,7 @@ export default function Home() {
                     alt=""
                     className={` ${changes.change >= 0 ? "rotate-180 green" : "red"}`}
                   />
-                  {formatSigned(changes.percent.toFixed(4))}
+                  {formatSigned(+changes.percent.toFixed(4))}
                 </span>
               </span>
             </div>
