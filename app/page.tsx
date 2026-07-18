@@ -28,10 +28,29 @@ export default function Home() {
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
   );
+  const date = new Date();
 
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Berlin",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZoneName: "short",
+  }).formatToParts(date);
+
+  function formatSigned(num) {
+    return num > 0 ? `+${num}` : `${num}`;
+  }
+
+  const get = (type: Intl.DateTimeFormatPartTypes): string =>
+    parts.find((p) => p.type === type)?.value ?? "";
+  const formatted =
+    `${get("month").toUpperCase()} ${get("day")} ` +
+    `${get("hour")}:${get("minute")} ${get("timeZoneName")}`;
   //Switch currencies
   function handleSwitch() {
-    setTime("1W");
     const [a, b] = [selected, selected2];
     setSelected(b);
     setSelected2(a);
@@ -166,7 +185,7 @@ export default function Home() {
             <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
               {/* Send */}
               <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
-                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-400">
+                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
                   Send
                 </label>
 
@@ -174,7 +193,7 @@ export default function Home() {
                   <input
                     type="number"
                     defaultValue={1}
-                    className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-white outline-none"
+                    className="min-w-0 no-spinner overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-white outline-none"
                     onChange={(e) => setMoney(+e.target.value)}
                   />
 
@@ -201,7 +220,7 @@ export default function Home() {
 
               {/* Receive */}
               <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
-                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-400">
+                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
                   Receive
                 </label>
 
@@ -249,41 +268,68 @@ export default function Home() {
           <Image src={flagUrl2} width={40} height={25} alt="state" />
         </div>
 
-        <div className="flex justify-center gap-8"></div>
-        <div className="mb-8 flex items-center  gap-6 justify-between">
-          <h2 className="text-3xl font-semibold tracking-wider text-white">
-            {rate.base}/{rate.quotes}
-          </h2>
-          <div className="flex items-center sm:flex-row flex-wrap gap-2">
+        <div className="mb-8 flex items-center text-preset-4 text-zinc-300  gap-6 justify-between">
+          {!ratesLoading && (
+            <div className="flex  flex-wrap uppercase gap-5 text-xl">
+              <span className="flex gap-2 min-w-[8rem]  flex-col justify-center items-start bg-gray-800 rounded-xl py-3 px-5">
+                <span> Open </span>
+                <span>{changes.open.toFixed(4)}</span>
+              </span>
+              <span className="flex gap-2 min-w-[8rem]  flex-col justify-center items-start bg-gray-800 rounded-xl py-3 px-5">
+                <span>Last</span>
+                <span>{changes.last.toFixed(4)}</span>
+              </span>
+
+              <span className="flex gap-2 min-w-[8rem]  flex-col justify-center items-start bg-gray-800 rounded-xl py-3 px-5">
+                <span>CHange</span>
+                <span
+                  className={`flex w-4 gap-1 ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
+                >
+                  {formatSigned(changes.change.toFixed(4))}
+                </span>
+              </span>
+              <span className="flex gap-2 min-w-[8rem]  flex-col justify-center items-start bg-gray-800 rounded-xl py-3 px-5 text-zinc-300">
+                <span>% CHANGE</span>
+
+                <span
+                  className={`flex w-6 gap-1 ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
+                >
+                  <img
+                    src="/images/icon-chevron-down.svg"
+                    alt=""
+                    className={` ${changes.change >= 0 ? "rotate-180 green" : "red"}`}
+                  />
+                  {formatSigned(changes.percent.toFixed(4))}
+                </span>
+              </span>
+            </div>
+          )}
+
+          <div className="flex items-center sm:flex-row flex-wrap gap-0 bg-gray-800 rounded-md">
             {rangesArr.map((range) => (
               <button
                 type="button"
                 onClick={() => setTime(range)}
                 key={range}
-                className={`text-amber-200 cursor-pointer rounded-md px-3 py-1 text-sm ${range === rate.time ? "bg-gray-500" : "bg-gray-800"} font-medium `}
+                className={` cursor-pointer rounded-md p-3  text-sm ${range === rate.time ? "bg-gray-600" : "bg-gray-800"} font-medium  hover:bg-gray-600`}
               >
                 {range}
               </button>
             ))}
           </div>
         </div>
-        {!ratesLoading && (
-          <div className="flex text-amber-100 flex-wrap uppercase gap-5 text-xl">
-            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
-              Open : {changes.open.toFixed(4)}
-            </span>
-            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
-              Last : {changes.last.toFixed(4)}
-            </span>
-            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
-              CHange : {changes.change.toFixed(4)}{" "}
-            </span>
-            <span className="flex gap-2 bg-gray-800 rounded-lg p-3">
-              % CHANGE : {changes.percent.toFixed(4)}
-            </span>
+        <div className="bg-neutral-900 rounded-3xl border h-fit mx-auto max-w-7xl  w-full border-zinc-800  sm:p-5 p-3 shadow-xl text-amber-200">
+          <div className="flex justify-between">
+            <h2 className="text-preset-3-medium  tracking-wider text-white">
+              {rate.base}/{rate.quotes}
+            </h2>
+
+            <div className="text-zinc-300 text-preset-5 flex gap-3 items-center">
+              {changes.last}
+              <div className="size-1 rounded-full bg-zinc-300" />
+              {formatted}
+            </div>
           </div>
-        )}
-        <div className="bg-[#171717] rounded-3xl border h-fit mx-auto max-w-3xl  w-full border-zinc-800  p-4 shadow-xl text-amber-200">
           {ratesLoading ? (
             <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
               {" "}

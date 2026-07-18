@@ -139,7 +139,7 @@ export default function CurrencySelect({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search currencies..."
-            className="w-full rounded border  border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
+            className=" w-full rounded border  border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
           />
 
           <ul
@@ -169,7 +169,6 @@ export default function CurrencySelect({
                   onSelect={(code) => {
                     setSelected(code);
                     setOpen(false);
-                    setTime("1W");
                   }}
                 />
               </>
@@ -191,7 +190,6 @@ export default function CurrencySelect({
                   onSelect={(code) => {
                     setSelected(code);
                     setOpen(false);
-                    setTime("1W");
                   }}
                 />
               </>

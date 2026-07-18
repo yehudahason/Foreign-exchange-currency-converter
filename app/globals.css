@@ -99,6 +99,18 @@
 @utility pause {
   animation-play-state: paused;
 }
+
+@layer utilities {
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+}
 body {
   background: var(--background);
   color: var(--foreground);
