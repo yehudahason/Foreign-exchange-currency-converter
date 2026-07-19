@@ -4,7 +4,6 @@ export const jetbrainsMono = localFont({
   src: [
     {
       path: "./fonts/jetbrains-mono-variable.ttf",
-      weight: "400",
       style: "normal",
     },
   ],
