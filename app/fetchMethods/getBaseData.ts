@@ -28,21 +28,15 @@ export async function getBaseData(base = "USD") {
 
   const list = today
     .map(({ quote, rate }) => {
-      const previous = previousMap.get(quote);
+      const previous = previousMap.get(quote) ?? rate;
 
       return {
         currency: quote,
         rate,
         previous,
-        percentChange:
-          previous !== undefined ? ((rate - previous) / previous) * 100 : null,
+        percentChange: ((rate - previous) / previous) * 100,
       };
-    }) // Filter No Change
-    .filter(
-      (item) =>
-        item.previous !== undefined &&
-        Math.abs(item.rate - item.previous) > 1e-12,
-    )
+    })
     .sort((a, b) => {
       const ai = order.get(a.currency);
       const bi = order.get(b.currency);
