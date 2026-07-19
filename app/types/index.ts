@@ -62,7 +62,7 @@ export type Changes = {
   percent: number;
 };
 
-//WITH NO  USD !!
+//popular list WITH NO  USD !!
 export const POPULAR_CURRENCIES = [
   "EUR",
   "GBP",
@@ -88,3 +88,9 @@ export const POPULAR_CURRENCIES = [
   "INR",
   "ZAR",
 ];
+export type todayRates = {
+  percentChange: number;
+  currency: string;
+  rate: number;
+  previous: number;
+};

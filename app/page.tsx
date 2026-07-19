@@ -1,65 +1,34 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { rangesArr, Changes } from "./types";
+import { useMemo, useState } from "react";
 import Chart from "./components/Chart";
-import type { ExchangeRate, Rates, ChartRange } from "./types";
+import type { ExchangeRate, Rates, ChartRange, Changes } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { compareRate } from "./fetchMethods/compareRates";
-import { CURRENCIES } from "@/public/frankfurter_currencies";
-import { POPULAR_CURRENCIES } from "@/public/popularCurrencies";
-import CurrencySelect from "./components/CurrencySelect";
+
 import { useBaseRates } from "./fetchMethods/useBaseRates";
 import { downsample } from "./utils/downsample";
-import { formatSigned } from "./utils/formatSigned";
+import Header from "./components/Header";
+import NavBar from "./components/NavBar";
+import ChangeBar from "./components/ChangeBar";
+import CompareBar from "./components/CompareBar";
+import { formatBerlinTime } from "./utils/formatBerlinTime";
 
 export default function Home() {
-  const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
-  const popularCurrencies = Object.keys(POPULAR_CURRENCIES);
-  const othersCurrencies = Object.keys(CURRENCIES);
   const [selected, setSelected] = useState<string>("USD");
   const [selected2, setSelected2] = useState<string>("EUR");
   const [time, setTime] = useState<ChartRange>("1W");
-  const [money, setMoney] = useState<number>(1);
-  const country = mergeObject[selected].flag;
-  const country2 = mergeObject[selected2].flag;
-  const flagUrl = `https://flagcdn.com/w40/${country}.png`;
-  const flagUrl2 = `https://flagcdn.com/w40/${country2}.png`;
-  const [active, setActive] = useState("favorites");
-  const tabs = [
-    { id: "history", label: "HISTORY", count: null },
-    { id: "compare", label: "COMPARE", count: null },
-    { id: "favorites", label: "FAVORITES", count: 10 },
-    { id: "log", label: "LOG", count: 8 },
-  ];
+
   const rate = useMemo(
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
   );
 
-  //Now date
-  const date = new Date();
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Europe/Berlin",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-    timeZoneName: "short",
-  }).formatToParts(date);
+  //Now CET date
+  const formatted = formatBerlinTime();
 
-  const get = (type: Intl.DateTimeFormatPartTypes): string =>
-    parts.find((p) => p.type === type)?.value ?? "";
-  const formatted =
-    `${get("month").toUpperCase()} ${get("day")} ` +
-    `${get("hour")}:${get("minute")} ${get("timeZoneName")}`;
-  //Switch currencies
-  function handleSwitch() {
-    const [a, b] = [selected, selected2];
-    setSelected(b);
-    setSelected2(a);
-  }
+  //today USD  banner rates
+  const { data: todayrates, error, isPending, isError } = useBaseRates("USD");
 
   //The Choosen rate
   const {
@@ -97,12 +66,13 @@ export default function Home() {
 
     const first = rates[0].rate;
     const last = rates[rates.length - 1].rate;
+    const percent = first !== 0 ? ((last - first) / first) * 100 : 0;
 
     return {
       open: first,
       last,
       change: last - first,
-      percent: ((last - first) / first) * 100,
+      percent,
     };
   }, [ratesLoading, rates]);
 
@@ -125,262 +95,29 @@ export default function Home() {
     }
   }, [rate, rates, ratesLoading]);
 
-  //today USD  banner rates
-
-  const { data: todayrates, error, isPending, isError } = useBaseRates("USD");
-
   return (
     <>
-      <header className="bg-neutral-900 w-full">
-        <div className="flex items-center gap-2 text-neutral-200 justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4  text-preset-6">
-          <Image src="/images/logo.svg" alt="" width={130} height={40} />
-          <span>165 Currencies · EOD · ECB data</span>
-        </div>
-
-        <div className="flex w-full overflow-x-hidden">
-          <div className="flex sm:w-32 w-29 shrink-0 gap-2 items-center justify-center whitespace-nowrap bg-lime-500 p-1 uppercase text-gray-900 sm:px-2 sm:py-3 text-preset-5-medium">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-current"></span>{" "}
-            Live markets
-          </div>
-          <div className="bg-neutral-700 overflow-hidden whitespace-nowrap w-full text-preset-5">
-            {isError && (
-              <span className="text-white text-preset-5  py-2 w-full flex justify-center items-center h-full">
-                {(error as Error).message}
-              </span>
-            )}
-            <ul className="flex items-center w-max animate-marquee ">
-              {isPending
-                ? ""
-                : todayrates?.map((item) => {
-                    const percentChange = item.percentChange ?? 0;
-                    return (
-                      <li
-                        key={item.currency}
-                        className="flex gap-2 border-x border-gray-800 shrink-0 px-3 py-3 text-gray-100"
-                      >
-                        <span>USD/{item.currency}</span>
-                        <span>{item.rate.toFixed(3)}</span>
-                        <span
-                          className={`flex ${percentChange >= 0 ? " text-green-500" : "text-red-500"} justify-between items-center gap-1`}
-                        >
-                          <Image
-                            className={`w-4 h-full ${percentChange >= 0 ? "green rotate-180" : "red"}`}
-                            src="/images/icon-chevron-down.svg"
-                            alt=""
-                            width={16}
-                            height={16}
-                          />
-                          {percentChange.toFixed(3)}%
-                        </span>
-                      </li>
-                    );
-                  })}
-            </ul>
-          </div>
-        </div>
-      </header>
+      <Header
+        isPending={isPending}
+        isError={isError}
+        error={error}
+        todayrates={todayrates ?? []}
+      />
       <main className="bg-neutral-900 relative min-h-screen flex flex-col items-center w-full mx-auto gap-6 sm:p-6 px-2 py-6">
-        <section className="max-w-7xl mx-auto w-full">
-          <h2 className="mb-6 text-preset-2 text-neutral-50 uppercase tracking-widest">
-            Check the Rate
-          </h2>
+        <CompareBar
+          selected={selected}
+          setSelected={setSelected}
+          selected2={selected2}
+          setSelected2={setSelected2}
+          ratesLoading={ratesLoading}
+          changes={changes}
+          rate={rate}
+        />
 
-          <div className="rounded-3xl w-full bg-zinc-900 sm:p-6 py-4 px-2 shadow-2xl">
-            {/* Top */}
-            <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
-              {/* Send */}
-              <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
-                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
-                  Send
-                </label>
+        <NavBar />
+        <ChangeBar rate={rate} setTime={setTime} changes={changes} />
 
-                <div className="flex gap-4 items-center justify-between relative">
-                  <input
-                    type="number"
-                    defaultValue={1}
-                    className="min-w-0 no-spinner overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-white outline-none"
-                    onChange={(e) => setMoney(+e.target.value)}
-                  />
-
-                  <CurrencySelect
-                    selected={selected}
-                    setSelected={setSelected}
-                    mergeObject={mergeObject}
-                    popularCurrencies={popularCurrencies}
-                    othersCurrencies={othersCurrencies}
-                    left={true}
-                    setTime={setTime}
-                  />
-                </div>
-              </div>
-
-              {/* Swap */}
-              <button
-                className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border border-zinc-700 bg-neutral-600 text-3xl text-white cursor-pointer md:rotate-0 rotate-90"
-                type="button"
-                onClick={() => handleSwitch()}
-              >
-                ⇄
-              </button>
-
-              {/* Receive */}
-              <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
-                <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
-                  Receive
-                </label>
-
-                <div className="flex flex-1 items-center justify-between relative">
-                  <output className=" flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-lime-400">
-                    {ratesLoading ? (
-                      <span className="flex animate-spin h-[2rem] flex-col items-center-safe justify-center">
-                        {" "}
-                        <Image
-                          src="/spinner.png"
-                          alt="loading"
-                          width={160}
-                          height={160}
-                        />
-                      </span>
-                    ) : (
-                      (changes.last * money).toFixed(2)
-                    )}
-                  </output>
-
-                  <CurrencySelect
-                    selected={selected2}
-                    setSelected={setSelected2}
-                    mergeObject={mergeObject}
-                    popularCurrencies={popularCurrencies}
-                    othersCurrencies={othersCurrencies}
-                    left={false}
-                    setTime={setTime}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="my-6 border-t border-dashed border-zinc-700" />
-
-            {/* Bottom */}
-            <div className="flex items-center sm:flex-row flex-col gap-3 justify-between">
-              <p className="text-preset-2 text-zinc-300">
-                1 {rate.base} = {changes.last} {rate.quotes}
-              </p>
-
-              <div className="flex  gap-4  ">
-                <button className="flex gap-2 rounded-lg bg-lime-400 sm:px-3 px-1 tracking-[3px]  py-3  font-semibold uppercase text-black text-preset-5-medium ">
-                  <span>★</span> <span>Favorited</span>
-                </button>
-
-                <button className="rounded-lg border border-lime-400 sm:p-3 p-1 font-semibold uppercase tracking-wider text-preset-5-medium text-white">
-                  Log Conversion
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-        <div className="flex  items-center gap-2 h-fit overflow-hidden">
-          <Image src={flagUrl} width={40} height={25} alt="state" /> /
-          <Image src={flagUrl2} width={40} height={25} alt="state" />
-        </div>
-        <div className="flex w-full max-w-7xl ">
-          {/* Mobile */}
-          <div className="md:hidden px-8">
-            <select
-              value={active}
-              onChange={(e) => setActive(e.target.value)}
-              className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3
-               uppercase tracking-[0.2em] text-zinc-100
-               focus:outline-none appearance-none text-preset-3"
-            >
-              {tabs.map((tab) => (
-                <option key={tab.id} value={tab.id}>
-                  {tab.label}
-                  {tab.count ? ` (${tab.count})` : ""}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Desktop */}
-          <nav className="hidden md:flex border-b border-zinc-800 text-preset-3">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActive(tab.id)}
-                className={`relative flex items-center gap-2 px-6 py-4
-        uppercase tracking-[0.2em]
-        text-preset-3 
-        cursor-pointer
-        ${
-          active === tab.id
-            ? "text-white after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-lime-400"
-            : "text-zinc-400 hover:text-white"
-        }`}
-              >
-                {tab.label}
-
-                {tab.count && (
-                  <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-lime-500/20 px-1 py-3 text-preset-4 font-semibold text-lime-400">
-                    {tab.count}
-                  </span>
-                )}
-              </button>
-            ))}
-          </nav>
-        </div>
-        <div className="mb-8 flex lg:flex-row   flex-col lg:items-center items-start  w-full max-w-7xl text-preset-4  text-zinc-300  gap-6 justify-between">
-          {!ratesLoading && (
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:w-[70%] uppercase  text-xl w-full px-2  gap-6">
-              <span className="flex gap-2   flex-col justify-center items-start bg-zinc-900 rounded-xl py-3 px-5">
-                <span> Open </span>
-                <span>{changes.open.toFixed(4)}</span>
-              </span>
-              <span className="flex gap-2  flex-col justify-center items-start bg-zinc-900 rounded-xl py-3 px-5">
-                <span>Last</span>
-                <span>{changes.last.toFixed(4)}</span>
-              </span>
-
-              <span className="flex gap-2  flex-col justify-center items-start bg-zinc-900  rounded-xl py-3 px-5">
-                <span>CHange</span>
-                <span
-                  className={`flex w-4 gap-1 ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
-                >
-                  {formatSigned(+changes.change.toFixed(4))}
-                </span>
-              </span>
-              <span className="flex gap-2   min-w-[9rem] flex-col justify-center items-start bg-zinc-900  rounded-xl py-3 px-4 text-zinc-300">
-                <span>% CHANGE</span>
-
-                <span
-                  className={`flex w-6 gap-1 px-4 ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
-                >
-                  <img
-                    src="/images/icon-chevron-down.svg"
-                    alt=""
-                    className={` ${changes.change >= 0 ? "rotate-180 green" : "red"}`}
-                  />
-                  {formatSigned(+changes.percent.toFixed(4))}
-                </span>
-              </span>
-            </div>
-          )}
-
-          <div className="flex items-center   sm:flex-row  gap-0 bg-zinc-900 rounded-md">
-            {rangesArr.map((range) => (
-              <button
-                type="button"
-                onClick={() => setTime(range)}
-                key={range}
-                className={` cursor-pointer rounded-md p-3  text-sm ${range === rate.time ? "bg-gray-800" : "bg-zinc-900"} font-medium  hover:bg-gray-800`}
-              >
-                {range}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="bg-neutral-900 rounded-3xl border h-fit mx-auto max-w-7xl  w-full border-zinc-800  sm:p-5 p-3 shadow-xl text-amber-200">
+        <div className="bg-neutral-900 rounded-3xl border h-fit mx-auto max-w-6xl  w-full border-zinc-800  sm:p-5 p-3 shadow-xl text-amber-200">
           <div className="flex justify-between">
             <h2 className="text-preset-3-medium  tracking-wider text-white">
               {rate.base}/{rate.quotes}
