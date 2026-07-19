@@ -103,7 +103,7 @@ export default function Home() {
         error={error}
         todayrates={todayrates ?? []}
       />
-      <main className="bg-neutral-900 relative min-h-screen flex flex-col items-center w-full mx-auto gap-6 sm:p-6 px-2 py-6">
+      <main className="bg-neutral-900 relative min-h-screen flex flex-col items-center w-full mx-auto gap-4 sm:p-6 px-2 py-6">
         <CompareBar
           selected={selected}
           setSelected={setSelected}
@@ -123,7 +123,7 @@ export default function Home() {
               {rate.base}/{rate.quotes}
             </h2>
 
-            <div className="text-zinc-300 text-preset-5 flex gap-3 items-center">
+            <div className="text-zinc-300 ml-4 text-preset-5 flex  gap-3 items-center">
               {changes.last}
               <div className="size-1 rounded-full bg-zinc-300" />
               {formatted}

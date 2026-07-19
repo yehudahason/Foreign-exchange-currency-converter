@@ -52,6 +52,10 @@
   }
 }
 
+@theme inline {
+  --font-mono: var(--font-jetbrains-mono);
+}
+
 /* globals.css */
 @utility text-preset-1 {
   @apply font-bold text-[2.5rem] leading-[1] tracking-[-0.03125rem];
@@ -112,7 +116,6 @@
   }
 }
 body {
-  background: var(--background);
   color: var(--foreground);
 }
 

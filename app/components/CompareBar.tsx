@@ -40,12 +40,12 @@ export default function CompareBar({
         Check the Rate
       </h2>
 
-      <div className="rounded-3xl w-full bg-zinc-900 sm:p-6 py-4 px-2 shadow-2xl">
+      <div className="rounded-3xl w-full bg-zinc-900 sm:px-4 py-4 px-2 shadow-2xl">
         {/* Top */}
         <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
           {/* Send */}
-          <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
-            <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
+          <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-neutral-600  sm:px-6 px-2 py-3">
+            <label className="mb-3 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
               Send
             </label>
 
@@ -78,8 +78,8 @@ export default function CompareBar({
           </button>
 
           {/* Receive */}
-          <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:p-6 px-2 py-6">
-            <label className="mb-4 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
+          <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:px-6 px-2 py-3">
+            <label className="mb-3 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
               Receive
             </label>
 
@@ -113,7 +113,7 @@ export default function CompareBar({
         </div>
 
         {/* Divider */}
-        <div className="my-6 border-t border-dashed border-zinc-700" />
+        <div className="my-3 border-t border-dashed border-zinc-700" />
 
         {/* Bottom */}
         <div className="flex items-center sm:flex-row flex-col gap-3 justify-between">
@@ -122,11 +122,11 @@ export default function CompareBar({
           </p>
 
           <div className="flex  gap-4  ">
-            <button className="flex gap-2 rounded-lg bg-lime-400 sm:px-3 px-1 tracking-[3px]  py-3  font-semibold uppercase text-black text-preset-5-medium ">
+            <button className="flex gap-2 rounded-lg bg-lime-400   tracking-[3px] sm:p-3 p-2  font-semibold uppercase text-black text-preset-5-medium ">
               <span>★</span> <span>Favorited</span>
             </button>
 
-            <button className="rounded-lg border border-lime-400 sm:p-3 p-1 font-semibold uppercase tracking-wider text-preset-5-medium text-white">
+            <button className="rounded-lg border border-lime-400 sm:p-3 font-semibold p-2 uppercase tracking-wider text-preset-5-medium text-white">
               Log Conversion
             </button>
           </div>
