@@ -9,7 +9,7 @@ type CompareRowProps = {
   favorite: boolean;
 };
 
-export function CompareRow({
+export function LogsRow({
   flag,
   code,
   name,

@@ -1,7 +1,9 @@
-import { useState } from "react";
+type NavBarProps = {
+  active: string;
+  setActive: (active: string) => void;
+};
 
-export default function NavBar() {
-  const [active, setActive] = useState("favorites");
+export default function NavBar({ active, setActive }: NavBarProps) {
   const tabs = [
     { id: "history", label: "HISTORY", count: null },
     { id: "compare", label: "COMPARE", count: null },

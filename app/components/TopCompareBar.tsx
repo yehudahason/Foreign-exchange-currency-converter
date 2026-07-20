@@ -7,7 +7,7 @@ export const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
 const popularCurrencies = Object.keys(POPULAR_CURRENCIES);
 const othersCurrencies = Object.keys(CURRENCIES);
 
-type CompareBarProps = {
+type TopCompareBarProps = {
   selected: string;
   setSelected: (rate: string) => void;
   selected2: string;
@@ -19,7 +19,7 @@ type CompareBarProps = {
   setMoney: (money: number) => void;
 };
 
-export default function CompareBar({
+export default function TopCompareBar({
   selected,
   setSelected,
   selected2,
@@ -29,7 +29,7 @@ export default function CompareBar({
   rate,
   money,
   setMoney,
-}: CompareBarProps) {
+}: TopCompareBarProps) {
   //Switch currencies
   function handleSwitch() {
     const [a, b] = [selected, selected2];
