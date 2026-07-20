@@ -1,17 +1,3 @@
-export type ApiResponse = {
-  meta: {
-    symbol: string;
-    interval: string;
-  };
-  values: {
-    datetime: string;
-    open: string;
-    high: string;
-    low: string;
-    close: string;
-  }[];
-};
-
 export type Rates = {
   quotes: string;
   base: string;
@@ -34,7 +20,7 @@ export type ExchangeRate = {
   quote: string;
   rate: number;
 };
-export const rangesArr: ChartRange[] = ["1D", "1W", "1M", "3M", "1Y", "5Y"];
+
 export type ChartRange = "1D" | "1W" | "1M" | "3M" | "1Y" | "3Y" | "5Y";
 export type ChartProps = {
   data: ExchangeRate[];
@@ -62,32 +48,6 @@ export type Changes = {
   percent: number;
 };
 
-//popular list WITH NO  USD !!
-export const POPULAR_CURRENCIES = [
-  "EUR",
-  "GBP",
-  "JPY",
-  "CHF",
-  "CAD",
-  "AUD",
-  "NZD",
-  "CNY",
-  "HKD",
-  "SGD",
-  "SEK",
-  "NOK",
-  "DKK",
-  "PLN",
-  "CZK",
-  "HUF",
-  "RON",
-  "TRY",
-  "ILS",
-  "MXN",
-  "BRL",
-  "INR",
-  "ZAR",
-];
 export type todayRates = {
   percentChange: number;
   currency: string;

@@ -1,10 +1,15 @@
-import { POPULAR_CURRENCIES, ExchangeRate } from "../types";
+import { ExchangeRate } from "../types";
+import { POPULAR_CURRENCIES_NO_USD } from "../data/index";
 
 export async function getBaseData(base = "USD") {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
+  function formatUTCDate(date: Date) {
+    return date.toISOString().slice(0, 10);
+  }
 
-  const date = yesterday.toISOString().split("T")[0];
+  const yesterday = new Date();
+  yesterday.setUTCDate(yesterday.getUTCDate() - 1);
+
+  const date = formatUTCDate(yesterday);
 
   const [today, prev]: [ExchangeRate[], ExchangeRate[]] = await Promise.all([
     fetch(`https://api.frankfurter.dev/v2/rates?base=${base}`).then((r) => {
@@ -23,9 +28,10 @@ export async function getBaseData(base = "USD") {
   const previousMap = new Map(prev.map((r) => [r.quote, r.rate]));
 
   const order = new Map(
-    POPULAR_CURRENCIES.map((currency, index) => [currency, index]),
+    POPULAR_CURRENCIES_NO_USD.map((currency, index) => [currency, index]),
   );
 
+  const isNoChange = (value: number) => Math.abs(value) < 1e-10;
   const list = today
     .map(({ quote, rate }) => {
       const previous = previousMap.get(quote) ?? rate;
@@ -38,6 +44,13 @@ export async function getBaseData(base = "USD") {
       };
     })
     .sort((a, b) => {
+      const aNoChange = isNoChange(a.percentChange);
+      const bNoChange = isNoChange(b.percentChange);
+
+      if (aNoChange !== bNoChange) {
+        return aNoChange ? 1 : -1;
+      }
+
       const ai = order.get(a.currency);
       const bi = order.get(b.currency);
 

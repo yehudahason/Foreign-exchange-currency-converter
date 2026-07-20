@@ -29,7 +29,7 @@ export default function NavBar() {
       </div>
 
       {/* Desktop */}
-      <nav className="hidden md:flex border-b border-zinc-800 text-preset-3">
+      <nav className="hidden md:flex border-b border-zinc-800 w-full text-preset-3">
         {tabs.map((tab) => (
           <button
             key={tab.id}

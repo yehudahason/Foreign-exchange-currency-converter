@@ -2,8 +2,8 @@ import { useState } from "react";
 import { CURRENCIES } from "@/public/frankfurter_currencies";
 import { POPULAR_CURRENCIES } from "@/public/popularCurrencies";
 import CurrencySelect from "./CurrencySelect";
-import type { Changes, ChartRange, Rates } from "../types";
-const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
+import type { Changes, Rates } from "../types";
+export const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
 const popularCurrencies = Object.keys(POPULAR_CURRENCIES);
 const othersCurrencies = Object.keys(CURRENCIES);
 
@@ -15,6 +15,8 @@ type CompareBarProps = {
   ratesLoading: boolean;
   changes: Changes;
   rate: Rates;
+  money: number;
+  setMoney: (money: number) => void;
 };
 
 export default function CompareBar({
@@ -25,6 +27,8 @@ export default function CompareBar({
   ratesLoading,
   changes,
   rate,
+  money,
+  setMoney,
 }: CompareBarProps) {
   //Switch currencies
   function handleSwitch() {
@@ -33,7 +37,7 @@ export default function CompareBar({
     setSelected2(a);
   }
   //The amount of money
-  const [money, setMoney] = useState<number>(1);
+
   return (
     <section className="max-w-6xl mx-auto w-full">
       <h2 className="mb-6 text-preset-2 text-neutral-50 uppercase tracking-widest">

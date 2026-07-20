@@ -13,12 +13,13 @@ import NavBar from "./components/NavBar";
 import ChangeBar from "./components/ChangeBar";
 import CompareBar from "./components/CompareBar";
 import { formatBerlinTime } from "./utils/formatBerlinTime";
+import CompareList from "./components/CompareList";
 
 export default function Home() {
   const [selected, setSelected] = useState<string>("USD");
   const [selected2, setSelected2] = useState<string>("EUR");
   const [time, setTime] = useState<ChartRange>("1W");
-
+  const [money, setMoney] = useState<number>(1);
   const rate = useMemo(
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
@@ -112,38 +113,43 @@ export default function Home() {
           ratesLoading={ratesLoading}
           changes={changes}
           rate={rate}
+          money={money}
+          setMoney={setMoney}
         />
 
         <NavBar />
         <ChangeBar rate={rate} setTime={setTime} changes={changes} />
+        {true ? (
+          <CompareList money={money} rate={rate} />
+        ) : (
+          <div className="bg-neutral-900 rounded-3xl border h-fit mx-auto max-w-6xl  w-full border-zinc-800  sm:p-5 p-3 shadow-xl text-amber-200">
+            <div className="flex justify-between">
+              <h2 className="text-preset-3-medium  tracking-wider text-white">
+                {rate.base}/{rate.quotes}
+              </h2>
 
-        <div className="bg-neutral-900 rounded-3xl border h-fit mx-auto max-w-6xl  w-full border-zinc-800  sm:p-5 p-3 shadow-xl text-amber-200">
-          <div className="flex justify-between">
-            <h2 className="text-preset-3-medium  tracking-wider text-white">
-              {rate.base}/{rate.quotes}
-            </h2>
-
-            <div className="text-zinc-300 ml-4 text-preset-5 flex  gap-3 items-center">
-              {changes.last}
-              <div className="size-1 rounded-full bg-zinc-300" />
-              {formatted}
+              <div className="text-zinc-300 ml-4 text-preset-5 flex  gap-3 items-center">
+                {changes.last}
+                <div className="size-1 rounded-full bg-zinc-300" />
+                {formatted}
+              </div>
             </div>
+            {ratesLoading ? (
+              <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
+                {" "}
+                <Image
+                  src="/spinner.png"
+                  alt="loading"
+                  width={160}
+                  height={160}
+                />
+              </span>
+            ) : (
+              <Chart ticks={ticks} data={rates ?? []} range={rate.time} />
+            )}
+            {ratesError ? ratesError?.message : ""}
           </div>
-          {ratesLoading ? (
-            <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
-              {" "}
-              <Image
-                src="/spinner.png"
-                alt="loading"
-                width={160}
-                height={160}
-              />
-            </span>
-          ) : (
-            <Chart ticks={ticks} data={rates ?? []} range={rate.time} />
-          )}
-          {ratesError ? ratesError.message : ""}
-        </div>
+        )}
       </main>
     </>
   );
