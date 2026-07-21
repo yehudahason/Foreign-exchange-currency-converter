@@ -16,14 +16,14 @@ export default function Logs({ money, rate }: CompareListProps) {
   } = useBaseRates(rate.base);
   let currencies = Object.entries(COMPARE_CURRENCIES).map(
     ([code, currency]) => {
-      const rate =
+      const choosenRate =
         comparerates?.find((item) => item.currency === code)?.rate ?? 0;
 
       return {
         code,
         name: currency.country,
-        amount: money * rate,
-        rate,
+        amount: money * choosenRate,
+        choosenRate,
         favorite: false,
         flag: currency.flag,
       };

@@ -5,7 +5,7 @@ type CompareRowProps = {
   code: string;
   name: string;
   amount: number;
-  rate: number;
+  choosenRate: number;
   favorite: boolean;
 };
 
@@ -13,7 +13,7 @@ export function CompareRow({
   flag,
   code,
   name,
-  rate,
+  choosenRate,
   favorite,
   amount,
 }: CompareRowProps) {
@@ -46,7 +46,9 @@ export function CompareRow({
           <div className="mt-1 break-all text-preset-3 text-white">
             {amount.toFixed(2)}
           </div>
-          <div className="mt-2 text-sm text-zinc-500">@ {rate.toFixed(2)}</div>
+          <div className="mt-2 text-sm text-zinc-500">
+            @ {choosenRate.toFixed(2)}
+          </div>
         </div>
 
         <button
