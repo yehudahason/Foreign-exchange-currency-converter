@@ -37,12 +37,8 @@ export default function Logs({ money, rate }: CompareListProps) {
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="flex flex-col gap-2 sm:flex-row">
-          <span className=" sm:text-preset-4 px-2 text-preset-5 uppercase tracking-[0.3em] text-zinc-500">
-            Multi-Currency{" "}
-          </span>
-
-          <span className="ml-2 text-preset-3-medium text-white ">
-            {money} FROM {rate.base}
+          <span className="uppercase sm:text-preset-3-medium px-2 text-preset-5 uppercase tracking-[0.3em] text-white">
+            Conversion log
           </span>
         </h2>
 
@@ -53,7 +49,12 @@ export default function Logs({ money, rate }: CompareListProps) {
 
       <div className="space-y-4">
         {currencies.map((currency) => (
-          <LogsRow key={currency.code} {...currency} />
+          <LogsRow
+            key={currency.code}
+            money={money}
+            {...currency}
+            rate={rate}
+          />
         ))}
       </div>
     </section>

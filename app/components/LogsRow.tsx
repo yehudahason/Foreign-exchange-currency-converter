@@ -1,5 +1,6 @@
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
+import { Rates } from "../types";
 type CompareRowProps = {
   flag: string;
   code: string;
@@ -7,6 +8,8 @@ type CompareRowProps = {
   amount: number;
   choosenRate: number;
   favorite: boolean;
+  rate: Rates;
+  money: number;
 };
 
 export function LogsRow({
@@ -16,38 +19,29 @@ export function LogsRow({
   choosenRate,
   favorite,
   amount,
+  rate,
+  money,
 }: CompareRowProps) {
   return (
     <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
       {/* Left */}
-      <div className="flex items-center sm:gap-4 gap-2">
-        <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
-          <img
-            src={`https://flagcdn.com/${flag}.svg`}
-            alt={name}
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div>
-          <h3 className="text-preset-4 mb-2 tracking-widest text-white">
-            {code}
-          </h3>
-
-          <p className=" text-preset-5 overflow-hidden tracking-wide text-zinc-500">
-            {name}
-          </p>
-        </div>
+      <div className="flex items-center sm:gap-2 gap-1">
+        <h3 className="text-preset-4  tracking-widest text-white">
+          {" "}
+          {rate.base}
+        </h3>
+        <img className="w-3" src="/images/icon-arrow-right.svg" alt="" />
+        <h3 className="text-preset-4  tracking-widest text-white">{code}</h3>
       </div>
 
       {/* Right */}
       <div className="flex items-center sm:gap-6 gap-1">
-        <div className="text-right">
-          <div className="mt-1 break-all text-preset-3 text-white">
-            {amount.toFixed(2)}
+        <div className="text-right grid sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-1 place-content-center place-items-center">
+          <div className=" break-all sm:text-preset-3 text-preset-5 text-white">
+            {money.toFixed(2)}
           </div>
-          <div className="mt-2 text-sm text-zinc-500">
-            @ {choosenRate.toFixed(2)}
+          <div className=" sm:text-preset-3 text-preset-5 text-lime-400">
+            {amount.toFixed(2)}
           </div>
         </div>
 
