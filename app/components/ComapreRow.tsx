@@ -52,6 +52,7 @@ export function CompareRow({
         </div>
 
         <button
+          type="button"
           className={`flex h-11 w-11 items-center justify-center rounded-xl border transition ${
             favorite
               ? "border-lime-400 text-lime-400"

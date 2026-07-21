@@ -12,7 +12,7 @@ type ChangesProps = {
 };
 export default function ChangeBar({ changes, setTime, rate }: ChangesProps) {
   return (
-    <div className="mb-4 flex lg:flex-row   flex-col lg:items-center items-start  w-full max-w-6xl text-preset-4  text-zinc-300  gap-6 justify-between">
+    <div className="mb-4 flex lg:flex-row  mx-auto  flex-col lg:items-center items-start  w-full max-w-6xl text-preset-4  text-zinc-300  gap-6 justify-between">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:w-[70%] uppercase  text-xl w-full px-2  gap-6">
         <span className="flex gap-1   flex-col justify-center items-start bg-zinc-900 rounded-xl py-1 px-5">
           <span> Open </span>

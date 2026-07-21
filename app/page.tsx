@@ -122,8 +122,14 @@ export default function Home() {
 
         <NavBar setActive={setActive} active={active} />
 
-        {active === "history" && (
-          <>
+        <>
+          <div
+            className="w-full flex items-center-center flex-col"
+            id="history-panel"
+            role="tabpanel"
+            aria-labelledby="history-tab"
+            hidden={active !== "history"}
+          >
             <ChangeBar rate={rate} setTime={setTime} changes={changes} />
             <div className="bg-neutral-900 rounded-3xl border h-fit mx-auto max-w-6xl  w-full border-zinc-800  sm:p-5 p-3 shadow-xl text-amber-200">
               <div className="flex justify-between">
@@ -142,7 +148,8 @@ export default function Home() {
                   {" "}
                   <Image
                     src="/spinner.png"
-                    alt="loading"
+                    alt=""
+                    aria-hidden="true"
                     width={160}
                     height={160}
                   />
@@ -152,11 +159,38 @@ export default function Home() {
               )}
               {ratesError ? ratesError?.message : ""}
             </div>
-          </>
-        )}
-        {active === "compare" && <CompareBottom money={money} rate={rate} />}
-        {active === "favorites" && <Favorite money={money} rate={rate} />}
-        {active === "log" && <Logs money={money} rate={rate} />}
+          </div>
+        </>
+
+        <div
+          className="w-full flex justify-center"
+          id="compare-panel"
+          role="tabpanel"
+          aria-labelledby="compare-tab"
+          hidden={active !== "compare"}
+        >
+          <CompareBottom money={money} rate={rate} />
+        </div>
+
+        <div
+          className="w-full flex justify-center"
+          id="favorites-panel"
+          role="tabpanel"
+          aria-labelledby="favorites-tab"
+          hidden={active !== "favorites"}
+        >
+          <Favorite money={money} rate={rate} />
+        </div>
+
+        <div
+          className="w-full flex justify-center"
+          id="log-panel"
+          role="tabpanel"
+          aria-labelledby="log-tab"
+          hidden={active !== "log"}
+        >
+          <Logs money={money} rate={rate} />
+        </div>
       </main>
     </>
   );

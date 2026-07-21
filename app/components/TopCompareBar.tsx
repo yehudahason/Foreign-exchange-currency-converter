@@ -49,12 +49,16 @@ export default function TopCompareBar({
         <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
           {/* Send */}
           <div className="col-span-8 w-full rounded-2xl border border-zinc-700 bg-neutral-600  sm:px-6 px-2 py-3">
-            <label className="mb-3 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
+            <label
+              htmlFor="send-amount"
+              className="mb-3 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300"
+            >
               Send
             </label>
 
             <div className="flex gap-4 items-center justify-between relative">
               <input
+                id="send-amount"
                 type="number"
                 defaultValue={1}
                 className="min-w-0 no-spinner overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-white outline-none"
@@ -62,6 +66,7 @@ export default function TopCompareBar({
               />
 
               <CurrencySelect
+                aria-label="Send currency"
                 selected={selected}
                 setSelected={setSelected}
                 mergeObject={mergeObject}
@@ -77,34 +82,49 @@ export default function TopCompareBar({
             className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border border-zinc-700 bg-neutral-600 text-3xl text-white cursor-pointer md:rotate-0 rotate-90"
             type="button"
             onClick={() => handleSwitch()}
+            aria-label="Swap currencies"
           >
             ⇄
           </button>
 
           {/* Receive */}
           <div className="md:col-span-8  w-full rounded-2xl border border-zinc-700 bg-neutral-600 sm:px-6 px-2 py-3">
-            <label className="mb-3 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300">
+            <label
+              htmlFor="receive-amount"
+              className="mb-3 block text-preset-4 uppercase tracking-[0.3em] text-zinc-300"
+            >
               Receive
             </label>
 
             <div className="flex flex-1 items-center justify-between relative">
-              <output className=" flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-lime-400">
-                {ratesLoading ? (
-                  <span className="flex animate-spin h-[2rem] flex-col items-center-safe justify-center">
-                    {" "}
-                    <img
-                      src="/spinner.png"
-                      alt="loading"
-                      width={160}
-                      height={160}
-                    />
-                  </span>
-                ) : (
-                  (changes.last * money).toFixed(2)
-                )}
-              </output>
+              {ratesLoading ? (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="flex animate-spin h-[2rem] flex-col items-center-safe justify-center"
+                >
+                  <img
+                    src="/spinner.png"
+                    alt=""
+                    aria-hidden="true"
+                    width={160}
+                    height={160}
+                  />
+                  <span className="sr-only">Calculating conversion...</span>
+                </div>
+              ) : (
+                <output
+                  id="receive-amount"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  className=" flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-lime-400"
+                >
+                  {(changes.last * money).toFixed(2)}
+                </output>
+              )}
 
               <CurrencySelect
+                aria-label="Receive currency"
                 selected={selected2}
                 setSelected={setSelected2}
                 mergeObject={mergeObject}
@@ -126,11 +146,25 @@ export default function TopCompareBar({
           </p>
 
           <div className="flex  gap-4  ">
-            <button className="flex gap-2 rounded-lg bg-lime-400   tracking-[3px] sm:p-3 p-2  font-semibold uppercase text-black text-preset-5-medium ">
-              <span>★</span> <span>Favorited</span>
+            <button
+              type="button"
+              className="outline-0 focus:outline-3  focus:outline-amber-200 flex gap-2 rounded-lg bg-lime-400   tracking-[3px] sm:p-3 p-2  font-semibold uppercase text-black text-preset-5-medium  items-center"
+            >
+              <span>
+                <img
+                  className="invert-0 brightness-0"
+                  src="/images/icon-star.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </span>{" "}
+              <span>Favorited</span>
             </button>
 
-            <button className="rounded-lg border border-lime-400 sm:p-3 font-semibold p-2 uppercase tracking-wider text-preset-5-medium text-white">
+            <button
+              type="button"
+              className="rounded-lg outline-0 focus:outline-2  focus:outline-amber-200 border border-lime-400 sm:p-3 font-semibold p-2 uppercase tracking-wider text-preset-5-medium text-white"
+            >
               Log Conversion
             </button>
           </div>

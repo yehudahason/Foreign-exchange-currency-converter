@@ -27,7 +27,6 @@ export default function CurrencySelect({
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
   const inputRef = useRef<HTMLInputElement>(null);
-
   const id = useId();
   const searchId = `${id}-currency-search`;
   const listboxId = `${id}-currency-listbox`;
@@ -44,7 +43,7 @@ export default function CurrencySelect({
       mergeObject[code].name.toLowerCase().includes(query.toLowerCase()),
   );
 
-  const filtered = useMemo(() => [...itemsP, ...itemsO], [itemsP, itemsO]);
+  const filtered = useMemo(() => [...itemsP, ...itemsO], [itemsO, itemsP]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
@@ -80,21 +79,17 @@ export default function CurrencySelect({
         });
     }
   }, [highlightedIndex, filtered]);
-
   useEffect(() => {
-    const timer = window.setTimeout(() => {
+    const id = window.setTimeout(() => {
       if (open) {
         setHighlightedIndex(0);
         inputRef.current?.focus();
       } else {
         setHighlightedIndex(-1);
-        setQuery("");
       }
     }, 0);
-
-    return () => window.clearTimeout(timer);
+    return () => window.clearTimeout(id);
   }, [open]);
-
   return (
     <>
       <button
@@ -103,8 +98,8 @@ export default function CurrencySelect({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listboxId}
-        onClick={() => setOpen((prev) => !prev)}
-        className="relative flex min-w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-neutral-800 p-2"
+        onClick={() => setOpen(!open)}
+        className="relative  cursor-pointer flex items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-neutral-800 p-2 min-w-fit"
       >
         <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
           <img
@@ -127,7 +122,7 @@ export default function CurrencySelect({
 
       {open && (
         <div
-          className={`absolute top-15 ${left ? "z-30 -right-4" : "-right-4"} w-72 rounded-xl border border-zinc-700 bg-[#1b1d24] p-2`}
+          className={`absolute top-15 ${left ? "z-30 -right-4" : "-right-4"} border border-zinc-700 w-72 rounded-xl bg-[#1b1d24] p-2`}
         >
           <label htmlFor={searchId} className="sr-only">
             Search currencies
@@ -138,7 +133,7 @@ export default function CurrencySelect({
             id={searchId}
             role="combobox"
             aria-expanded={open}
-            aria-controls={listboxId}
+            aria-controls="currency-listbox"
             aria-autocomplete="list"
             aria-haspopup="listbox"
             aria-activedescendant={
@@ -150,13 +145,13 @@ export default function CurrencySelect({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search currencies..."
-            className="w-full rounded border border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
+            className=" w-full rounded border  border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
           />
 
           <ul
             id={listboxId}
             role="listbox"
-            className="scrollbar absolute left-0 z-10 m-0 flex max-h-80 w-full flex-col items-center overflow-y-auto rounded-b-lg border border-t-0 border-zinc-700 bg-[#1b1d24] px-2 pt-2 pb-4 shadow-xl"
+            className={`scrollbar absolute left-0 z-10 m-0 flex max-h-80  flex-col items-center overflow-y-auto rounded-b-lg bg-[#1b1d24] px-2 pt-2 pb-4 shadow-xl border-t-0 border  border-zinc-700 w-full`}
           >
             {itemsP.length === 0 && itemsO.length === 0 && (
               <li className="flex w-full items-center justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
@@ -169,7 +164,7 @@ export default function CurrencySelect({
               <>
                 <li className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
                   <span>Popular</span>
-                  <span>{itemsP.length}</span>
+                  <span>3</span>
                 </li>
 
                 <CurrencyList
@@ -189,7 +184,7 @@ export default function CurrencySelect({
               <>
                 <li className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
                   <span>Other currencies</span>
-                  <span>{itemsO.length}</span>
+                  <span>{165}</span>
                 </li>
 
                 <CurrencyList

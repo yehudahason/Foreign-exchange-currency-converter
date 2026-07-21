@@ -53,9 +53,9 @@ export function LogsRow({
           }`}
         >
           {favorite ? (
-            <StarIcon className="h-5 w-5" />
+            <img src="/images/icon-delete-filled.svg" alt="" />
           ) : (
-            <StarOutline className="h-5 w-5" />
+            <img src="/images/icon-delete-filled.svg" alt="" />
           )}
         </button>
       </div>
