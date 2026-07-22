@@ -16,6 +16,7 @@ import Logs from "./components/Logs";
 import TopCompareBar from "./components/TopCompareBar";
 import { formatBerlinTime } from "./utils/formatBerlinTime";
 import CompareBottom from "./components/CompareBottom";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const [selected, setSelected] = useState<string>("USD");
@@ -203,6 +204,7 @@ export default function Home() {
           <Logs money={money} rate={rate} />
         </div>
       </main>
+      <Footer />
     </>
   );
 }

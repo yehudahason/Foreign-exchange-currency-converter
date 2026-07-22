@@ -165,3 +165,31 @@ body {
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+.attribution {
+  letter-spacing: 0.5px;
+  bottom: 1px;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--neutral-900);
+  color: rgb(209, 154, 82);
+}
+
+/* Links */
+.attribution a {
+  margin: 0 0.25rem;
+  text-decoration: none;
+  font-weight: 600;
+  color: rgb(210, 93, 50);
+}
+
+.attribution a:hover {
+  opacity: 0.5;
+}
+
+/* Separator dot */
+.separator {
+  margin: 0 0.5rem;
+  opacity: 0.6;
+}
