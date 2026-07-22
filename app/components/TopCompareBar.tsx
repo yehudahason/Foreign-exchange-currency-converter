@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { CURRENCIES } from "@/public/frankfurter_currencies";
-import { POPULAR_CURRENCIES } from "@/public/popularCurrencies";
+import { CURRENCIES } from "@/app/data/frankfurter_currencies";
+import { POPULAR_CURRENCIES } from "@/app/data/popularCurrencies";
 import CurrencySelect from "./CurrencySelect";
 import type { Changes, Rates } from "../types";
-export const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
+import { mergeObject } from "../data";
+
 const popularCurrencies = Object.keys(POPULAR_CURRENCIES);
 const othersCurrencies = Object.keys(CURRENCIES);
 

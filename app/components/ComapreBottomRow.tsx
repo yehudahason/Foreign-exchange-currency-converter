@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
 type CompareRowProps = {
@@ -6,17 +7,26 @@ type CompareRowProps = {
   name: string;
   amount: number;
   choosenRate: number;
-  favorite: boolean;
+  isFavorite: boolean;
+  setFavorites: Dispatch<SetStateAction<string[]>>;
 };
 
-export function CompareRow({
+export function CompareBottomRow({
   flag,
   code,
   name,
   choosenRate,
-  favorite,
+  isFavorite,
   amount,
+  setFavorites,
 }: CompareRowProps) {
+  const toggleFavorite = (currency: string) => {
+    setFavorites((prev: string[]) =>
+      prev.includes(currency)
+        ? prev.filter((item) => item !== currency)
+        : [...prev, currency],
+    );
+  };
   return (
     <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
       {/* Left */}
@@ -54,12 +64,12 @@ export function CompareRow({
         <button
           type="button"
           className={`flex h-11 w-11 items-center justify-center rounded-xl border transition ${
-            favorite
+            isFavorite
               ? "border-lime-400 text-lime-400"
               : "border-zinc-700 text-zinc-500 hover:border-zinc-500"
           }`}
         >
-          {favorite ? (
+          {isFavorite ? (
             <StarIcon className="h-5 w-5" />
           ) : (
             <StarOutline className="h-5 w-5" />

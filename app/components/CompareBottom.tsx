@@ -1,23 +1,22 @@
-import { CompareRow } from "./ComapreRow";
+import type { Dispatch, SetStateAction } from "react";
+
+import { CompareBottomRow } from "./ComapreBottomRow";
 import { COMPARE_CURRENCIES } from "../data";
 import { ExchangeRate, Rates } from "../types";
 import { useBaseRates } from "../fetchMethods/useBaseRates";
-const currencies2 = [
-  {
-    code: "GBP",
-    name: "British Pound",
-    amount: "736.65",
-    rate: "0.7366",
-    favorite: true,
-    flag: "🇬🇧",
-  },
-];
 
 type CompareListProps = {
   money: number;
   rate: Rates;
+  favorites: string[];
+  setFavorites: Dispatch<SetStateAction<string[]>>;
 };
-export default function CompareBottom({ money, rate }: CompareListProps) {
+export default function CompareBottom({
+  money,
+  rate,
+  favorites,
+  setFavorites,
+}: CompareListProps) {
   const {
     data: comparerates,
     error,
@@ -63,7 +62,12 @@ export default function CompareBottom({ money, rate }: CompareListProps) {
 
       <div className="space-y-4">
         {currencies.map((currency) => (
-          <CompareRow key={currency.code} {...currency} />
+          <CompareBottomRow
+            setFavorites={setFavorites}
+            key={currency.code}
+            {...currency}
+            isFavorite={favorites.includes(currency.code)}
+          />
         ))}
       </div>
     </section>

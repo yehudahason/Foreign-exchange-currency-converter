@@ -1,3 +1,4 @@
+//Currencies with no USD/EUR/GBP
 export const CURRENCIES: Record<string, { flag: string; name: string }> = {
   JPY: { flag: "jp", name: "Japanese Yen" },
   CNY: { flag: "cn", name: "Chinese Renminbi Yuan" },

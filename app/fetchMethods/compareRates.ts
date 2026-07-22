@@ -12,7 +12,7 @@ export async function compareRate(time: string, rate: Rates) {
       today.setDate(today.getDate() - 7);
       break;
     case "1M":
-      today.setDate(today.getDate() - 30);
+      today.setMonth(today.getMonth() - 1);
       break;
     case "3M":
       today.setMonth(today.getMonth() - 3);

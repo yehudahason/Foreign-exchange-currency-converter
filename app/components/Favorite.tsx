@@ -1,41 +1,49 @@
+import type { Dispatch, SetStateAction } from "react";
 import { FavoriteRow } from "./FavoriteRow";
-import { COMPARE_CURRENCIES } from "../data";
+import { mergeObject } from "../data";
 import { Rates } from "../types";
 import { useBaseRates } from "../fetchMethods/useBaseRates";
 
 type CompareListProps = {
   money: number;
   rate: Rates;
+  favorites: string[];
+  setFavorites: Dispatch<SetStateAction<string[]>>;
 };
-export default function Favorite({ money, rate }: CompareListProps) {
+export default function Favorite({
+  money,
+  rate,
+  favorites,
+  setFavorites,
+}: CompareListProps) {
   const {
     data: comparerates,
     error,
     isPending,
     isError,
   } = useBaseRates(rate.base);
-  let currencies = Object.entries(COMPARE_CURRENCIES).map(
-    ([code, currency]) => {
-      const choosenRate =
-        comparerates?.find((item) => item.currency === code)?.rate ?? 0;
-      const percentChange =
-        comparerates?.find((item) => item.currency === code)?.percentChange ??
-        0;
 
-      return {
-        code,
-        name: currency.country,
-        amount: money * choosenRate,
-        choosenRate,
-        favorite: false,
-        flag: currency.flag,
-        percentChange,
-      };
-    },
-  );
+  let currencies = Object.entries(mergeObject).map(([code, currency]) => {
+    const choosenRate =
+      comparerates?.find((item) => item.currency === code)?.rate ?? 0;
+    const percentChange =
+      comparerates?.find((item) => item.currency === code)?.percentChange ?? 0;
+
+    return {
+      code,
+      name: currency.name,
+      amount: money * choosenRate,
+      choosenRate,
+      isFavorite: false,
+      flag: currency.flag,
+      percentChange,
+    };
+  });
 
   //Filtering base
   currencies = currencies.filter((item) => item.code !== rate.base);
+  currencies = currencies.filter((item) => favorites.includes(item.code));
+
   return (
     <section className="rounded-3xl w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
       {/* Header */}
@@ -53,7 +61,13 @@ export default function Favorite({ money, rate }: CompareListProps) {
 
       <div className="space-y-4">
         {currencies.map((currency) => (
-          <FavoriteRow key={currency.code} {...currency} rate={rate} />
+          <FavoriteRow
+            key={currency.code}
+            {...currency}
+            rate={rate}
+            isFavorite={favorites.includes(currency.code)}
+            setFavorites={setFavorites}
+          />
         ))}
       </div>
     </section>

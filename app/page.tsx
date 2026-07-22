@@ -23,6 +23,7 @@ export default function Home() {
   const [time, setTime] = useState<ChartRange>("1W");
   const [money, setMoney] = useState<number>(1);
   const [active, setActive] = useState("history");
+  const [favorites, setFavorites] = useState<string[]>(["GBP", "JPY"]);
   const rate = useMemo(
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
@@ -169,7 +170,12 @@ export default function Home() {
           aria-labelledby="compare-tab"
           hidden={active !== "compare"}
         >
-          <CompareBottom money={money} rate={rate} />
+          <CompareBottom
+            setFavorites={setFavorites}
+            money={money}
+            rate={rate}
+            favorites={favorites}
+          />
         </div>
 
         <div
@@ -179,7 +185,12 @@ export default function Home() {
           aria-labelledby="favorites-tab"
           hidden={active !== "favorites"}
         >
-          <Favorite money={money} rate={rate} />
+          <Favorite
+            money={money}
+            rate={rate}
+            setFavorites={setFavorites}
+            favorites={favorites}
+          />
         </div>
 
         <div

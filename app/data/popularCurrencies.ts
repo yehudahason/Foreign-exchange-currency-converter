@@ -1,3 +1,4 @@
+// Most popular currnecies
 export const POPULAR_CURRENCIES: Record<
   string,
   {

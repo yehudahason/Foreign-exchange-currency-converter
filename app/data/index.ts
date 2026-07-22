@@ -1,5 +1,10 @@
 import type { ChartRange } from "../types";
+import { POPULAR_CURRENCIES } from "./popularCurrencies";
+import { CURRENCIES } from "./frankfurter_currencies";
+// ALL Currencies object
+export const mergeObject = { ...CURRENCIES, ...POPULAR_CURRENCIES };
 
+// Bottom comapre rates
 export const COMPARE_CURRENCIES = {
   USD: { country: "United States", flag: "us" },
   EUR: { country: "European Union", flag: "eu" },
