@@ -121,7 +121,7 @@ export default function Home() {
           setMoney={setMoney}
         />
 
-        <NavBar setActive={setActive} active={active} />
+        <NavBar setActive={setActive} active={active} favorites={favorites} />
 
         <>
           <div

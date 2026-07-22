@@ -1,13 +1,14 @@
 type NavBarProps = {
   active: string;
   setActive: (active: string) => void;
+  favorites: string[];
 };
 
-export default function NavBar({ active, setActive }: NavBarProps) {
+export default function NavBar({ active, setActive, favorites }: NavBarProps) {
   const tabs = [
     { id: "history", label: "HISTORY", count: null },
     { id: "compare", label: "COMPARE", count: null },
-    { id: "favorites", label: "FAVORITES", count: 0 },
+    { id: "favorites", label: "FAVORITES", count: favorites.length },
     { id: "log", label: "LOG", count: 0 },
   ];
 
