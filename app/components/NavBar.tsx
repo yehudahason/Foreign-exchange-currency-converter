@@ -1,7 +1,9 @@
+import { Pairs } from "../types";
+
 type NavBarProps = {
   active: string;
   setActive: (active: string) => void;
-  favorites: string[];
+  favorites: Pairs;
 };
 
 export default function NavBar({ active, setActive, favorites }: NavBarProps) {

@@ -2,20 +2,22 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { CompareBottomRow } from "./ComapreBottomRow";
 import { COMPARE_CURRENCIES } from "../data";
-import { ExchangeRate, Rates } from "../types";
+import { ExchangeRate, Pairs, Rates } from "../types";
 import { useBaseRates } from "../fetchMethods/useBaseRates";
 
 type CompareListProps = {
   money: number;
   rate: Rates;
-  favorites: string[];
-  setFavorites: Dispatch<SetStateAction<string[]>>;
+  favorites: Pairs;
+  setFavorites: Dispatch<SetStateAction<Pairs>>;
+  selected: string;
 };
 export default function CompareBottom({
   money,
   rate,
   favorites,
   setFavorites,
+  selected,
 }: CompareListProps) {
   const {
     data: comparerates,
@@ -66,7 +68,10 @@ export default function CompareBottom({
             setFavorites={setFavorites}
             key={currency.code}
             {...currency}
-            isFavorite={favorites.includes(currency.code)}
+            isFavorite={favorites.some(
+              ({ base, quote }) => base === selected && quote === currency.code,
+            )}
+            selected={selected}
           />
         ))}
       </div>

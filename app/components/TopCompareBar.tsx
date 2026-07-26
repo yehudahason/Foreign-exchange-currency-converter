@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { CURRENCIES } from "@/app/data/frankfurter_currencies";
 import { POPULAR_CURRENCIES } from "@/app/data/popularCurrencies";
 import CurrencySelect from "./CurrencySelect";
-import type { Changes, Rates } from "../types";
+import type { Changes, Pairs, Rates } from "../types";
 import { mergeObject } from "../data";
 
 const popularCurrencies = Object.keys(POPULAR_CURRENCIES);
@@ -18,6 +18,8 @@ type TopCompareBarProps = {
   rate: Rates;
   money: number;
   setMoney: (money: number) => void;
+  favorites: Pairs;
+  setFavorites: Dispatch<SetStateAction<Pairs>>;
 };
 
 export default function TopCompareBar({
@@ -30,6 +32,8 @@ export default function TopCompareBar({
   rate,
   money,
   setMoney,
+  favorites,
+  setFavorites,
 }: TopCompareBarProps) {
   //Switch currencies
   function handleSwitch() {
@@ -37,8 +41,22 @@ export default function TopCompareBar({
     setSelected(b);
     setSelected2(a);
   }
-  //The amount of money
+  const toggleFavorite = () => {
+    setFavorites((prev) => {
+      const exists = prev.some(
+        ({ base, quote }) => base === selected && quote === selected2,
+      );
 
+      return exists
+        ? prev.filter(
+            ({ base, quote }) => !(base === selected && quote === selected2),
+          )
+        : [...prev, { base: selected, quote: selected2 }];
+    });
+  };
+  const isFavorite = favorites.some(
+    ({ base, quote }) => base === selected && quote === selected2,
+  );
   return (
     <section className="max-w-6xl mx-auto w-full">
       <h2 className="mb-6 text-preset-2 text-neutral-50 uppercase tracking-widest">
@@ -149,12 +167,13 @@ export default function TopCompareBar({
           <div className="flex  gap-4  ">
             <button
               type="button"
-              className="outline-0 focus:outline-3  focus:outline-amber-200 flex gap-2 rounded-lg bg-lime-400   tracking-[3px] sm:p-3 p-2  font-semibold uppercase text-black text-preset-5-medium  items-center"
+              onClick={() => toggleFavorite()}
+              className="hover:cursor-pointer  outline-0 focus:outline-3  focus:outline-amber-200 flex gap-2 rounded-lg bg-lime-400   tracking-[3px] sm:p-3 p-2  font-semibold uppercase text-black text-preset-5-medium  items-center"
             >
               <span>
                 <img
                   className="invert-0 brightness-0"
-                  src="/images/icon-star.svg"
+                  src={`/images/icon-star${isFavorite ? "-filled" : ""}.svg`}
                   alt=""
                   aria-hidden="true"
                 />

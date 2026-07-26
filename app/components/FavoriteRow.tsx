@@ -1,48 +1,47 @@
 import type { Dispatch, SetStateAction } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
-import { Rates } from "../types";
+import { Pairs, Rates } from "../types";
 import { formatSigned } from "../utils/formatSigned";
 type CompareRowProps = {
-  flag: string;
-  code: string;
-  name: string;
   amount: number;
   choosenRate: number;
-  isFavorite: boolean;
-  rate: Rates;
+  base: string;
+  quote: string;
   percentChange: number;
-  setFavorites: Dispatch<SetStateAction<string[]>>;
+  isFavorite: boolean;
+  setFavorites: Dispatch<SetStateAction<Pairs>>;
 };
 
 export function FavoriteRow({
-  flag,
-  code,
-  name,
+  base,
+  quote,
   choosenRate,
-  isFavorite,
   amount,
-  rate,
   percentChange,
   setFavorites,
+  isFavorite,
 }: CompareRowProps) {
   const toggleFavorite = (currency: string) => {
-    setFavorites((prev: string[]) =>
-      prev.includes(currency)
-        ? prev.filter((item) => item !== currency)
-        : [...prev, currency],
-    );
+    setFavorites((prev) => {
+      const exists = prev.some(
+        ({ base, quote }) => base === base && quote === currency,
+      );
+
+      return exists
+        ? prev.filter(
+            ({ base, quote }) => !(base === base && quote === currency),
+          )
+        : [...prev, { base: base, quote: currency }];
+    });
   };
   return (
     <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
       {/* Left */}
       <div className="flex items-center gap-2">
-        <h3 className="text-preset-4  tracking-widest text-white">
-          {" "}
-          {rate.base}
-        </h3>
+        <h3 className="text-preset-4  tracking-widest text-white"> {base}</h3>
         <img className="w-3" src="/images/icon-arrow-right.svg" alt="" />
-        <h3 className="text-preset-4  tracking-widest text-white">{code}</h3>
+        <h3 className="text-preset-4  tracking-widest text-white">{quote}</h3>
       </div>
 
       {/* Right */}
@@ -65,7 +64,7 @@ export function FavoriteRow({
 
         <button
           type="button"
-          onClick={() => toggleFavorite(code)}
+          onClick={() => toggleFavorite(quote)}
           className={`flex h-11 w-11 items-center justify-center rounded-xl border transition ${
             isFavorite
               ? "border-lime-400 text-lime-400"

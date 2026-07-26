@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
+import { Pairs } from "../types";
 type CompareRowProps = {
   flag: string;
   code: string;
@@ -8,7 +9,8 @@ type CompareRowProps = {
   amount: number;
   choosenRate: number;
   isFavorite: boolean;
-  setFavorites: Dispatch<SetStateAction<string[]>>;
+  setFavorites: Dispatch<SetStateAction<Pairs>>;
+  selected: string;
 };
 
 export function CompareBottomRow({
@@ -19,13 +21,20 @@ export function CompareBottomRow({
   isFavorite,
   amount,
   setFavorites,
+  selected,
 }: CompareRowProps) {
   const toggleFavorite = (currency: string) => {
-    setFavorites((prev: string[]) =>
-      prev.includes(currency)
-        ? prev.filter((item) => item !== currency)
-        : [...prev, currency],
-    );
+    setFavorites((prev) => {
+      const exists = prev.some(
+        ({ base, quote }) => base === selected && quote === currency,
+      );
+
+      return exists
+        ? prev.filter(
+            ({ base, quote }) => !(base === selected && quote === currency),
+          )
+        : [...prev, { base: selected, quote: currency }];
+    });
   };
   return (
     <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">

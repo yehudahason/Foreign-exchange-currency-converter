@@ -1,49 +1,69 @@
-import type { Dispatch, SetStateAction } from "react";
+import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
 import { FavoriteRow } from "./FavoriteRow";
 import { mergeObject } from "../data";
-import { Rates } from "../types";
+import { ExchangeRate, Pairs, Rates } from "../types";
 import { useBaseRates } from "../fetchMethods/useBaseRates";
 
 type CompareListProps = {
   money: number;
   rate: Rates;
-  favorites: string[];
-  setFavorites: Dispatch<SetStateAction<string[]>>;
+  favorites: Pairs;
+  setFavorites: Dispatch<SetStateAction<Pairs>>;
+  selected: string;
 };
 export default function Favorite({
   money,
   rate,
   favorites,
   setFavorites,
+  selected,
 }: CompareListProps) {
-  const {
-    data: comparerates,
-    error,
-    isPending,
-    isError,
-  } = useBaseRates(rate.base);
+  const [pairs, setPairs] = useState<ExchangeRate[][]>([]);
 
-  let currencies = Object.entries(mergeObject).map(([code, currency]) => {
-    const choosenRate =
-      comparerates?.find((item) => item.currency === code)?.rate ?? 0;
-    const percentChange =
-      comparerates?.find((item) => item.currency === code)?.percentChange ?? 0;
+  const currencies = pairs.map((history) => {
+    const first = history[history.length - 2];
+    const last = history[history.length - 1];
 
     return {
-      code,
-      name: currency.name,
-      amount: money * choosenRate,
-      choosenRate,
-      isFavorite: false,
-      flag: currency.flag,
-      percentChange,
+      base: last.base,
+      quote: last.quote,
+      rate: last.rate,
+      percentChange:
+        first.rate !== 0 ? ((last.rate - first.rate) / first.rate) * 100 : 0,
     };
   });
 
-  //Filtering base
-  currencies = currencies.filter((item) => item.code !== rate.base);
-  currencies = currencies.filter((item) => favorites.includes(item.code));
+  useEffect(() => {
+    const today = new Date();
 
+    today.setDate(today.getDate() - 7);
+    async function fetchPairs(): Promise<ExchangeRate[][]> {
+      const results = await Promise.all(
+        favorites.map(async ({ base, quote }) => {
+          const res = await fetch(
+            `https://api.frankfurter.dev/v2/rates?from=${today}&base=${base}&quotes=${quote}`,
+          );
+
+          if (!res.ok) {
+            throw new Error(`Failed to fetch ${base}/${quote}`);
+          }
+
+          return res.json();
+        }),
+      );
+
+      return results;
+    }
+
+    fetchPairs()
+      .then((data) => {
+        setPairs(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [favorites]);
   return (
     <section className="rounded-3xl w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
       {/* Header */}
@@ -55,18 +75,21 @@ export default function Favorite({
         </h2>
 
         <span className="text-preset-5 uppercase tracking-[0.25em] text-zinc-500">
-          {currencies.length} Pairs
+          {pairs.length} Pairs
         </span>
       </div>
 
       <div className="space-y-4">
-        {currencies.map((currency) => (
+        {currencies.map((item) => (
           <FavoriteRow
-            key={currency.code}
-            {...currency}
-            rate={rate}
-            isFavorite={favorites.includes(currency.code)}
+            key={item.quote + item.base}
+            base={item.base}
+            quote={item.quote}
             setFavorites={setFavorites}
+            amount={money}
+            choosenRate={item.rate}
+            percentChange={item.percentChange}
+            isFavorite={true}
           />
         ))}
       </div>

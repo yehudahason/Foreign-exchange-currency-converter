@@ -54,3 +54,7 @@ export type todayRates = {
   rate: number;
   previous: number;
 };
+export type Pairs = {
+  base: string;
+  quote: string;
+}[];

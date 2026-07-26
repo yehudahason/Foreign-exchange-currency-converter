@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import Chart from "./components/Chart";
-import type { ExchangeRate, Rates, ChartRange, Changes } from "./types";
+import type { ExchangeRate, Rates, ChartRange, Changes, Pairs } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { compareRate } from "./fetchMethods/compareRates";
 
@@ -24,7 +24,9 @@ export default function Home() {
   const [time, setTime] = useState<ChartRange>("1W");
   const [money, setMoney] = useState<number>(1);
   const [active, setActive] = useState("history");
-  const [favorites, setFavorites] = useState<string[]>(["GBP", "JPY"]);
+  const [favorites, setFavorites] = useState<Pairs>([
+    { base: "USD", quote: "EUR" },
+  ]);
   const rate = useMemo(
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
@@ -120,6 +122,8 @@ export default function Home() {
           rate={rate}
           money={money}
           setMoney={setMoney}
+          favorites={favorites}
+          setFavorites={setFavorites}
         />
 
         <NavBar setActive={setActive} active={active} favorites={favorites} />
@@ -176,6 +180,7 @@ export default function Home() {
             money={money}
             rate={rate}
             favorites={favorites}
+            selected={selected}
           />
         </div>
 
@@ -191,6 +196,7 @@ export default function Home() {
             rate={rate}
             setFavorites={setFavorites}
             favorites={favorites}
+            selected={selected}
           />
         </div>
 
