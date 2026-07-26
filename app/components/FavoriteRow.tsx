@@ -3,6 +3,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
 import { Pairs, Rates } from "../types";
 import { formatSigned } from "../utils/formatSigned";
+
 type CompareRowProps = {
   amount: number;
   choosenRate: number;
@@ -65,11 +66,7 @@ export function FavoriteRow({
         <button
           type="button"
           onClick={() => toggleFavorite(quote)}
-          className={`flex h-11 w-11 items-center justify-center rounded-xl border transition ${
-            isFavorite
-              ? "border-lime-400 text-lime-400"
-              : "border-zinc-700 text-zinc-500 hover:border-zinc-500"
-          }`}
+          className={`flex hover:cursor-pointer h-11 w-11 items-center justify-center rounded-xl border transition border-lime-400 text-lime-400`}
         >
           {isFavorite ? (
             <StarIcon className="h-5 w-5" />

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { CURRENCIES } from "@/app/data/frankfurter_currencies";
 import { POPULAR_CURRENCIES } from "@/app/data/popularCurrencies";
 import CurrencySelect from "./CurrencySelect";
-import type { Changes, Pairs, Rates } from "../types";
+import type { Changes, Pairs, Rates, LogsItems } from "../types";
 import { mergeObject } from "../data";
 
 const popularCurrencies = Object.keys(POPULAR_CURRENCIES);
@@ -20,6 +20,7 @@ type TopCompareBarProps = {
   setMoney: (money: number) => void;
   favorites: Pairs;
   setFavorites: Dispatch<SetStateAction<Pairs>>;
+  setLogs: Dispatch<SetStateAction<LogsItems>>;
 };
 
 export default function TopCompareBar({
@@ -34,6 +35,7 @@ export default function TopCompareBar({
   setMoney,
   favorites,
   setFavorites,
+  setLogs,
 }: TopCompareBarProps) {
   //Switch currencies
   function handleSwitch() {
@@ -183,6 +185,20 @@ export default function TopCompareBar({
 
             <button
               type="button"
+              onClick={() => {
+                setLogs((prev) => {
+                  return [
+                    ...prev,
+                    {
+                      base: selected,
+                      quote: selected2,
+                      amount: money,
+                      rate: money * changes.last,
+                      date: new Date(),
+                    },
+                  ];
+                });
+              }}
               className="rounded-lg outline-0 focus:outline-2  focus:outline-amber-200 border border-lime-400 sm:p-3 font-semibold p-2 uppercase tracking-wider text-preset-5-medium text-white"
             >
               Log Conversion

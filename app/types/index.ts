@@ -58,3 +58,19 @@ export type Pairs = {
   base: string;
   quote: string;
 }[];
+
+export type LogsItems = {
+  base: string;
+  quote: string;
+  amount: number;
+  rate: number;
+  date: Date;
+}[];
+
+export type LogItem = {
+  base: string;
+  quote: string;
+  amount: number;
+  rate: number;
+  date: Date;
+};

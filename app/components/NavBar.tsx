@@ -1,17 +1,23 @@
-import { Pairs } from "../types";
+import { LogsItems, Pairs } from "../types";
 
 type NavBarProps = {
   active: string;
   setActive: (active: string) => void;
   favorites: Pairs;
+  logs: LogsItems;
 };
 
-export default function NavBar({ active, setActive, favorites }: NavBarProps) {
+export default function NavBar({
+  logs,
+  active,
+  setActive,
+  favorites,
+}: NavBarProps) {
   const tabs = [
     { id: "history", label: "HISTORY", count: null },
     { id: "compare", label: "COMPARE", count: null },
     { id: "favorites", label: "FAVORITES", count: favorites.length },
-    { id: "log", label: "LOG", count: 0 },
+    { id: "log", label: "LOG", count: logs.length },
   ];
 
   return (

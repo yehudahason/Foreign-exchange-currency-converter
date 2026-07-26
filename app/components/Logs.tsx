@@ -1,37 +1,13 @@
+import { Dispatch, SetStateAction } from "react";
 import { LogsRow } from "./LogsRow";
-import { COMPARE_CURRENCIES } from "../data";
-import { Rates } from "../types";
-import { useBaseRates } from "../fetchMethods/useBaseRates";
+import { LogsItems } from "../types";
 
 type CompareListProps = {
-  money: number;
-  rate: Rates;
+  logs: LogsItems;
+
+  setLogs: Dispatch<SetStateAction<LogsItems>>;
 };
-export default function Logs({ money, rate }: CompareListProps) {
-  const {
-    data: comparerates,
-    error,
-    isPending,
-    isError,
-  } = useBaseRates(rate.base);
-  let currencies = Object.entries(COMPARE_CURRENCIES).map(
-    ([code, currency]) => {
-      const choosenRate =
-        comparerates?.find((item) => item.currency === code)?.rate ?? 0;
-
-      return {
-        code,
-        name: currency.country,
-        amount: money * choosenRate,
-        choosenRate,
-        favorite: false,
-        flag: currency.flag,
-      };
-    },
-  );
-
-  //Filtering base
-  currencies = currencies.filter((item) => item.code !== rate.base);
+export default function Logs({ logs, setLogs }: CompareListProps) {
   return (
     <section className="rounded-3xl w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
       {/* Header */}
@@ -43,18 +19,13 @@ export default function Logs({ money, rate }: CompareListProps) {
         </h2>
 
         <span className="text-preset-5 uppercase tracking-[0.25em] text-zinc-500">
-          {currencies.length} Pairs
+          {logs.length} Pairs
         </span>
       </div>
 
       <div className="space-y-4">
-        {currencies.map((currency) => (
-          <LogsRow
-            key={currency.code}
-            money={money}
-            {...currency}
-            rate={rate}
-          />
+        {logs.map((item, index) => (
+          <LogsRow key={index} index={index} {...item} setLogs={setLogs} />
         ))}
       </div>
     </section>

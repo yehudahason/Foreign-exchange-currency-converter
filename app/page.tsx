@@ -1,8 +1,17 @@
 "use client";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useLocalStorage } from "./utils/useLocalStorage";
 import Chart from "./components/Chart";
-import type { ExchangeRate, Rates, ChartRange, Changes, Pairs } from "./types";
+import type {
+  ExchangeRate,
+  Rates,
+  ChartRange,
+  Changes,
+  Pairs,
+  LogsItems,
+  LogItem,
+} from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { compareRate } from "./fetchMethods/compareRates";
 
@@ -24,9 +33,12 @@ export default function Home() {
   const [time, setTime] = useState<ChartRange>("1W");
   const [money, setMoney] = useState<number>(1);
   const [active, setActive] = useState("history");
-  const [favorites, setFavorites] = useState<Pairs>([
+
+  const [favorites, setFavorites] = useLocalStorage<Pairs>("favorites", [
     { base: "USD", quote: "EUR" },
   ]);
+
+  const [logs, setLogs] = useLocalStorage<LogsItems>("logs", []);
   const rate = useMemo(
     () => ({ base: selected, quotes: selected2, time }) as Rates,
     [selected, selected2, time],
@@ -124,9 +136,15 @@ export default function Home() {
           setMoney={setMoney}
           favorites={favorites}
           setFavorites={setFavorites}
+          setLogs={setLogs}
         />
 
-        <NavBar setActive={setActive} active={active} favorites={favorites} />
+        <NavBar
+          logs={logs}
+          setActive={setActive}
+          active={active}
+          favorites={favorites}
+        />
 
         <>
           <div
@@ -207,7 +225,7 @@ export default function Home() {
           aria-labelledby="log-tab"
           hidden={active !== "log"}
         >
-          <Logs money={money} rate={rate} />
+          <Logs logs={logs ?? []} setLogs={setLogs} />
         </div>
       </main>
       <Footer />

@@ -73,7 +73,7 @@ export function CompareBottomRow({
         <button
           type="button"
           onClick={() => toggleFavorite(code)}
-          className={`flex h-11 w-11 items-center justify-center rounded-xl border transition ${
+          className={`flex hover:cursor-pointer h-11 w-11 items-center justify-center rounded-xl border transition ${
             isFavorite
               ? "border-lime-400 text-lime-400"
               : "border-zinc-700 text-zinc-500 hover:border-zinc-500"
