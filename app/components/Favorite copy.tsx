@@ -11,22 +11,30 @@ export default function Favorite({
   favorites,
   setFavorites,
 }: CompareListProps) {
-  const {
-    data: pairs = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["favorite-pairs", favorites],
-    queryFn: async (): Promise<ExchangeRate[][]> => {
-      const today = new Date();
-      today.setDate(today.getDate() - 7);
+  const [pairs, setPairs] = useState<ExchangeRate[][]>([]);
 
-      const from = today.toISOString().split("T")[0]; // YYYY-MM-DD
+  const currencies = pairs.map((history) => {
+    const first = history[history.length - 2];
+    const last = history[history.length - 1];
 
-      return Promise.all(
+    return {
+      base: last.base,
+      quote: last.quote,
+      rate: last.rate,
+      percentChange:
+        first.rate !== 0 ? ((last.rate - first.rate) / first.rate) * 100 : 0,
+    };
+  });
+
+  useEffect(() => {
+    const today = new Date();
+
+    today.setDate(today.getDate() - 7);
+    async function fetchPairs(): Promise<ExchangeRate[][]> {
+      const results = await Promise.all(
         favorites.map(async ({ base, quote }) => {
           const res = await fetch(
-            `https://api.frankfurter.dev/v2/rates?from=${from}&base=${base}&quotes=${quote}`,
+            `https://api.frankfurter.dev/v2/rates?from=${today}&base=${base}&quotes=${quote}`,
           );
 
           if (!res.ok) {
@@ -36,35 +44,19 @@ export default function Favorite({
           return res.json();
         }),
       );
-    },
-    enabled: favorites.length > 0,
-    select: (pairs) =>
-      pairs
-        .filter((history) => history.length >= 2)
-        .map((history) => {
-          const first = history[history.length - 2];
-          const last = history[history.length - 1];
 
-          return {
-            base: last.base,
-            quote: last.quote,
-            rate: last.rate,
-            percentChange:
-              first.rate !== 0
-                ? ((last.rate - first.rate) / first.rate) * 100
-                : 0,
-          };
-        }),
-  });
+      return results;
+    }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Something went wrong.</div>;
-  }
-
+    fetchPairs()
+      .then((data) => {
+        setPairs(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [favorites]);
   return (
     <section className="rounded-3xl w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
       {/* Header */}
@@ -81,7 +73,7 @@ export default function Favorite({
       </div>
 
       <div className="space-y-4">
-        {pairs?.map((item) => (
+        {currencies.map((item) => (
           <FavoriteRow
             key={item.quote + item.base}
             base={item.base}

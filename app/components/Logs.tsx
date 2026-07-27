@@ -4,7 +4,6 @@ import { LogsItems } from "../types";
 
 type CompareListProps = {
   logs: LogsItems;
-
   setLogs: Dispatch<SetStateAction<LogsItems>>;
 };
 export default function Logs({ logs, setLogs }: CompareListProps) {
@@ -13,7 +12,7 @@ export default function Logs({ logs, setLogs }: CompareListProps) {
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="flex flex-col gap-2 sm:flex-row">
-          <span className="uppercase sm:text-preset-3-medium px-2 text-preset-5 uppercase tracking-[0.3em] text-white">
+          <span className="uppercase sm:text-preset-3-medium px-2 text-preset-5  tracking-[0.3em] text-white">
             Conversion log
           </span>
         </h2>

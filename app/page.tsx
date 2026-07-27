@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { useLocalStorage } from "./utils/useLocalStorage";
 import Chart from "./components/Chart";
 import type {
@@ -10,7 +10,6 @@ import type {
   Changes,
   Pairs,
   LogsItems,
-  LogItem,
 } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { compareRate } from "./fetchMethods/compareRates";
@@ -211,10 +210,8 @@ export default function Home() {
         >
           <Favorite
             money={money}
-            rate={rate}
             setFavorites={setFavorites}
             favorites={favorites}
-            selected={selected}
           />
         </div>
 

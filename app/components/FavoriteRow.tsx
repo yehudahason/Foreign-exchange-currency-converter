@@ -1,11 +1,10 @@
 import type { Dispatch, SetStateAction } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
-import { Pairs, Rates } from "../types";
+import { Pairs } from "../types";
 import { formatSigned } from "../utils/formatSigned";
 
 type CompareRowProps = {
-  amount: number;
   choosenRate: number;
   base: string;
   quote: string;
@@ -18,7 +17,6 @@ export function FavoriteRow({
   base,
   quote,
   choosenRate,
-  amount,
   percentChange,
   setFavorites,
   isFavorite,
