@@ -66,7 +66,7 @@ export default function Favorite({
   }
 
   return (
-    <section className="rounded-3xl w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
+    <section className="rounded-3xl min-h-[11rem] w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="flex flex-col gap-2 sm:flex-row">
@@ -93,6 +93,11 @@ export default function Favorite({
             />
           </li>
         ))}
+        {pairs.length === 0 && (
+          <h3 className="uppercase text-center text-preset-2-bold text-neutral-100">
+            No favorite yet
+          </h3>
+        )}
       </ul>
     </section>
   );

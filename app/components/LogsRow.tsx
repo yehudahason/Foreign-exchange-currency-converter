@@ -22,7 +22,7 @@ export function LogsRow({
   index,
 }: CompareRowProps) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
+    <li className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
       {/* Left */}
       <div className="flex items-center sm:gap-3 gap-1">
         <h4 className="text-neutral-200 text-preset-4">{timeAgo(date)}</h4>
@@ -52,6 +52,6 @@ export function LogsRow({
           <img src="/images/icon-delete-filled.svg" alt="" />
         </button>
       </div>
-    </div>
+    </li>
   );
 }
