@@ -208,11 +208,7 @@ export default function Home() {
           aria-labelledby="favorites-tab"
           hidden={active !== "favorites"}
         >
-          <Favorite
-            money={money}
-            setFavorites={setFavorites}
-            favorites={favorites}
-          />
+          <Favorite setFavorites={setFavorites} favorites={favorites} />
         </div>
 
         <div
