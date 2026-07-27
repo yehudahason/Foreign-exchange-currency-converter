@@ -23,7 +23,7 @@ export default function NavBar({
   return (
     <div className="flex w-full max-w-6xl">
       {/* Mobile */}
-      <div className="px-8 md:hidden">
+      <div className="px-8  w-full md:hidden">
         <select
           aria-label="Select section"
           value={active}

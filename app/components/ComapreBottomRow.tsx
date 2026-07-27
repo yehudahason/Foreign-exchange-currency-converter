@@ -72,8 +72,14 @@ export function CompareBottomRow({
 
         <button
           type="button"
+          aria-pressed={isFavorite}
+          aria-label={
+            isFavorite
+              ? `Remove ${selected} to ${code} from favorites`
+              : `Add ${selected} to ${code} to favorites`
+          }
           onClick={() => toggleFavorite(code)}
-          className={`flex hover:cursor-pointer h-11 w-11 items-center justify-center rounded-xl border transition ${
+          className={` focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1e1e1f] flex hover:cursor-pointer h-11 w-11 items-center justify-center rounded-xl border transition ${
             isFavorite
               ? "border-lime-400 text-lime-400"
               : "border-zinc-700 text-zinc-500 hover:border-zinc-500"

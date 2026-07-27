@@ -1,4 +1,4 @@
-import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import { FavoriteRow } from "./FavoriteRow";
 import { ExchangeRate, Pairs } from "../types";
 import { useQuery } from "@tanstack/react-query";
@@ -80,19 +80,20 @@ export default function Favorite({
         </span>
       </div>
 
-      <div className="space-y-4">
+      <ul className="space-y-4">
         {pairs?.map((item) => (
-          <FavoriteRow
-            key={item.quote + item.base}
-            base={item.base}
-            quote={item.quote}
-            setFavorites={setFavorites}
-            choosenRate={item.rate}
-            percentChange={item.percentChange}
-            isFavorite={true}
-          />
+          <li key={item.quote + item.base}>
+            <FavoriteRow
+              fbase={item.base}
+              fquote={item.quote}
+              setFavorites={setFavorites}
+              choosenRate={item.rate}
+              percentChange={item.percentChange}
+              isFavorite={true}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

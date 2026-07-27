@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { CompareBottomRow } from "./ComapreBottomRow";
 import { COMPARE_CURRENCIES } from "../data";
-import { ExchangeRate, Pairs, Rates } from "../types";
+import { Pairs, Rates } from "../types";
 import { useBaseRates } from "../fetchMethods/useBaseRates";
 
 type CompareListProps = {
@@ -35,11 +35,20 @@ export default function CompareBottom({
         name: currency.country,
         amount: money * choosenRate,
         choosenRate,
-        favorite: false,
         flag: currency.flag,
       };
     },
   );
+  if (isPending) {
+    return <p role="status">Loading exchange rates…</p>;
+  }
+
+  if (isError) {
+    console.log(error.message);
+    return (
+      <p role="alert"> Failed to load exchange rates. Please try again.</p>
+    );
+  }
 
   //Filtering base
   currencies = currencies.filter((item) => item.code !== rate.base);
@@ -62,19 +71,21 @@ export default function CompareBottom({
         </span>
       </div>
 
-      <div className="space-y-4">
+      <ul className="space-y-4">
         {currencies.map((currency) => (
-          <CompareBottomRow
-            setFavorites={setFavorites}
-            key={currency.code}
-            {...currency}
-            isFavorite={favorites.some(
-              ({ base, quote }) => base === selected && quote === currency.code,
-            )}
-            selected={selected}
-          />
+          <li key={currency.code}>
+            <CompareBottomRow
+              setFavorites={setFavorites}
+              {...currency}
+              isFavorite={favorites.some(
+                ({ base, quote }) =>
+                  base === selected && quote === currency.code,
+              )}
+              selected={selected}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

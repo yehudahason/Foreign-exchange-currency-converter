@@ -102,7 +102,7 @@ export default function TopCompareBar({
           <button
             className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border border-zinc-700 bg-neutral-600 text-3xl text-white cursor-pointer md:rotate-0 rotate-90"
             type="button"
-            onClick={() => handleSwitch()}
+            onClick={handleSwitch}
             aria-label="Swap currencies"
           >
             ⇄
@@ -138,6 +138,7 @@ export default function TopCompareBar({
                   id="receive-amount"
                   aria-live="polite"
                   aria-atomic="true"
+                  aria-label={`${money} ${selected} equals ${(changes.last * money).toFixed(2)} ${selected2}`}
                   className=" flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-lime-400"
                 >
                   {(changes.last * money).toFixed(2)}
@@ -162,14 +163,23 @@ export default function TopCompareBar({
 
         {/* Bottom */}
         <div className="flex items-center sm:flex-row flex-col gap-3 justify-between">
-          <p className="text-preset-2 text-zinc-300">
+          <p
+            className="text-preset-2 text-zinc-300"
+            aria-label={`Current exchange rate: 1 ${rate.base} equals ${changes.last} ${rate.quotes}`}
+          >
             1 {rate.base} = {changes.last} {rate.quotes}
           </p>
 
           <div className="flex  gap-4  ">
             <button
+              aria-pressed={isFavorite}
+              aria-label={
+                isFavorite
+                  ? `Remove ${selected} to ${selected2} from favorites`
+                  : `Add ${selected} to ${selected2} to favorites`
+              }
               type="button"
-              onClick={() => toggleFavorite()}
+              onClick={toggleFavorite}
               className="hover:cursor-pointer  outline-0 focus:outline-3  focus:outline-amber-200 flex gap-2 rounded-lg bg-lime-400   tracking-[3px] sm:p-3 p-2  font-semibold uppercase text-black text-preset-5-medium  items-center"
             >
               <span>
@@ -186,20 +196,18 @@ export default function TopCompareBar({
             <button
               type="button"
               onClick={() => {
-                setLogs((prev) => {
-                  return [
-                    ...prev,
-                    {
-                      base: selected,
-                      quote: selected2,
-                      amount: money,
-                      rate: money * changes.last,
-                      date: new Date(),
-                    },
-                  ];
-                });
+                setLogs((prev) => [
+                  ...prev,
+                  {
+                    base: selected,
+                    quote: selected2,
+                    amount: money,
+                    rate: money * changes.last,
+                    date: new Date(),
+                  },
+                ]);
               }}
-              className="rounded-lg outline-0 focus:outline-2  focus:outline-amber-200 border border-lime-400 sm:p-3 font-semibold p-2 uppercase tracking-wider text-preset-5-medium text-white"
+              className="cursor-pointer rounded-lg outline-0 focus:outline-2  focus:outline-amber-200 border border-lime-400 sm:p-3 font-semibold p-2 uppercase tracking-wider text-preset-5-medium text-white"
             >
               Log Conversion
             </button>
