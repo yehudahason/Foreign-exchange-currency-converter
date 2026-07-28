@@ -18,7 +18,7 @@ export const COMPARE_CURRENCIES = {
   BDT: { country: "Bangladeshi Taka", flag: "bd" },
 } as const;
 
-//popular list WITH NO  USD !!
+//popular list WITH NO  USD   for header banner
 export const POPULAR_CURRENCIES_NO_USD = [
   "EUR",
   "GBP",

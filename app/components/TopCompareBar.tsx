@@ -81,7 +81,7 @@ export default function TopCompareBar({
               <input
                 id="send-amount"
                 type="number"
-                defaultValue={1}
+                value={money}
                 className="min-w-0 no-spinner overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-white outline-none"
                 onChange={(e) => setMoney(+e.target.value)}
               />

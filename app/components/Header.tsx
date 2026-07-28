@@ -1,10 +1,11 @@
 import { todayRates } from "../types";
-
+import Link from "next/link";
 type HeaderProps = {
   isError: boolean;
   error: Error | null;
   isPending: boolean;
   todayrates: todayRates[];
+  reset: () => void;
 };
 
 export default function Header({
@@ -12,11 +13,20 @@ export default function Header({
   error,
   isPending,
   todayrates,
+  reset,
 }: HeaderProps) {
   return (
     <header className="bg-neutral-900 w-full">
       <div className="flex items-center gap-2 text-neutral-200 justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4  text-preset-6">
-        <img src="/images/logo.svg" alt="" width={130} height={40} />
+        <Link
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            reset();
+          }}
+        >
+          <img src="/images/logo.svg" alt="" width={130} height={40} />
+        </Link>
         <span>165 Currencies · EOD · ECB data</span>
       </div>
 

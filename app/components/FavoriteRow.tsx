@@ -29,7 +29,7 @@ export function FavoriteRow({
     });
   };
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
+    <li className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
       {/* Left */}
       <div className="flex items-center gap-2">
         <h3 className="text-preset-4  tracking-widest text-white"> {fbase}</h3>
@@ -79,6 +79,6 @@ export function FavoriteRow({
           <StarIcon aria-hidden="true" className="h-5 w-5" />
         </button>
       </div>
-    </div>
+    </li>
   );
 }

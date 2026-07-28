@@ -15,6 +15,7 @@ export default function Favorite({
     data: pairs = [],
     isLoading,
     error,
+    isError,
   } = useQuery({
     queryKey: ["favorite-pairs", favorites],
     queryFn: async (): Promise<ExchangeRate[][]> => {
@@ -61,8 +62,11 @@ export default function Favorite({
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Something went wrong.</div>;
+  if (isError) {
+    console.log(error.message);
+    return (
+      <p role="alert"> Failed to load exchange rates. Please try again.</p>
+    );
   }
 
   return (
@@ -80,18 +84,17 @@ export default function Favorite({
         </span>
       </div>
 
-      <ul className="space-y-4">
+      <ul aria-label="List of all favorites" className="space-y-4">
         {pairs?.map((item) => (
-          <li key={item.quote + item.base}>
-            <FavoriteRow
-              fbase={item.base}
-              fquote={item.quote}
-              setFavorites={setFavorites}
-              choosenRate={item.rate}
-              percentChange={item.percentChange}
-              isFavorite={true}
-            />
-          </li>
+          <FavoriteRow
+            key={item.quote + item.base}
+            fbase={item.base}
+            fquote={item.quote}
+            setFavorites={setFavorites}
+            choosenRate={item.rate}
+            percentChange={item.percentChange}
+            isFavorite={true}
+          />
         ))}
         {pairs.length === 0 && (
           <h3 className="uppercase text-center text-preset-2-bold text-neutral-100">

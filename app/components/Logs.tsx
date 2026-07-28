@@ -31,7 +31,7 @@ export default function Logs({ logs, setLogs }: CompareListProps) {
         </div>
       </div>
 
-      <ul className="space-y-4">
+      <ul className="space-y-4" aria-label="List of all Logs">
         {logs.map((item, index) => (
           <LogsRow key={index} index={index} {...item} setLogs={setLogs} />
         ))}
