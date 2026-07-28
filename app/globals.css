@@ -45,6 +45,26 @@
 
   --color-green-500: #42eb05;
 }
+
+@theme {
+  --color-bg: #f4f4f4;
+
+  --color-surface: #ffffff;
+  --color-surface-2: #f3f4f6;
+
+  --color-border: #d9dee6;
+
+  --color-text: #111111;
+  --color-text-secondary: #5f6672;
+  --color-text-muted: #8a919e;
+
+  --color-primary: #8ee000;
+  --color-primary-hover: #7ac600;
+
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -56,6 +76,7 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
 /* globals.css */
 @utility text-preset-1 {
   @apply font-bold text-[2.5rem] leading-[1] tracking-[-0.03125rem];
@@ -172,7 +193,6 @@ body {
   font-size: 0.9rem;
   text-align: center;
   padding: 1rem;
-  background-color: var(--neutral-900);
   color: rgb(209, 154, 82);
 }
 

@@ -104,7 +104,7 @@ export default function CurrencySelect({
         aria-expanded={open}
         aria-controls={listboxId}
         onClick={() => setOpen((prev) => !prev)}
-        className="relative flex min-w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-neutral-800 p-2"
+        className="relative flex min-w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border dark:border-zinc-700 border-gray-300 bg-surface dark:bg-neutral-800 p-2"
       >
         <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
           <img
@@ -115,13 +115,15 @@ export default function CurrencySelect({
           />
         </div>
 
-        <span className="w-8 text-preset-4 text-neutral-50">{selected}</span>
+        <span className="w-8 text-preset-4 dark:text-neutral-50 text-text">
+          {selected}
+        </span>
 
         <img
-          src="/images/icon-chevron-down.svg"
+          src={`/images/chevron-down.svg`}
           alt=""
           aria-hidden="true"
-          className={`h-4 w-4 transition ${open ? "rotate-180" : ""}`}
+          className={` h-4 w-4 transition ${open ? "rotate-180" : ""} invert  dark:invert-0`}
         />
       </button>
 

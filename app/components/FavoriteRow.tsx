@@ -55,7 +55,7 @@ export function FavoriteRow({
             className={`flex gap-1 items-center justify-end text-preset-4 mt-2 text-right    ${percentChange >= 0 ? "text-green-500" : "text-red-500"}`}
           >
             <img
-              src="/images/icon-chevron-down.svg"
+              src="/images/chevron-down.svg"
               alt=""
               aria-hidden="true"
               className={`max-w-5 ${percentChange >= 0 ? "rotate-180 green" : "red"}`}

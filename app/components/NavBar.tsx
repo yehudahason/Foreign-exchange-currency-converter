@@ -28,8 +28,8 @@ export default function NavBar({
           aria-label="Select section"
           value={active}
           onChange={(e) => setActive(e.target.value)}
-          className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3
-                     appearance-none text-zinc-100 uppercase tracking-[0.2em]
+          className="w-full rounded-xl border border-gray-400 text-text dark:border-zinc-700 dark:bg-zinc-900 bg-bg px-4 py-3
+                     appearance-none dark:text-zinc-100 uppercase tracking-[0.2em]
                      text-preset-3 focus:outline-none"
         >
           {tabs.map((tab) => (
@@ -44,7 +44,7 @@ export default function NavBar({
       {/* Desktop */}
       <nav
         aria-label="Dashboard sections"
-        className="hidden w-full border-b border-zinc-800 text-preset-3 md:flex"
+        className="hidden w-full border-b dark:border-zinc-800 border-gray-400 text-preset-3 md:flex"
       >
         <div role="tablist" aria-orientation="horizontal" className="flex">
           {tabs.map((tab) => (
@@ -62,8 +62,8 @@ export default function NavBar({
                 focus-visible:outline-2 focus-visible:outline-amber-200 focus-visible:outline-offset-2
                 ${
                   active === tab.id
-                    ? "text-white after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-lime-400"
-                    : "text-zinc-400 hover:text-white"
+                    ? "dark:text-white text-text after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-lime-400"
+                    : "dark:text-zinc-400 text-text hover:text-gray-500 dark:hover:text-white"
                 }`}
             >
               <span>{tab.label}</span>
@@ -71,7 +71,7 @@ export default function NavBar({
               {tab.count !== null && (
                 <span
                   aria-label={`${tab.count} items`}
-                  className="flex h-6 min-w-6 items-center justify-center rounded-full bg-lime-500/20 px-1 py-3 text-preset-4 font-semibold text-lime-400"
+                  className="flex h-6 min-w-6 items-center justify-center rounded-full dark:bg-lime-500/20 px-1 py-3 text-preset-4 font-semibold dark:text-lime-400 bg-lime-600 text-lime-200"
                 >
                   {tab.count}
                 </span>

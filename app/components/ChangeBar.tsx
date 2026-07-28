@@ -38,7 +38,7 @@ export default function ChangeBar({ changes, setTime, rate }: ChangesProps) {
             className={`flex text-preset-2 w-6 gap-1  ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
           >
             <Image
-              src="/images/icon-chevron-down.svg"
+              src="/images/chevron-down.svg"
               alt=""
               className={`max-w-5 ${changes.change >= 0 ? "rotate-180 green" : "red"}`}
               width={20}

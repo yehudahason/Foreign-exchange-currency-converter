@@ -51,7 +51,10 @@ export default function Home() {
   ]);
   //Sync search params
   const [logs, setLogs] = useLocalStorage<LogsItems>("logs", []);
-
+  const [dark, SetDark] = useState<boolean>(true);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+  }, [dark]);
   //Sync Params with URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -156,8 +159,10 @@ export default function Home() {
         isError={isError}
         error={error}
         todayrates={todayrates ?? []}
+        setDark={SetDark}
+        dark={dark}
       />
-      <main className="bg-neutral-900 relative min-h-screen flex flex-col items-center w-full mx-auto gap-4 sm:p-6 px-2 py-6">
+      <main className="dark:bg-neutral-900 bg-bg relative min-h-screen flex flex-col items-center w-full mx-auto gap-4 sm:p-6 px-2 py-6">
         <TopCompareBar
           selected={selected}
           setSelected={setSelected}

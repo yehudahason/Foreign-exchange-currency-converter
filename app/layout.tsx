@@ -14,7 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full overflow-x-hidden `}>
+    <html
+      suppressHydrationWarning
+      lang="en"
+      className={`h-full overflow-x-hidden `}
+    >
       <body
         className={` ${jetbrainsMono.className} bg-[#171717] min-h-full flex  w-full flex-col`}
       >
