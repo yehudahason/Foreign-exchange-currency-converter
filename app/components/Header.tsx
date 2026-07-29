@@ -22,7 +22,10 @@ export default function Header({
   dark,
 }: HeaderProps) {
   return (
-    <header className="dark:bg-neutral-900 bg-bg w-full">
+    <header
+      className="   
+     dark:bg-neutral-900 bg-bg w-full"
+    >
       <div className="flex items-center gap-2 text-neutral-200 justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4  text-preset-6">
         <Link
           href="/"

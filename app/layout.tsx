@@ -17,10 +17,10 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`h-full overflow-x-hidden `}
+      className={`h-full  overflow-x-hidden `}
     >
       <body
-        className={` ${jetbrainsMono.className} bg-[#171717] min-h-full flex  w-full flex-col`}
+        className={`*:transition-colors *:duration-500 ${jetbrainsMono.className} bg-[#171717] min-h-full flex  w-full flex-col`}
       >
         <Providers>{children}</Providers>
       </body>

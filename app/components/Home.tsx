@@ -162,7 +162,7 @@ export default function Home() {
         setDark={SetDark}
         dark={dark}
       />
-      <main className="dark:bg-neutral-900 bg-bg relative min-h-screen flex flex-col items-center w-full mx-auto gap-4 sm:p-6 px-2 py-6">
+      <main className="  dark:bg-neutral-900 bg-bg relative min-h-screen flex flex-col items-center w-full mx-auto gap-4 sm:p-6 px-2 py-6">
         <TopCompareBar
           selected={selected}
           setSelected={setSelected}

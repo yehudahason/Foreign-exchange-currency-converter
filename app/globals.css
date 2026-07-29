@@ -77,7 +77,7 @@
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
-/* globals.css */
+
 @utility text-preset-1 {
   @apply font-bold text-[2.5rem] leading-[1] tracking-[-0.03125rem];
 }

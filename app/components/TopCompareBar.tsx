@@ -43,6 +43,22 @@ export default function TopCompareBar({
     setSelected(b);
     setSelected2(a);
   }
+
+  function handleLogs() {
+    //If not fetched yet return
+    if (changes.last === 0) return;
+
+    setLogs((prev) => [
+      ...prev,
+      {
+        base: selected,
+        quote: selected2,
+        amount: money,
+        rate: money * changes.last,
+        date: new Date(),
+      },
+    ]);
+  }
   const toggleFavorite = () => {
     setFavorites((prev) => {
       const exists = prev.some(
@@ -65,11 +81,15 @@ export default function TopCompareBar({
         Check the Rate
       </h2>
 
-      <div className="rounded-3xl w-full bg-surface dark:bg-zinc-900 sm:px-4 py-4 px-2 shadow-2xl">
+      <div className="rounded-3xl w-full bg-surface transition-colors duration-500 dark:bg-zinc-900 sm:px-4 py-4 px-2 shadow-2xl">
         {/* Top */}
         <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
           {/* Send */}
-          <div className="col-span-8 w-full rounded-2xl border dark:border-zinc-700 border-gray-300 dark:bg-neutral-600 bg-surface-2 sm:px-6 px-2 py-3">
+          <div
+            className="col-span-8 w-full rounded-2xl border 
+          transition-colors duration-500
+          dark:border-zinc-700 border-gray-300 dark:bg-neutral-600 bg-surface-2 sm:px-6 px-2 py-3"
+          >
             <label
               htmlFor="send-amount"
               className="mb-3 block text-preset-4 uppercase tracking-[0.3em] dark:text-zinc-300 text-text"
@@ -100,7 +120,10 @@ export default function TopCompareBar({
 
           {/* Swap */}
           <button
-            className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border border-gray-300 dark:border-zinc-700 dark:bg-neutral-600 bg-surface-2 text-3xl text-text dark:text-white cursor-pointer md:rotate-0 rotate-90"
+            className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border
+             border-gray-300 
+             transition-colors duration-500
+             dark:border-zinc-700 dark:bg-neutral-600 bg-surface-2 text-3xl text-text dark:text-white cursor-pointer md:rotate-0 rotate-90"
             type="button"
             onClick={handleSwitch}
             aria-label="Swap currencies"
@@ -109,7 +132,11 @@ export default function TopCompareBar({
           </button>
 
           {/* Receive */}
-          <div className="md:col-span-8  w-full rounded-2xl border dark:border-zinc-700 border-gray-300 dark:bg-neutral-600 bg-surface-2 sm:px-6 px-2 py-3">
+          <div
+            className="md:col-span-8  w-full rounded-2xl border 
+          transition-colors duration-500
+          dark:border-zinc-700 border-gray-300 dark:bg-neutral-600 bg-surface-2 sm:px-6 px-2 py-3"
+          >
             <label
               htmlFor="receive-amount"
               className="mb-3 block text-preset-4 uppercase tracking-[0.3em]text-text  dark:text-zinc-300"
@@ -195,18 +222,7 @@ export default function TopCompareBar({
 
             <button
               type="button"
-              onClick={() => {
-                setLogs((prev) => [
-                  ...prev,
-                  {
-                    base: selected,
-                    quote: selected2,
-                    amount: money,
-                    rate: money * changes.last,
-                    date: new Date(),
-                  },
-                ]);
-              }}
+              onClick={handleLogs}
               className="cursor-pointer rounded-lg outline-0 focus:outline-2  focus:outline-amber-200 border border-lime-400 sm:p-3 font-semibold p-2 uppercase tracking-wider text-preset-5-medium dark:bg-neutral-800 bg-surface-2 text-text dark:text-white"
             >
               Log Conversion
