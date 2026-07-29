@@ -21,6 +21,7 @@ type TopCompareBarProps = {
   favorites: Pairs;
   setFavorites: Dispatch<SetStateAction<Pairs>>;
   setLogs: Dispatch<SetStateAction<LogsItems>>;
+  isRatesError: boolean;
 };
 
 export default function TopCompareBar({
@@ -36,6 +37,7 @@ export default function TopCompareBar({
   favorites,
   setFavorites,
   setLogs,
+  isRatesError,
 }: TopCompareBarProps) {
   //Switch currencies
   function handleSwitch() {
@@ -77,9 +79,10 @@ export default function TopCompareBar({
   );
   return (
     <section className="max-w-6xl mx-auto w-full">
-      <h1 className="mb-6 text-preset-2 dark:text-neutral-50 text-text uppercase tracking-widest">
+      <h1 className="mb-3 text-preset-2 dark:text-neutral-50 text-text uppercase tracking-widest">
         Check the Rate
       </h1>
+      <p className="pb-2 text-center text-preset-3-bold dark:text-green-50 text-text">{`${isRatesError ? "Could not fetch try again later.." : ""}`}</p>
 
       <div className="rounded-3xl w-full border border-gray-300 dark:border-gray-800 bg-surface  dark:bg-zinc-900 sm:px-4 py-4 px-2 shadow-lg">
         {/* Top */}

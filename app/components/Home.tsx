@@ -80,7 +80,7 @@ export default function Home() {
   const {
     data,
     isPending: ratesLoading,
-    error: ratesError,
+    isError: isRatesError,
   } = useQuery({
     queryKey: ["rates", rate],
     queryFn: () => compareRate(rate.time, rate),
@@ -176,6 +176,7 @@ export default function Home() {
           favorites={favorites}
           setFavorites={setFavorites}
           setLogs={setLogs}
+          isRatesError={isRatesError}
         />
 
         <NavBar
@@ -225,7 +226,9 @@ export default function Home() {
                   range={rate.time}
                 />
               )}
-              {ratesError ? ratesError?.message : ""}
+              {isRatesError && (
+                <p className="text-center">Could not fetch try again later..</p>
+              )}
             </div>
           </div>
         </>

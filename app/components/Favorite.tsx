@@ -84,7 +84,7 @@ export default function Favorite({
         </span>
       </div>
 
-      <ul aria-label="List of all favorites" className="space-y-4">
+      <ul aria-label="List of all Choosen favorites" className="space-y-4">
         {pairs?.map((item) => (
           <FavoriteRow
             key={item.quote + item.base}

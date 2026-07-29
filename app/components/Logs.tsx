@@ -18,7 +18,10 @@ export default function Logs({ dark, logs, setLogs }: CompareListProps) {
           </span>
         </h2>
         <div className="flex gap-4 items-center w-full sm:w-fit justify-between">
-          <span className="text-preset-4 font-medium uppercase text-text-secondary dark:text-zinc-500">
+          <span
+            aria-label={`${logs.length} Logged`}
+            className="text-preset-4 font-medium uppercase text-text-secondary dark:text-zinc-500"
+          >
             {logs.length} Logged
           </span>
           <button
@@ -43,7 +46,7 @@ export default function Logs({ dark, logs, setLogs }: CompareListProps) {
           />
         ))}
         {logs.length === 0 && (
-          <h3 className="uppercase text-center text-preset-2-bold text-neutral-100">
+          <h3 className="uppercase text-center text-preset-2-bold text-text dark:text-neutral-100">
             No logs Yet
           </h3>
         )}

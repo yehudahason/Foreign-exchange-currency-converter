@@ -71,7 +71,7 @@ export default function CompareBottom({
         </span>
       </div>
 
-      <ul className="space-y-4">
+      <ul className="space-y-4" aria-label="List of Top Currenicies">
         {currencies.map((currency) => (
           <li key={currency.code}>
             <CompareBottomRow

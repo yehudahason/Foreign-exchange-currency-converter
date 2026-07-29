@@ -66,11 +66,11 @@ export default function Header({
         <div className="dark:bg-neutral-700 bg-surface overflow-hidden whitespace-nowrap w-full text-preset-5">
           {isError && (
             <span
-              className="dark:text-text 
+              className="dark:text-gray-50 
             text-text
             text-preset-5  py-2 w-full flex justify-center items-center h-full"
             >
-              {(error as Error).message}
+              Failed to fetched
             </span>
           )}
           <ul className="flex items-center w-max animate-marquee ">
