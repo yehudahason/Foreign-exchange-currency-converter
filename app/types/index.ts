@@ -26,6 +26,7 @@ export type ChartProps = {
   data: ExchangeRate[];
   range: ChartRange;
   ticks: string[] | undefined;
+  dark: boolean;
 };
 
 export type TooltipProps = {

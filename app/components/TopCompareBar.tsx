@@ -77,17 +77,17 @@ export default function TopCompareBar({
   );
   return (
     <section className="max-w-6xl mx-auto w-full">
-      <h2 className="mb-6 text-preset-2 text-neutral-50 uppercase tracking-widest">
+      <h1 className="mb-6 text-preset-2 dark:text-neutral-50 text-text uppercase tracking-widest">
         Check the Rate
-      </h2>
+      </h1>
 
-      <div className="rounded-3xl w-full bg-surface transition-colors duration-500 dark:bg-zinc-900 sm:px-4 py-4 px-2 shadow-2xl">
+      <div className="rounded-3xl w-full border border-gray-300 dark:border-gray-800 bg-surface  dark:bg-zinc-900 sm:px-4 py-4 px-2 shadow-lg">
         {/* Top */}
         <div className="md:grid md:grid-cols-18 flex items-center md:place-items-center flex-col gap-6">
           {/* Send */}
           <div
             className="col-span-8 w-full rounded-2xl border 
-          transition-colors duration-500
+          
           dark:border-zinc-700 border-gray-300 dark:bg-neutral-600 bg-surface-2 sm:px-6 px-2 py-3"
           >
             <label
@@ -122,7 +122,7 @@ export default function TopCompareBar({
           <button
             className="flex col-span-2 h-14 w-14 items-center justify-center rounded-xl border
              border-gray-300 
-             transition-colors duration-500
+             
              dark:border-zinc-700 dark:bg-neutral-600 bg-surface-2 text-3xl text-text dark:text-white cursor-pointer md:rotate-0 rotate-90"
             type="button"
             onClick={handleSwitch}
@@ -134,7 +134,7 @@ export default function TopCompareBar({
           {/* Receive */}
           <div
             className="md:col-span-8  w-full rounded-2xl border 
-          transition-colors duration-500
+          
           dark:border-zinc-700 border-gray-300 dark:bg-neutral-600 bg-surface-2 sm:px-6 px-2 py-3"
           >
             <label

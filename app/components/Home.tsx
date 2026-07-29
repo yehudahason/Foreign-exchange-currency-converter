@@ -194,13 +194,13 @@ export default function Home() {
             hidden={active !== "history"}
           >
             <ChangeBar rate={rate} setTime={setTime} changes={changes} />
-            <div className="bg-neutral-900 rounded-3xl border h-fit mx-auto max-w-6xl  w-full border-zinc-800  sm:p-5 p-3 shadow-xl text-amber-200">
+            <div className="dark:bg-neutral-900 bg-surface rounded-3xl  h-fit mx-auto max-w-6xl  w-full border border-gray-300 dark:border-gray-800  sm:p-5 p-3 shadow-xl text-text dark:text-amber-200">
               <div className="flex justify-between">
-                <h2 className="text-preset-3-medium  tracking-wider text-white">
+                <h2 className="text-preset-3-medium  tracking-wider text-text dark:text-white">
                   {rate.base}/{rate.quotes}
                 </h2>
 
-                <div className="text-zinc-300 ml-4 text-preset-5 flex  gap-3 items-center">
+                <div className="dark:text-zinc-300 text-text ml-4 text-preset-5 flex  gap-3 items-center">
                   {changes.last}
                   <div className="size-1 rounded-full bg-zinc-300" />
                   {formatted}
@@ -218,7 +218,12 @@ export default function Home() {
                   />
                 </span>
               ) : (
-                <Chart ticks={ticks} data={rates ?? []} range={rate.time} />
+                <Chart
+                  dark={dark}
+                  ticks={ticks}
+                  data={rates ?? []}
+                  range={rate.time}
+                />
               )}
               {ratesError ? ratesError?.message : ""}
             </div>
@@ -258,7 +263,7 @@ export default function Home() {
           aria-labelledby="log-tab"
           hidden={active !== "log"}
         >
-          <Logs logs={logs ?? []} setLogs={setLogs} />
+          <Logs dark={dark} logs={logs ?? []} setLogs={setLogs} />
         </div>
       </main>
       <Footer />

@@ -20,7 +20,7 @@ export default function RootLayout({
       className={`h-full  overflow-x-hidden `}
     >
       <body
-        className={`*:transition-colors *:duration-500 ${jetbrainsMono.className} bg-[#171717] min-h-full flex  w-full flex-col`}
+        className={` ${jetbrainsMono.className} bg-[#171717] min-h-full flex  w-full flex-col`}
       >
         <Providers>{children}</Providers>
       </body>

@@ -70,16 +70,16 @@ export default function Favorite({
   }
 
   return (
-    <section className="rounded-3xl min-h-[11rem] w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
+    <section className="rounded-3xl min-h-[11rem] w-full max-w-6xl border border-gray-300 dark:border-gray-800 dark:bg-[#151515] bg-surface sm:p-6 p-2 shadow-lg">
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="flex flex-col gap-2 sm:flex-row">
-          <span className=" sm:text-preset-3-medium px-2 text-preset-5 uppercase tracking-[0.3em] text-white">
+          <span className=" sm:text-preset-3-medium px-2 text-preset-5 uppercase tracking-[0.3em] text-text dark:text-white">
             Pinned Pairs
           </span>
         </h2>
 
-        <span className="text-preset-5 uppercase tracking-[0.25em] text-zinc-500">
+        <span className="text-preset-5 uppercase tracking-[0.25em] dark:text-zinc-500 text-text-secondary">
           {pairs.length} Pairs
         </span>
       </div>
@@ -97,7 +97,7 @@ export default function Favorite({
           />
         ))}
         {pairs.length === 0 && (
-          <h3 className="uppercase text-center text-preset-2-bold text-neutral-100">
+          <h3 className="uppercase text-center text-preset-2-bold dark:text-neutral-100 text-text">
             No favorite yet
           </h3>
         )}

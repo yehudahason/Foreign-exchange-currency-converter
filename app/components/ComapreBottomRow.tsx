@@ -37,23 +37,24 @@ export function CompareBottomRow({
     });
   };
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-[#1e1e1f] sm:px-5 px-1 py-4 transition hover:border-zinc-700">
+    <div className="flex items-center justify-between rounded-2xl shadow-lg dark:bg-[#1e1e1f] bg-surface-2 sm:px-5 px-1 py-4 transition ">
       {/* Left */}
       <div className="flex items-center sm:gap-4 gap-2">
-        <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+        <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full shadow">
           <img
             src={`https://flagcdn.com/${flag}.svg`}
-            alt={name}
-            className="h-full w-full object-cover"
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover "
           />
         </div>
 
         <div>
-          <h3 className="text-preset-4 mb-2 tracking-widest text-white">
+          <h3 className="text-preset-4 mb-2 tracking-widest dark:text-white text-text">
             {code}
           </h3>
 
-          <p className=" text-preset-5 overflow-hidden tracking-wide text-zinc-500">
+          <p className=" text-preset-5 overflow-hidden tracking-wide dark:text-zinc-500 text-text-secondary">
             {name}
           </p>
         </div>
@@ -62,10 +63,10 @@ export function CompareBottomRow({
       {/* Right */}
       <div className="flex items-center sm:gap-6 gap-1">
         <div className="text-right">
-          <div className="mt-1 break-all text-preset-3 text-white">
+          <div className="mt-1 break-all text-preset-3 text-text dark:text-white">
             {amount.toFixed(2)}
           </div>
-          <div className="mt-2 text-sm text-zinc-500">
+          <div className="mt-2 text-sm text-text-secondary dark:text-zinc-500">
             @ {choosenRate.toFixed(2)}
           </div>
         </div>

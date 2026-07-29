@@ -59,7 +59,7 @@ export default function NavBar({
               onClick={() => setActive(tab.id)}
               className={`relative flex cursor-pointer items-center gap-2 px-6 py-4
                 uppercase tracking-[0.2em] text-preset-3
-                focus-visible:outline-2 focus-visible:outline-amber-200 focus-visible:outline-offset-2
+                focus-visible:outline-2 focus-visible:outline-amber-600 focus-visible:outline-offset-2
                 ${
                   active === tab.id
                     ? "dark:text-white text-text after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-lime-400"

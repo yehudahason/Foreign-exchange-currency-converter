@@ -26,7 +26,7 @@ export default function Header({
       className="   
      dark:bg-neutral-900 bg-bg w-full"
     >
-      <div className="flex items-center gap-2 text-neutral-200 justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4  text-preset-6">
+      <div className="flex items-center gap-2 dark:text-neutral-200 text-text-secondary justify-between sm:p-6  px-3 py-6 uppercase sm:text-preset-4  text-preset-6">
         <Link
           href="/"
           onClick={(e) => {
@@ -36,12 +36,13 @@ export default function Header({
         >
           <img
             src={`/images/logo${dark ? "" : "_black"}.svg`}
-            alt=""
+            alt="Home page"
             className="h-4.5 w-auto sm:h-8 "
           />
         </Link>
         <div className="flex sm:flex-row flex-col items-center gap-4">
           <button
+            aria-label={`Change to ${dark ? "light" : "dark"} mode`}
             className="bg-none border-0 cursor-pointer"
             onClick={() => setDark((prev) => !prev)}
           >
@@ -85,7 +86,7 @@ export default function Header({
                       <span>USD/{item.currency}</span>
                       <span>{item.rate.toFixed(3)}</span>
                       <span
-                        className={`flex ${percentChange >= 0 ? " text-green-500" : "text-red-500"} justify-between items-center gap-1`}
+                        className={`flex ${percentChange >= 0 ? "text-green-700  dark:text-green-500" : "dark:text-red-500 text-red-700"} justify-between items-center gap-1`}
                       >
                         <img
                           className={`w-4 h-full ${percentChange >= 0 ? "green rotate-180" : "red"}`}

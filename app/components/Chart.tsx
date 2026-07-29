@@ -15,7 +15,7 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   const { date, base, quote, rate } = payload[0].payload;
 
   return (
-    <div className="rounded-xl border border-gray-400 bg-gray-800 p-3 shadow-lg p-3">
+    <div className="rounded-xl border border-gray-400 bg-gray-800  shadow-lg p-3">
       <p className="text-sm text-gray-50">
         {new Date(date).toLocaleDateString("en-US", {
           weekday: "short",
@@ -34,7 +34,7 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   );
 }
 
-export default function Chart({ data, range, ticks }: ChartProps) {
+export default function Chart({ dark, data, range, ticks }: ChartProps) {
   const formatTick = (date: string) => {
     const d = new Date(date);
 
@@ -66,7 +66,7 @@ export default function Chart({ data, range, ticks }: ChartProps) {
   };
 
   return (
-    <div className="h-[20rem] w-full rounded-xl bg-neutral-900 p-0 shadow">
+    <div className="h-[20rem] w-full rounded-xl bg-surface dark:bg-neutral-900 p-0 shadow">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
@@ -83,13 +83,11 @@ export default function Chart({ data, range, ticks }: ChartProps) {
               <stop offset="100%" stopColor="#D8FF3E" stopOpacity={0} />
             </linearGradient>
           </defs>
-
           <CartesianGrid
             vertical={false}
             stroke="#343434"
             strokeDasharray="3 6"
           />
-
           <XAxis
             dataKey="date"
             ticks={ticks}
@@ -98,14 +96,12 @@ export default function Chart({ data, range, ticks }: ChartProps) {
             axisLine={false}
             minTickGap={30}
           />
-
           <YAxis
             tickFormatter={(value: number) => value.toFixed(2)}
             tickLine={false}
             axisLine={false}
             domain={["dataMin - 0.0002", "dataMax + 0.0002"]}
           />
-
           <Tooltip
             cursor={{
               stroke: "#555",
@@ -113,7 +109,21 @@ export default function Chart({ data, range, ticks }: ChartProps) {
             }}
             content={<CustomTooltip />}
           />
+
           <Area
+            dataKey="rate"
+            stroke={dark ? "#D8FF3E" : "#cbf542"} // darker in light mode
+            strokeWidth={3}
+            fill="url(#gradient)"
+            dot={false}
+            activeDot={{
+              r: 5,
+              fill: dark ? "#D8FF3E" : "#cbf542",
+              stroke: dark ? "#171717" : "#ffffff",
+              strokeWidth: 3,
+            }}
+          />
+          {/* <Area
             dataKey="rate"
             stroke="#D8FF3E"
             strokeWidth={3}
@@ -125,7 +135,7 @@ export default function Chart({ data, range, ticks }: ChartProps) {
               stroke: "#171717",
               strokeWidth: 3,
             }}
-          />
+          /> */}
         </AreaChart>
       </ResponsiveContainer>
     </div>

@@ -12,30 +12,30 @@ type ChangesProps = {
 };
 export default function ChangeBar({ changes, setTime, rate }: ChangesProps) {
   return (
-    <div className="mb-4 flex lg:flex-row  mx-auto  flex-col lg:items-center items-start  w-full max-w-6xl text-preset-4  text-zinc-300  gap-6 justify-between">
+    <div className="mb-4 flex lg:flex-row  mx-auto  flex-col lg:items-center items-start  w-full max-w-6xl text-preset-4  dark:text-zinc-300  text-text gap-6 justify-between">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:w-[70%] uppercase  text-xl w-full px-2  gap-6">
-        <span className="flex gap-1   flex-col justify-center items-start bg-zinc-900 rounded-xl py-1 px-5">
+        <span className="flex gap-1   flex-col justify-center items-start dark:bg-zinc-900 bg-surface shadow rounded-xl py-1 px-5">
           <span> Open </span>
           <span>{changes.open.toFixed(4)}</span>
         </span>
-        <span className="flex gap-1  flex-col justify-center items-start bg-zinc-900 rounded-xl py-2 px-5">
+        <span className="flex gap-1 shadow flex-col justify-center items-start dark:bg-zinc-900 bg-surface rounded-xl py-2 px-5">
           <span>Last</span>
           <span>{changes.last.toFixed(4)}</span>
         </span>
 
-        <span className="flex gap-1  flex-col justify-center items-start bg-zinc-900  rounded-xl py-2 px-5">
-          <span>CHange</span>
+        <span className="flex gap-1 shadow flex-col justify-center items-start dark:bg-zinc-900 bg-surface rounded-xl py-2 px-5">
+          <span>Change</span>
           <span
-            className={`flex w-4 gap-1  text-preset-2 ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
+            className={`flex w-4 gap-1  text-preset-2 ${changes.change >= 0 ? "dark:text-green-500 text-green-700" : "dark:text-red-500 text-red-700"}`}
           >
             {formatSigned(+changes.change.toFixed(4))}
           </span>
         </span>
-        <span className="flex gap-1   min-w-[8.5rem] flex-col justify-center items-start bg-zinc-900  rounded-xl py-2 sm:px-4 px-2 text-zinc-300">
+        <span className="flex gap-1 shadow  min-w-[8.5rem] flex-col justify-center items-start dark:bg-zinc-900 bg-surface rounded-xl py-2 sm:px-4 px-2 ">
           <span>% CHANGE</span>
 
           <span
-            className={`flex text-preset-2 w-6 gap-1  ${changes.change >= 0 ? "text-green-500" : "text-red-500"}`}
+            className={`flex text-preset-2 w-6 gap-1  ${changes.change >= 0 ? "dark:text-green-500 text-green-700" : "dark:text-red-500 text-red-700"}`}
           >
             <Image
               src="/images/chevron-down.svg"

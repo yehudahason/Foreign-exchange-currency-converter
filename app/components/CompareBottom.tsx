@@ -53,20 +53,20 @@ export default function CompareBottom({
   //Filtering base
   currencies = currencies.filter((item) => item.code !== rate.base);
   return (
-    <section className="rounded-3xl w-full max-w-6xl border border-zinc-800 bg-[#151515] sm:p-6 p-2">
+    <section className="rounded-3xl w-full max-w-6xl border border-gray-300 dark:border-gray-800 dark:bg-[#151515] bg-surface sm:p-6 p-2 shadow-lg">
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="flex flex-col gap-2 sm:flex-row">
-          <span className=" sm:text-preset-4 px-2 text-preset-5 uppercase tracking-[0.3em] text-zinc-500">
+          <span className=" sm:text-preset-4 px-2 text-preset-5 uppercase tracking-[0.3em] dark:text-zinc-500 text-text-secondary">
             Multi-Currency{" "}
           </span>
 
-          <span className="ml-2 text-preset-3-medium text-white ">
+          <span className="ml-2 text-preset-3-medium text-text dark:text-white ">
             {money} FROM {rate.base}
           </span>
         </h2>
 
-        <span className="text-preset-5 uppercase tracking-[0.25em] text-zinc-500">
+        <span className="text-preset-5 uppercase tracking-[0.25em] dark:text-zinc-500 text-text-secondary">
           {currencies.length} Pairs
         </span>
       </div>
