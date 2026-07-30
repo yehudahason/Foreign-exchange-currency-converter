@@ -39,7 +39,7 @@ export default function CompareBottom({
       };
     },
   );
-  if (isPending) {
+  if (isPending && !comparerates) {
     return <p role="status">Loading exchange rates…</p>;
   }
 

@@ -91,7 +91,6 @@ export default function Home() {
     if (!data) return [];
 
     if (rate.time === "1D") {
-      console.log("data:", data);
       return data.slice(-2);
     } else if (rate.time === "5Y" || rate.time === "1Y") {
       return downsample(data, 180);

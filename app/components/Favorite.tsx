@@ -2,6 +2,10 @@ import { type Dispatch, type SetStateAction } from "react";
 import { FavoriteRow } from "./FavoriteRow";
 import { ExchangeRate, Pairs } from "../types";
 import { useQuery } from "@tanstack/react-query";
+import { useToday } from "../utils/useToday";
+import { useMemo } from "react";
+import { fetchFavoritePairs } from "../fetchMethods/fetchFavoritesPairs";
+import { mapFavoritePairs } from "../utils/mapFavoritePairs";
 
 type CompareListProps = {
   favorites: Pairs;
@@ -11,52 +15,26 @@ export default function Favorite({
   favorites,
   setFavorites,
 }: CompareListProps) {
-  const today2 = new Date().toISOString().split("T")[0];
+  const today = useToday();
+  const favoritesKey = useMemo(
+    () =>
+      favorites
+        .map(({ base, quote }) => `${base}-${quote}`)
+        .sort()
+        .join(","),
+    [favorites],
+  );
+
   const {
     data: pairs = [],
     isLoading,
     error,
     isError,
   } = useQuery({
-    queryKey: ["favorite-pairs", favorites, today2],
-    queryFn: async (): Promise<ExchangeRate[][]> => {
-      const today = new Date();
-      today.setDate(today.getDate() - 7);
-
-      const from = today.toISOString().split("T")[0]; // YYYY-MM-DD
-
-      return Promise.all(
-        favorites.map(async ({ base, quote }) => {
-          const res = await fetch(
-            `https://api.frankfurter.dev/v2/rates?from=${from}&base=${base}&quotes=${quote}`,
-          );
-
-          if (!res.ok) {
-            throw new Error(`Failed to fetch ${base}/${quote}`);
-          }
-
-          return res.json();
-        }),
-      );
-    },
+    queryKey: ["favorite-pairs", today, favoritesKey],
+    queryFn: () => fetchFavoritePairs(favorites),
     enabled: favorites.length > 0,
-    select: (pairs) =>
-      pairs
-        .filter((history) => history.length >= 2)
-        .map((history) => {
-          const first = history[history.length - 2];
-          const last = history[history.length - 1];
-
-          return {
-            base: last.base,
-            quote: last.quote,
-            rate: last.rate,
-            percentChange:
-              first.rate !== 0
-                ? ((last.rate - first.rate) / first.rate) * 100
-                : 0,
-          };
-        }),
+    select: mapFavoritePairs,
   });
 
   if (isLoading) {
