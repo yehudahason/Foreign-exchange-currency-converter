@@ -1,7 +1,7 @@
 import type { ExchangeRate } from "../types";
 
 export function mapFavoritePairs(pairs: ExchangeRate[][]) {
-  return pairs
+  const rpairs = pairs
     .filter((history) => history.length >= 2)
     .map((history) => {
       const first = history[history.length - 2];
@@ -15,4 +15,6 @@ export function mapFavoritePairs(pairs: ExchangeRate[][]) {
           first.rate !== 0 ? ((last.rate - first.rate) / first.rate) * 100 : 0,
       };
     });
+  console.log("favorites:", rpairs);
+  return rpairs;
 }

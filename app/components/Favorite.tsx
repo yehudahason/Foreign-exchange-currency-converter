@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { FavoriteRow } from "./FavoriteRow";
 import { ExchangeRate, Pairs } from "../types";
 import { useQuery } from "@tanstack/react-query";
@@ -37,6 +37,9 @@ export default function Favorite({
     select: mapFavoritePairs,
   });
 
+  useEffect(() => {
+    console.log(favorites, "-\n", favoritesKey);
+  }, [favorites, favoritesKey]);
   if (isLoading) {
     return <div>Loading...</div>;
   }
