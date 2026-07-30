@@ -11,13 +11,14 @@ export default function Favorite({
   favorites,
   setFavorites,
 }: CompareListProps) {
+  const today2 = new Date().toISOString().split("T")[0];
   const {
     data: pairs = [],
     isLoading,
     error,
     isError,
   } = useQuery({
-    queryKey: ["favorite-pairs", favorites],
+    queryKey: ["favorite-pairs", favorites, today2],
     queryFn: async (): Promise<ExchangeRate[][]> => {
       const today = new Date();
       today.setDate(today.getDate() - 7);
