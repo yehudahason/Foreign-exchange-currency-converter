@@ -76,9 +76,9 @@ export default function Favorite({
 
       <ul aria-label="List of all Choosen favorites" className="space-y-4">
         {isPending && favorites.length > 0 && (
-          <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
+          <span className="flex animate-spin h-[10rem] flex-col items-center-safe justify-center">
             <img
-              className="h-full"
+              className="h-full w-auto"
               src="/spinner.png"
               alt=""
               aria-hidden="true"

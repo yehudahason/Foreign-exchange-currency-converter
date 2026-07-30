@@ -73,9 +73,9 @@ export default function CompareBottom({
 
       <ul className="space-y-4" aria-label="List of Top Currenicies">
         {isPending && (
-          <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
+          <span className="flex animate-spin h-[10rem] flex-col items-center-safe justify-center">
             <img
-              className="h-full"
+              className="h-full w-auto"
               src="/spinner.png"
               alt=""
               aria-hidden="true"
