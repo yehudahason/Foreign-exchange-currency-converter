@@ -7,6 +7,7 @@ export async function GET(request: Request) {
 
   const res = await fetch(
     `https://api.frankfurter.dev/v2/rates?from=${from}&base=${base}&quotes=${quote}`,
+    { cache: "no-store" },
   );
 
   const contentType = res.headers.get("content-type");

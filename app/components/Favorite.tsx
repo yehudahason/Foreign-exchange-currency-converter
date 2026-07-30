@@ -30,7 +30,7 @@ export default function Favorite({
     fetchStatus,
     dataUpdatedAt,
     data: pairs = [],
-    isLoading,
+    isPending,
     error,
     isError,
   } = useQuery({
@@ -48,14 +48,14 @@ export default function Favorite({
   useEffect(() => {
     console.log(favorites, "-\n", favoritesKey);
   }, [favorites, favoritesKey]);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (isError) {
     console.log(error.message);
     return (
-      <p role="alert"> Failed to load exchange rates. Please try again.</p>
+      <p className="text-amber-700" role="alert">
+        {" "}
+        Failed to load exchange rates. Please try again.
+      </p>
     );
   }
 
@@ -75,6 +75,16 @@ export default function Favorite({
       </div>
 
       <ul aria-label="List of all Choosen favorites" className="space-y-4">
+        {isPending && (
+          <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
+            <img
+              className="h-full"
+              src="/spinner.png"
+              alt=""
+              aria-hidden="true"
+            />
+          </span>
+        )}
         {pairs?.map((item) => (
           <FavoriteRow
             key={item.quote + item.base}

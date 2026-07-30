@@ -12,6 +12,9 @@ export async function fetchFavoritePairs(
     favorites.map(async ({ base, quote }) => {
       const res = await fetch(
         `https://api.frankfurter.dev/v2/rates?from=${date}&base=${base}&quotes=${quote}`,
+        {
+          cache: "no-store",
+        },
       );
 
       if (!res.ok) {

@@ -39,14 +39,14 @@ export default function CompareBottom({
       };
     },
   );
-  if (isPending && !comparerates) {
-    return <p role="status">Loading exchange rates…</p>;
-  }
 
   if (isError) {
     console.log(error.message);
     return (
-      <p role="alert"> Failed to load exchange rates. Please try again.</p>
+      <p className="text-amber-700" role="alert">
+        {" "}
+        Failed to load exchange rates. Please try again.
+      </p>
     );
   }
 
@@ -72,6 +72,16 @@ export default function CompareBottom({
       </div>
 
       <ul className="space-y-4" aria-label="List of Top Currenicies">
+        {isPending && (
+          <span className="flex animate-spin h-[20rem] flex-col items-center-safe justify-center">
+            <img
+              className="h-full"
+              src="/spinner.png"
+              alt=""
+              aria-hidden="true"
+            />
+          </span>
+        )}
         {currencies.map((currency) => (
           <li key={currency.code}>
             <CompareBottomRow
