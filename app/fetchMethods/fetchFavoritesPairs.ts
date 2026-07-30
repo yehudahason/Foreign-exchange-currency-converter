@@ -17,8 +17,9 @@ export async function fetchFavoritePairs(
       if (!res.ok) {
         throw new Error(`Failed to fetch ${base}/${quote}`);
       }
-
-      return res.json();
+      const log = await res.json();
+      console.log("fetchFavorites:", log);
+      return log;
     }),
   );
 }

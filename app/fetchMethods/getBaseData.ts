@@ -60,6 +60,6 @@ export async function getBaseData(base = "USD") {
 
       return a.currency.localeCompare(b.currency);
     });
-  console.log(list);
+  console.log("useBase data:", list);
   return list;
 }

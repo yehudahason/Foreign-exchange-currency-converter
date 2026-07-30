@@ -26,17 +26,25 @@ export default function Favorite({
   );
 
   const {
+    status,
+    fetchStatus,
+    dataUpdatedAt,
     data: pairs = [],
     isLoading,
     error,
     isError,
   } = useQuery({
     queryKey: ["favorite-pairs", today, favoritesKey],
-    queryFn: () => fetchFavoritePairs(favorites),
+    queryFn: () => {
+      console.log("QUERY FN");
+      return fetchFavoritePairs(favorites);
+    },
     enabled: favorites.length > 0,
     select: mapFavoritePairs,
   });
-
+  console.log(status);
+  console.log(fetchStatus);
+  console.log(dataUpdatedAt);
   useEffect(() => {
     console.log(favorites, "-\n", favoritesKey);
   }, [favorites, favoritesKey]);

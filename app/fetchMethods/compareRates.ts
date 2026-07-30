@@ -39,6 +39,6 @@ export async function compareRate(time: string, rate: Rates) {
   }
 
   const log = await res.json();
-  console.log(log);
+  console.log("compare:", log);
   return log;
 }
