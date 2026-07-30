@@ -32,6 +32,7 @@ export async function compareRate(time: string, rate: Rates) {
 
   const res = await fetch(
     `/api/rates?base=${rate.base}&quote=${rate.quotes}&from=${from}`,
+    { cache: "no-store" },
   );
 
   if (!res.ok) {

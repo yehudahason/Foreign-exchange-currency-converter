@@ -12,13 +12,15 @@ export async function getBaseData(base = "USD") {
   const date = formatUTCDate(yesterday);
 
   const [today, prev]: [ExchangeRate[], ExchangeRate[]] = await Promise.all([
-    fetch(`https://api.frankfurter.dev/v2/rates?base=${base}`).then((r) => {
+    fetch(`https://api.frankfurter.dev/v2/rates?base=${base}`, {
+      cache: "no-store",
+    }).then((r) => {
       if (!r.ok) throw new Error(`Failed to fetch today's rates (${r.status})`);
       return r.json();
     }),
-    fetch(
-      `https://api.frankfurter.dev/v2/rates?base=${base}&date=${date}`,
-    ).then((r) => {
+    fetch(`https://api.frankfurter.dev/v2/rates?base=${base}&date=${date}`, {
+      cache: "no-store",
+    }).then((r) => {
       if (!r.ok)
         throw new Error(`Failed to fetch previous rates (${r.status})`);
       return r.json();
