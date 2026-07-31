@@ -54,14 +54,43 @@ export default function CurrencySelect({
 
   const filtered = useMemo(() => [...itemsP, ...itemsO], [itemsP, itemsO]);
 
-  // Close dropdown on click outside
+  // Helper to close and reset internal search state
+  const closeMenu = () => {
+    setOpen(false);
+    setHighlightedIndex(-1);
+    setQuery("");
+  };
+
+  // Helper to open and initialize search state
+  const openMenu = () => {
+    setOpen(true);
+    setHighlightedIndex(0);
+  };
+
+  // Focus input when opened
+  useEffect(() => {
+    if (open) {
+      inputRef.current?.focus();
+    }
+  }, [open]);
+
+  // Scroll active descendant into view
+  useEffect(() => {
+    if (highlightedIndex >= 0 && filtered[highlightedIndex]) {
+      document
+        .getElementById(`currency-option-${filtered[highlightedIndex]}`)
+        ?.scrollIntoView({ block: "nearest" });
+    }
+  }, [highlightedIndex, filtered]);
+
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
-        setOpen(false);
+        closeMenu();
       }
     };
     document.addEventListener("mousedown", handleOutsideClick);
@@ -73,8 +102,7 @@ export default function CurrencySelect({
       case "ArrowDown":
         e.preventDefault();
         if (!open) {
-          setOpen(true);
-          setHighlightedIndex(0);
+          openMenu();
         } else {
           setHighlightedIndex((i) => Math.min(i + 1, filtered.length - 1));
         }
@@ -91,40 +119,22 @@ export default function CurrencySelect({
         if (open && highlightedIndex >= 0 && filtered[highlightedIndex]) {
           e.preventDefault();
           setSelected(filtered[highlightedIndex]);
-          setOpen(false);
+          closeMenu();
         }
         break;
 
       case "Escape":
         if (open) {
           e.preventDefault();
-          setOpen(false);
+          closeMenu();
         }
         break;
 
       case "Tab":
-        setOpen(false);
+        closeMenu();
         break;
     }
   };
-
-  useEffect(() => {
-    if (highlightedIndex >= 0 && filtered[highlightedIndex]) {
-      document
-        .getElementById(`currency-option-${filtered[highlightedIndex]}`)
-        ?.scrollIntoView({ block: "nearest" });
-    }
-  }, [highlightedIndex, filtered]);
-
-  useEffect(() => {
-    if (open) {
-      setHighlightedIndex(0);
-      inputRef.current?.focus();
-    } else {
-      setHighlightedIndex(-1);
-      setQuery("");
-    }
-  }, [open]);
 
   const activeDescendantId =
     open && highlightedIndex >= 0 && filtered[highlightedIndex]
@@ -132,14 +142,13 @@ export default function CurrencySelect({
       : undefined;
 
   return (
-    <div ref={containerRef} className="relative inline-block min-w-fit">
-      {/* Trigger Button */}
+    <div ref={containerRef} className="min-w-fit relative inline-block">
       <button
         type="button"
         aria-label={ariaLabel}
         aria-expanded={open}
         aria-controls={open ? listboxId : undefined}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => (open ? closeMenu() : openMenu())}
         className="flex min-w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-surface p-2 dark:border-zinc-700 dark:bg-neutral-800"
       >
         <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
@@ -165,7 +174,6 @@ export default function CurrencySelect({
         />
       </button>
 
-      {/* Floating Combobox Panel */}
       {open && (
         <div
           className={`absolute top-15 ${
@@ -187,13 +195,15 @@ export default function CurrencySelect({
             aria-activedescendant={activeDescendantId}
             autoComplete="off"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setHighlightedIndex(0); // Reset index to top when search query changes
+            }}
             onKeyDown={handleKeyDown}
             placeholder="Search currencies..."
             className="w-full rounded border border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
           />
 
-          {/* Live region for Screen Reader announcements */}
           <div className="sr-only" aria-live="polite">
             {filtered.length === 0
               ? "No matching currencies found."
@@ -220,7 +230,7 @@ export default function CurrencySelect({
               <li role="group" aria-label="Popular Currencies">
                 <div
                   aria-hidden="true"
-                  className="flex justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400 text-xs font-semibold"
+                  className="flex justify-between border-b border-gray-700 px-4 py-2 uppercase text-xs font-semibold text-gray-400"
                 >
                   <span>Popular</span>
                   <span>{itemsP.length}</span>
@@ -233,7 +243,7 @@ export default function CurrencySelect({
                     mergeObject={mergeObject}
                     onSelect={(code) => {
                       setSelected(code);
-                      setOpen(false);
+                      closeMenu();
                     }}
                   />
                 </ul>
@@ -244,7 +254,7 @@ export default function CurrencySelect({
               <li role="group" aria-label="Other Currencies">
                 <div
                   aria-hidden="true"
-                  className="flex justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400 text-xs font-semibold mt-2"
+                  className="mt-2 flex justify-between border-b border-gray-700 px-4 py-2 uppercase text-xs font-semibold text-gray-400"
                 >
                   <span>Other currencies</span>
                   <span>{itemsO.length}</span>
@@ -258,7 +268,7 @@ export default function CurrencySelect({
                     mergeObject={mergeObject}
                     onSelect={(code) => {
                       setSelected(code);
-                      setOpen(false);
+                      closeMenu();
                     }}
                   />
                 </ul>

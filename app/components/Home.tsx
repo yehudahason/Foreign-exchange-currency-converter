@@ -171,7 +171,7 @@ export default function Home() {
           ratesLoading={ratesLoading}
           changes={changes}
           rate={rate}
-          money={money}
+          money={+money}
           setMoney={setMoney}
           favorites={favorites}
           setFavorites={setFavorites}
@@ -242,7 +242,7 @@ export default function Home() {
         >
           <CompareBottom
             setFavorites={setFavorites}
-            money={money}
+            money={+money}
             rate={rate}
             favorites={favorites}
             selected={selected}

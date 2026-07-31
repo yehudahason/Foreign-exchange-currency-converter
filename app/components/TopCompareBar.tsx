@@ -104,9 +104,9 @@ export default function TopCompareBar({
               <input
                 id="send-amount"
                 type="number"
-                value={money}
+                value={String(money)}
                 className="min-w-0 no-spinner overflow-hidden text-ellipsis whitespace-nowrap  text-preset-2-bold text-text dark:text-white outline-none"
-                onChange={(e) => setMoney(+e.target.value)}
+                onChange={(e) => setMoney(Number(e.target.value))}
               />
 
               <CurrencySelect
