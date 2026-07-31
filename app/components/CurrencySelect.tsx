@@ -1,4 +1,3 @@
-// CurrencySelect.tsx
 import { useRef, useState, useEffect, useMemo, useId } from "react";
 import CurrencyList from "./CurrencyList";
 import { CurrencyMap } from "../types";
@@ -26,116 +25,152 @@ export default function CurrencySelect({
   const [query, setQuery] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const id = useId();
   const searchId = `${id}-currency-search`;
-  const popupId = `${id}-currency-popup`;
   const listboxId = `${id}-currency-listbox`;
 
-  const itemsP = popularCurrencies.filter(
-    (code) =>
-      code.toLowerCase().includes(query.toLowerCase()) ||
-      mergeObject[code].name.toLowerCase().includes(query.toLowerCase()),
+  const itemsP = useMemo(
+    () =>
+      popularCurrencies.filter(
+        (code) =>
+          code.toLowerCase().includes(query.toLowerCase()) ||
+          mergeObject[code]?.name.toLowerCase().includes(query.toLowerCase()),
+      ),
+    [popularCurrencies, query, mergeObject],
   );
 
-  const itemsO = othersCurrencies.filter(
-    (code) =>
-      code.toLowerCase().includes(query.toLowerCase()) ||
-      mergeObject[code].name.toLowerCase().includes(query.toLowerCase()),
+  const itemsO = useMemo(
+    () =>
+      othersCurrencies.filter(
+        (code) =>
+          code.toLowerCase().includes(query.toLowerCase()) ||
+          mergeObject[code]?.name.toLowerCase().includes(query.toLowerCase()),
+      ),
+    [othersCurrencies, query, mergeObject],
   );
 
   const filtered = useMemo(() => [...itemsP, ...itemsO], [itemsP, itemsO]);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setHighlightedIndex((i) => Math.min(i + 1, filtered.length - 1));
+        if (!open) {
+          setOpen(true);
+          setHighlightedIndex(0);
+        } else {
+          setHighlightedIndex((i) => Math.min(i + 1, filtered.length - 1));
+        }
         break;
 
       case "ArrowUp":
         e.preventDefault();
-        setHighlightedIndex((i) => Math.max(i - 1, 0));
+        if (open) {
+          setHighlightedIndex((i) => Math.max(i - 1, 0));
+        }
         break;
 
       case "Enter":
-        if (highlightedIndex >= 0) {
+        if (open && highlightedIndex >= 0 && filtered[highlightedIndex]) {
+          e.preventDefault();
           setSelected(filtered[highlightedIndex]);
           setOpen(false);
         }
         break;
 
       case "Escape":
+        if (open) {
+          e.preventDefault();
+          setOpen(false);
+        }
+        break;
+
+      case "Tab":
         setOpen(false);
         break;
     }
   };
 
   useEffect(() => {
-    if (highlightedIndex >= 0) {
+    if (highlightedIndex >= 0 && filtered[highlightedIndex]) {
       document
-        .getElementById(`currency-${filtered[highlightedIndex]}`)
-        ?.scrollIntoView({
-          block: "nearest",
-        });
+        .getElementById(`currency-option-${filtered[highlightedIndex]}`)
+        ?.scrollIntoView({ block: "nearest" });
     }
   }, [highlightedIndex, filtered]);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      if (open) {
-        setHighlightedIndex(0);
-        inputRef.current?.focus();
-      } else {
-        setHighlightedIndex(-1);
-        setQuery("");
-      }
-    }, 0);
-
-    return () => window.clearTimeout(timer);
+    if (open) {
+      setHighlightedIndex(0);
+      inputRef.current?.focus();
+    } else {
+      setHighlightedIndex(-1);
+      setQuery("");
+    }
   }, [open]);
 
+  const activeDescendantId =
+    open && highlightedIndex >= 0 && filtered[highlightedIndex]
+      ? `currency-option-${filtered[highlightedIndex]}`
+      : undefined;
+
   return (
-    <>
+    <div ref={containerRef} className="relative inline-block min-w-fit">
+      {/* Trigger Button */}
       <button
         type="button"
         aria-label={ariaLabel}
-        aria-haspopup="dialog"
         aria-expanded={open}
-        aria-controls={popupId}
+        aria-controls={open ? listboxId : undefined}
         onClick={() => setOpen((prev) => !prev)}
-        className="relative flex min-w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border dark:border-zinc-700 border-gray-300 bg-surface dark:bg-neutral-800 p-2"
+        className="flex min-w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-surface p-2 dark:border-zinc-700 dark:bg-neutral-800"
       >
         <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
           <img
-            src={`https://flagcdn.com/${mergeObject[selected].flag}.svg`}
+            src={`https://flagcdn.com/${mergeObject[selected]?.flag}.svg`}
             alt=""
             aria-hidden="true"
             className="h-full w-full object-cover"
           />
         </div>
 
-        <span className="w-8 text-preset-4 dark:text-neutral-50 text-text">
+        <span className="w-8 text-preset-4 text-text dark:text-neutral-50">
           {selected}
         </span>
 
         <img
-          src={`/images/chevron-down.svg`}
+          src="/images/chevron-down.svg"
           alt=""
           aria-hidden="true"
-          className={` h-4 w-4 transition ${open ? "rotate-180" : ""} invert  dark:invert-0`}
+          className={`h-4 w-4 invert transition dark:invert-0 ${
+            open ? "rotate-180" : ""
+          }`}
         />
       </button>
 
+      {/* Floating Combobox Panel */}
       {open && (
         <div
-          id={popupId}
-          role="dialog"
-          aria-modal="false"
-          aria-labelledby={searchId}
-          tabIndex={-1}
-          className={`absolute top-15 ${left ? "z-30 -right-4" : "-right-4"} w-72 rounded-xl border border-zinc-700 bg-[#1b1d24] p-2`}
+          className={`absolute top-15 ${
+            left ? "z-30 -right-4" : "-right-4"
+          } w-72 rounded-xl border border-zinc-700 bg-[#1b1d24] p-2`}
         >
           <label htmlFor={searchId} className="sr-only">
             Search currencies
@@ -144,89 +179,94 @@ export default function CurrencySelect({
           <input
             ref={inputRef}
             id={searchId}
-            type="search"
-            aria-label="Search currencies"
+            type="text"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={open}
             aria-controls={listboxId}
+            aria-activedescendant={activeDescendantId}
             autoComplete="off"
             value={query}
-            aria-activedescendant={
-              highlightedIndex >= 0
-                ? `currency-${filtered[highlightedIndex]}`
-                : undefined
-            }
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search currencies..."
             className="w-full rounded border border-zinc-600 bg-transparent px-3 py-3 text-preset-5 text-gray-200 focus:border-gray-400 focus:outline-none"
           />
 
+          {/* Live region for Screen Reader announcements */}
+          <div className="sr-only" aria-live="polite">
+            {filtered.length === 0
+              ? "No matching currencies found."
+              : `${filtered.length} currencies available.`}
+          </div>
+
           <ul
             id={listboxId}
             role="listbox"
-            aria-labelledby={searchId}
-            className="scrollbar absolute left-0 z-10 m-0 flex max-h-80 w-full flex-col items-center overflow-y-auto rounded-b-lg border border-t-0 border-zinc-700 bg-[#1b1d24] px-2 pt-2 pb-4 shadow-xl"
+            aria-label="Currencies"
+            className="scrollbar m-0 max-h-80 overflow-y-auto px-2 pt-2 pb-4"
           >
-            {itemsP.length === 0 && itemsO.length === 0 && (
+            {filtered.length === 0 && (
               <li
                 role="option"
-                aria-disabled="true"
-                aria-selected={false}
-                className="flex w-full items-center justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400"
+                aria-selected="false"
+                className="px-4 py-2 text-gray-400"
               >
-                <span>No results</span>
-                <span>0</span>
+                No results found
               </li>
             )}
 
             {itemsP.length > 0 && (
-              <>
-                <li
-                  role="presentation"
-                  className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400"
+              <li role="group" aria-label="Popular Currencies">
+                <div
+                  aria-hidden="true"
+                  className="flex justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400 text-xs font-semibold"
                 >
                   <span>Popular</span>
                   <span>{itemsP.length}</span>
-                </li>
-
-                <CurrencyList
-                  items={itemsP}
-                  selected={selected}
-                  highlightedIndex={highlightedIndex}
-                  mergeObject={mergeObject}
-                  onSelect={(code) => {
-                    setSelected(code);
-                    setOpen(false);
-                  }}
-                />
-              </>
+                </div>
+                <ul role="presentation">
+                  <CurrencyList
+                    items={itemsP}
+                    selected={selected}
+                    highlightedIndex={highlightedIndex}
+                    mergeObject={mergeObject}
+                    onSelect={(code) => {
+                      setSelected(code);
+                      setOpen(false);
+                    }}
+                  />
+                </ul>
+              </li>
             )}
 
             {itemsO.length > 0 && (
-              <>
-                <li
-                  role="presentation"
-                  className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400"
+              <li role="group" aria-label="Other Currencies">
+                <div
+                  aria-hidden="true"
+                  className="flex justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400 text-xs font-semibold mt-2"
                 >
                   <span>Other currencies</span>
                   <span>{itemsO.length}</span>
-                </li>
-
-                <CurrencyList
-                  items={itemsO}
-                  startIndex={itemsP.length}
-                  selected={selected}
-                  highlightedIndex={highlightedIndex}
-                  mergeObject={mergeObject}
-                  onSelect={(code) => {
-                    setSelected(code);
-                    setOpen(false);
-                  }}
-                />
-              </>
+                </div>
+                <ul role="presentation">
+                  <CurrencyList
+                    items={itemsO}
+                    startIndex={itemsP.length}
+                    selected={selected}
+                    highlightedIndex={highlightedIndex}
+                    mergeObject={mergeObject}
+                    onSelect={(code) => {
+                      setSelected(code);
+                      setOpen(false);
+                    }}
+                  />
+                </ul>
+              </li>
             )}
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 }

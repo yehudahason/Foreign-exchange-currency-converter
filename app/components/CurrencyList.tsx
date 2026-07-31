@@ -21,56 +21,46 @@ export default function CurrencyList({
     <>
       {items.map((code, index) => {
         const realIndex = startIndex + index;
+        const isSelected = selected === code;
+        const isHighlighted = highlightedIndex === realIndex;
 
         return (
           <li
             key={code}
-            id={`currency-${code}`}
+            id={`currency-option-${code}`}
             role="option"
-            aria-selected={selected === code}
-            tabIndex={highlightedIndex === realIndex ? 0 : -1}
-            className="w-full"
+            aria-selected={isSelected}
+            className={`flex cursor-pointer items-center justify-between rounded px-4 py-3 border-2 ${
+              isHighlighted
+                ? "border-gray-500 bg-zinc-800"
+                : "border-[#1b1d24] hover:border-gray-500"
+            }`}
             onClick={() => onSelect(code)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                onSelect(code);
-              }
-            }}
           >
-            <div
-              className={` relative w-full cursor-pointer rounded border-2 border-[#1b1d24] px-4 py-3 ${
-                highlightedIndex === realIndex
-                  ? "border-gray-500"
-                  : "hover:border-gray-500"
-              }`}
-            >
-              <div className="flex items-center gap-4">
-                <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
-                  <img
-                    src={`https://flagcdn.com/${mergeObject[code].flag}.svg`}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-
-                <span className="w-7 text-preset-4 text-white">{code}</span>
-
-                <span className="truncate text-preset-5 text-zinc-400">
-                  {mergeObject[code].name}
-                </span>
-
-                {selected === code && (
-                  <img
-                    src="/images/icon-check.svg"
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute right-2"
-                  />
-                )}
+            <div className="flex items-center gap-4">
+              <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                <img
+                  src={`https://flagcdn.com/${mergeObject[code]?.flag}.svg`}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-cover"
+                />
               </div>
+
+              <span className="w-7 text-preset-4 text-white">{code}</span>
+
+              <span className="truncate text-preset-5 text-zinc-400">
+                {mergeObject[code]?.name}
+              </span>
             </div>
+
+            {isSelected && (
+              <img
+                src="/images/icon-check.svg"
+                alt="Selected"
+                className="h-4 w-4"
+              />
+            )}
           </li>
         );
       })}
