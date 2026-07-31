@@ -75,14 +75,10 @@ export default function Favorite({
 
       <ul aria-label="List of all Choosen favorites" className="space-y-4">
         {isPending && favorites.length > 0 && (
-          <span className="flex animate-spin h-[10rem] flex-col items-center-safe justify-center">
-            <img
-              className="h-full w-auto"
-              src="/spinner.png"
-              alt=""
-              aria-hidden="true"
-            />
-          </span>
+          <div className="h-[10rem] flex items-center justify-center flex-col">
+            {" "}
+            <div className=" animate-fade text-amber-500">Loading Rates..</div>
+          </div>
         )}
         {pairs?.map((item) => (
           <FavoriteRow

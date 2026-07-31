@@ -39,7 +39,6 @@ export default function CompareBottom({
       };
     },
   );
-
   if (isError) {
     console.log(error.message);
     return (
@@ -72,14 +71,10 @@ export default function CompareBottom({
 
       <ul className="space-y-4" aria-label="List of Top Currenicies">
         {isPending && (
-          <span className="flex animate-spin h-[10rem] flex-col items-center-safe justify-center">
-            <img
-              className="h-full w-auto"
-              src="/spinner.png"
-              alt=""
-              aria-hidden="true"
-            />
-          </span>
+          <div className="h-[10rem] flex items-center justify-center flex-col">
+            {" "}
+            <div className=" animate-fade text-amber-500">Loading Rates..</div>
+          </div>
         )}
         {currencies.map((currency) => (
           <li key={currency.code}>

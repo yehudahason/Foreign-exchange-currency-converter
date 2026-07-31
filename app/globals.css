@@ -22,6 +22,18 @@
   /* Green */
   --green-500: #42eb05;
 }
+@theme {
+  --animate-fade: fade 1.5s ease-in-out infinite;
+}
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
