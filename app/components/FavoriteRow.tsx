@@ -70,7 +70,7 @@ export function FavoriteRow({
                 percentChange >= 0 ? "Up" : "Down"
               } ${Math.abs(percentChange).toFixed(3)} percent`}
             >
-              {formatSigned(+percentChange.toFixed(3))}
+              {formatSigned(+percentChange.toFixed(3))}%
             </span>
           </span>
         </div>

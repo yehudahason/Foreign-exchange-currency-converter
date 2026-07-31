@@ -52,8 +52,7 @@ export default function Favorite({
   if (isError) {
     console.log(error.message);
     return (
-      <p className="text-amber-700" role="alert">
-        {" "}
+      <p className="text-amber-700 py-4" role="alert">
         Failed to load exchange rates. Please try again.
       </p>
     );
