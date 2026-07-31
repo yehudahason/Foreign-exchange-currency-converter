@@ -28,11 +28,17 @@ export default function CurrencyList({
             id={`currency-${code}`}
             role="option"
             aria-selected={selected === code}
-            tabIndex={-1}
+            tabIndex={highlightedIndex === realIndex ? 0 : -1}
             className="w-full"
+            onClick={() => onSelect(code)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSelect(code);
+              }
+            }}
           >
-            <button
-              onClick={() => onSelect(code)}
+            <div
               className={` relative w-full cursor-pointer rounded border-2 border-[#1b1d24] px-4 py-3 ${
                 highlightedIndex === realIndex
                   ? "border-gray-500"
@@ -64,7 +70,7 @@ export default function CurrencyList({
                   />
                 )}
               </div>
-            </button>
+            </div>
           </li>
         );
       })}

@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { CompareBottomRow } from "./ComapreBottomRow";
+import { CompareBottomRow } from "./CompareBottomRow";
 import { COMPARE_CURRENCIES } from "../data";
 import { Pairs, Rates } from "../types";
 import { useBaseRates } from "../fetchMethods/useBaseRates";

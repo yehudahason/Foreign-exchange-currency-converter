@@ -30,6 +30,7 @@ export default function CurrencySelect({
 
   const id = useId();
   const searchId = `${id}-currency-search`;
+  const popupId = `${id}-currency-popup`;
   const listboxId = `${id}-currency-listbox`;
 
   const itemsP = popularCurrencies.filter(
@@ -100,9 +101,9 @@ export default function CurrencySelect({
       <button
         type="button"
         aria-label={ariaLabel}
-        aria-haspopup="listbox"
+        aria-haspopup="dialog"
         aria-expanded={open}
-        aria-controls={listboxId}
+        aria-controls={popupId}
         onClick={() => setOpen((prev) => !prev)}
         className="relative flex min-w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border dark:border-zinc-700 border-gray-300 bg-surface dark:bg-neutral-800 p-2"
       >
@@ -129,6 +130,11 @@ export default function CurrencySelect({
 
       {open && (
         <div
+          id={popupId}
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby={searchId}
+          tabIndex={-1}
           className={`absolute top-15 ${left ? "z-30 -right-4" : "-right-4"} w-72 rounded-xl border border-zinc-700 bg-[#1b1d24] p-2`}
         >
           <label htmlFor={searchId} className="sr-only">
@@ -138,17 +144,16 @@ export default function CurrencySelect({
           <input
             ref={inputRef}
             id={searchId}
-            role="combobox"
-            aria-expanded={open}
+            type="search"
+            aria-label="Search currencies"
             aria-controls={listboxId}
-            aria-autocomplete="list"
-            aria-haspopup="listbox"
+            autoComplete="off"
+            value={query}
             aria-activedescendant={
               highlightedIndex >= 0
                 ? `currency-${filtered[highlightedIndex]}`
                 : undefined
             }
-            value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search currencies..."
@@ -158,10 +163,16 @@ export default function CurrencySelect({
           <ul
             id={listboxId}
             role="listbox"
+            aria-labelledby={searchId}
             className="scrollbar absolute left-0 z-10 m-0 flex max-h-80 w-full flex-col items-center overflow-y-auto rounded-b-lg border border-t-0 border-zinc-700 bg-[#1b1d24] px-2 pt-2 pb-4 shadow-xl"
           >
             {itemsP.length === 0 && itemsO.length === 0 && (
-              <li className="flex w-full items-center justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
+              <li
+                role="option"
+                aria-disabled="true"
+                aria-selected={false}
+                className="flex w-full items-center justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400"
+              >
                 <span>No results</span>
                 <span>0</span>
               </li>
@@ -169,7 +180,10 @@ export default function CurrencySelect({
 
             {itemsP.length > 0 && (
               <>
-                <li className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
+                <li
+                  role="presentation"
+                  className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400"
+                >
                   <span>Popular</span>
                   <span>{itemsP.length}</span>
                 </li>
@@ -189,7 +203,10 @@ export default function CurrencySelect({
 
             {itemsO.length > 0 && (
               <>
-                <li className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400">
+                <li
+                  role="presentation"
+                  className="flex w-full justify-between border-b border-gray-700 px-4 py-2 uppercase text-gray-400"
+                >
                   <span>Other currencies</span>
                   <span>{itemsO.length}</span>
                 </li>
