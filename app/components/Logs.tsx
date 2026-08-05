@@ -46,9 +46,15 @@ export default function Logs({ dark, logs, setLogs }: CompareListProps) {
           />
         ))}
         {logs.length === 0 && (
-          <h3 className="uppercase text-center text-preset-2-bold text-text dark:text-neutral-100">
-            No logs Yet
-          </h3>
+          <div className="flex flex-col items-center gap-4">
+            <h3 className=" text-center text-preset-3-medium dark:text-neutral-100 text-text">
+              No conversions logged yet
+            </h3>
+            <p className="max-w-[29rem] text-center text-preset-4 dark:text-gray-400 text-gray-700">
+              Every conversion is recorded here automatically when you tap Log
+              conversion. Your log is private to this session and this browser
+            </p>
+          </div>
         )}
       </ul>
     </section>

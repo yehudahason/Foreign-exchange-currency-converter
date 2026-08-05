@@ -92,9 +92,15 @@ export default function Favorite({
           />
         ))}
         {pairs.length === 0 && (
-          <h3 className="uppercase text-center text-preset-2-bold dark:text-neutral-100 text-text">
-            No favorite yet
-          </h3>
+          <div className="flex flex-col items-center gap-4">
+            <h3 className=" text-center text-preset-3-medium dark:text-neutral-100 text-text">
+              No pinned pairs yet
+            </h3>
+            <p className="max-w-[28rem] text-center text-preset-4 dark:text-gray-400 text-gray-700">
+              Pin a pair to track its rate here. Tap the star icon on any
+              conversion or comparison row.
+            </p>
+          </div>
         )}
       </ul>
     </section>
