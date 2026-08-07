@@ -92,7 +92,7 @@ export default function Favorite({
           />
         ))}
         {pairs.length === 0 && (
-          <div className="flex flex-col items-center gap-4">
+          <li className="flex flex-col items-center gap-4">
             <h3 className=" text-center text-preset-3-medium dark:text-neutral-100 text-text">
               No pinned pairs yet
             </h3>
@@ -100,7 +100,7 @@ export default function Favorite({
               Pin a pair to track its rate here. Tap the star icon on any
               conversion or comparison row.
             </p>
-          </div>
+          </li>
         )}
       </ul>
     </section>
