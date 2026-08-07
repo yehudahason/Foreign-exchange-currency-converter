@@ -1,4 +1,11 @@
-import { useRef, useState, useEffect, useMemo, useId } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+  useId,
+  useCallback,
+} from "react";
 import CurrencyList from "./CurrencyList";
 import { CurrencyMap } from "../types";
 
@@ -32,24 +39,29 @@ export default function CurrencySelect({
   const searchId = `${id}-currency-search`;
   const listboxId = `${id}-currency-listbox`;
 
+  const normalizedQuery = query.trim().toLowerCase();
+
+  const filterCurrencies = useCallback(
+    (currencies: string[]) =>
+      currencies.filter((code) => {
+        const name = mergeObject[code]?.name?.toLowerCase() ?? "";
+
+        return (
+          code.toLowerCase().includes(normalizedQuery) ||
+          name.includes(normalizedQuery)
+        );
+      }),
+    [normalizedQuery, mergeObject],
+  );
+
   const itemsP = useMemo(
-    () =>
-      popularCurrencies.filter(
-        (code) =>
-          code.toLowerCase().includes(query.toLowerCase()) ||
-          mergeObject[code]?.name.toLowerCase().includes(query.toLowerCase()),
-      ),
-    [popularCurrencies, query, mergeObject],
+    () => filterCurrencies(popularCurrencies),
+    [popularCurrencies, filterCurrencies],
   );
 
   const itemsO = useMemo(
-    () =>
-      othersCurrencies.filter(
-        (code) =>
-          code.toLowerCase().includes(query.toLowerCase()) ||
-          mergeObject[code]?.name.toLowerCase().includes(query.toLowerCase()),
-      ),
-    [othersCurrencies, query, mergeObject],
+    () => filterCurrencies(othersCurrencies),
+    [othersCurrencies, filterCurrencies],
   );
 
   const filtered = useMemo(() => [...itemsP, ...itemsO], [itemsP, itemsO]);
