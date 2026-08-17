@@ -190,7 +190,7 @@ export default function CurrencySelect({
         <div
           className={`absolute top-15 ${
             left ? "z-30 -right-4" : "z-20 -right-4"
-          } overflow-x-hidden w-82 rounded-xl border 
+          } overflow-x-hidden w-75 rounded-xl border 
           
           border-zinc-700 bg-[#1b1d24] p-2`}
         >
