@@ -190,7 +190,9 @@ export default function CurrencySelect({
         <div
           className={`absolute top-15 ${
             left ? "z-30 -right-4" : "z-20 -right-4"
-          } w-72 rounded-xl border border-zinc-700 bg-[#1b1d24] p-2`}
+          } overflow-x-hidden w-82 rounded-xl border 
+          
+          border-zinc-700 bg-[#1b1d24] p-2`}
         >
           <label htmlFor={searchId} className="sr-only">
             Search currencies
@@ -226,7 +228,9 @@ export default function CurrencySelect({
             id={listboxId}
             role="listbox"
             aria-label="Currencies"
-            className="scrollbar m-0 max-h-80 overflow-y-auto px-2 pt-2 pb-4"
+            className="scrollbar m-0 max-h-80 overflow-y-auto  
+            overflow-x-hidden
+            pt-2 pb-4"
           >
             {filtered.length === 0 && (
               <li

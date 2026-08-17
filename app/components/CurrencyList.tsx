@@ -30,14 +30,18 @@ export default function CurrencyList({
             id={`currency-option-${code}`}
             role="option"
             aria-selected={isSelected}
-            className={`flex cursor-pointer items-center justify-between rounded px-4 py-3 border-2 ${
-              isHighlighted
-                ? "border-gray-500 bg-zinc-800"
-                : "border-[#1b1d24] hover:border-gray-500"
-            }`}
+            className={`flex cursor-pointer items-center justify-between rounded px-4 py-3 border-2
+              ${
+                isHighlighted
+                  ? "border-gray-500 bg-zinc-800"
+                  : "border-[#1b1d24] hover:border-gray-500"
+              } `}
             onClick={() => onSelect(code)}
           >
-            <div className="flex items-center gap-4">
+            <div
+              className={`flex items-center gap-4
+                `}
+            >
               <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
                 <img
                   src={`https://flagcdn.com/${mergeObject[code]?.flag}.svg`}
